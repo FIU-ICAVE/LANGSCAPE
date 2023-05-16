@@ -1,6 +1,6 @@
 # Capstone II: LANGSCAPE
 
-eLANGSCAPE: Language-driven Architectural VR Scape is an innovative capstone project that aims to develop an immersive and interactive virtual reality (VR) experience, 
+LANGSCAPE: Language-driven Architectural VR Scape is an innovative capstone project that aims to develop an immersive and interactive virtual reality (VR) experience, 
 allowing users to control their environment using natural language exclusively. By creating an intuitive and seamless interface between the user and the VR environment, 
 LANGSCAPE enables efficient communication with an AI assistant for designing and manipulating a 3D space. The project's primary goal is to enhance user engagement by bridging 
 the gap between the digital and physical realms by exploring recent advances in Large Language Models (LLM), ultimately providing an innovative and accessible platform for 
