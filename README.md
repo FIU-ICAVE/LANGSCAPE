@@ -10,21 +10,23 @@ users to explore and create architectural structures.
 
 ### Unity Setup
 
-#### 1. Install [Unity Hub](https://unity3d.com/get-unity/download)
+#### 1. Install [Unity Hub](https://unity3d.com/get-unity/download).
 
 #### 2. Open the Unity Hub application and go to the Installs menu on the left hand side.
 
-#### 3. Install the 2021.3.11f1 Editor with your respective OS build [Windows/Linux (IL2CPP) | Mac (Mono)].
+#### 3. Install the 2021.3.25f1 Editor with no packages.
+
+#### 4. Install [Visual Studio Community 2022](https://visualstudio.microsoft.com/vs/).
 
 
 ### Project Setup
 
-#### 1. Download [GIT](https://git-scm.com/downloads)
+#### 1. Download [GIT](https://git-scm.com/downloads).
 
 #### 2. Open a new terminal and type the following command to build your repository.
 
 ```
-git clone https://github.com/SPDJoker/Software-Engineering-1.git
+git clone https://github.com/commanser-sar/LANGSCAPE.git
 ```
 
 #### 3. Open the new folder through Unity Hub.
