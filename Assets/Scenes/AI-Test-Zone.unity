@@ -1697,6 +1697,8 @@ MonoBehaviour:
   message: {fileID: 1882794605}
   symbol: {fileID: 882458191}
   dropdown: {fileID: 316111170}
+  startKeyword: Command
+  stopKeyword: Stop
 --- !u!1 &1670092191
 GameObject:
   m_ObjectHideFlags: 0

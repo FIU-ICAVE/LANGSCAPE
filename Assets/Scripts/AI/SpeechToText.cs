@@ -2,6 +2,7 @@ using OpenAI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows.Speech;
 
 public class SpeechToText : MonoBehaviour
 {
@@ -15,8 +16,12 @@ public class SpeechToText : MonoBehaviour
 
     private AudioClip clip;
     private bool isRecording;
-    private float time;
+    private float time = 0;
     private OpenAIApi openai = new OpenAIApi(apiKey: "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");
+
+    [SerializeField] private string startKeyword;
+    [SerializeField] private string stopKeyword;
+    private KeywordRecognizer keywordRecognizer;
 
     private void Start() {
         dropdown.ClearOptions();
@@ -30,6 +35,19 @@ public class SpeechToText : MonoBehaviour
         var index = PlayerPrefs.GetInt("user-mic-device-index");
         dropdown.SetValueWithoutNotify(index);
         dropdown.RefreshShownValue();
+
+        string[] keywords = { startKeyword, stopKeyword };
+
+        keywordRecognizer = new KeywordRecognizer(keywords, ConfidenceLevel.Medium);
+        keywordRecognizer.OnPhraseRecognized += OnCommandRecognition;
+        keywordRecognizer.Start();
+    }
+
+    private void OnCommandRecognition(PhraseRecognizedEventArgs args) {
+        if (!isRecording && args.text == startKeyword)
+            StartRecording();
+        else if (isRecording && args.text == stopKeyword)
+            EndRecording();
     }
 
     private void ChangeMicrophone(int index) {
@@ -48,6 +66,7 @@ public class SpeechToText : MonoBehaviour
     private async void EndRecording() {
         isRecording = false;
         symbol.enabled = false;
+        time = 0;
 
         message.text = "Transcribing...";
 
@@ -72,5 +91,16 @@ public class SpeechToText : MonoBehaviour
             StartRecording();
         if (isRecording && Input.GetKeyUp(PUSH_TO_TALK_KEY))
             EndRecording();
+
+        if (isRecording) {
+            time += Time.deltaTime;
+            if (time >= MAX_DURATION)
+                EndRecording();
+        }
+    }
+
+    private void OnApplicationQuit() {
+        keywordRecognizer.Stop();
+        keywordRecognizer.Dispose();
     }
 }
