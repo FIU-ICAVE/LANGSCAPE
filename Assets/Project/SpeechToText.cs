@@ -23,7 +23,7 @@ public class SpeechToText : MonoBehaviour
         foreach (var device in Microphone.devices) {
             dropdown.options.Add(new TMP_Dropdown.OptionData(device));
         }
-        dropdown.SetValueWithoutNotify(0);
+        dropdown.RefreshShownValue();
         dropdown.onValueChanged.AddListener(ChangeMicrophone);
 
         var index = PlayerPrefs.GetInt("user-mic-device-index");
