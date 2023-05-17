@@ -11,7 +11,7 @@ public class SpeechToText : MonoBehaviour
     [SerializeField] private TMP_Dropdown dropdown;
 
     private readonly string fileName = "output.wav";
-    private readonly int MAX_DURATION = 30;
+    private readonly int MAX_DURATION = 20;
 
     private AudioClip clip;
     private bool isRecording;
@@ -23,11 +23,13 @@ public class SpeechToText : MonoBehaviour
         foreach (var device in Microphone.devices) {
             dropdown.options.Add(new TMP_Dropdown.OptionData(device));
         }
-        dropdown.RefreshShownValue();
+        
         dropdown.onValueChanged.AddListener(ChangeMicrophone);
+        message.text = "...";
 
         var index = PlayerPrefs.GetInt("user-mic-device-index");
         dropdown.SetValueWithoutNotify(index);
+        dropdown.RefreshShownValue();
     }
 
     private void ChangeMicrophone(int index) {
@@ -37,6 +39,7 @@ public class SpeechToText : MonoBehaviour
     private void StartRecording() {
         isRecording = true;
         symbol.enabled = true;
+        message.text = "Listening...";
 
         var index = PlayerPrefs.GetInt("user-mic-device-index");
         clip = Microphone.Start(dropdown.options[index].text, false, MAX_DURATION, 44100);
@@ -46,7 +49,7 @@ public class SpeechToText : MonoBehaviour
         isRecording = false;
         symbol.enabled = false;
 
-        message.text = "Transcripting...";
+        message.text = "Transcribing...";
 
         Microphone.End(null);
         byte[] data = SaveWav.Save(fileName, clip);
