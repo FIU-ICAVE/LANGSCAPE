@@ -1694,7 +1694,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PUSH_TO_TALK_KEY: 118
-  message: {fileID: 1882794605}
+  inputBox: {fileID: 1882794605}
+  outputBox: {fileID: 1159656053}
   symbol: {fileID: 882458191}
   dropdown: {fileID: 316111170}
   startKeyword: Command
