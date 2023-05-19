@@ -4,8 +4,8 @@
         [[[TO DO]]]
     
     TO DO:
-        - make distance between points nearly side-by-side
         - script description
+        - change DrawSphere to DrawIcon
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using UnityEngine.UIElements;
 public class Grid : MonoBehaviour
 {
     [SerializeField]
-    private float _size = 1.0f;
+    private float _size = 1.0f; //no space between blocks
     [SerializeField]
     private bool _gridGizmoDebug = true;
 

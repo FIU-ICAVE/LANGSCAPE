@@ -1,5 +1,5 @@
 /*
- * Author: Jose Gonzalez Lopez, Christian Laverde, Justin Cardoso
+ * Author: Jose Gonzalez Lopez, Christian Laverde, Justin Cardoso, Ian Rodriguez
  * Script Description:
  *      Handles converting voice input into valid JSON object.
  *      
@@ -42,12 +42,12 @@ public class CommandInterpreter : MonoBehaviour
 
     // ChatGPT
     private List<ChatMessage> messages = new List<ChatMessage>();
-    private string prompt = 
-        "Only respond in JSON and if you cannot follow the sample format, return success as 1 " +
+    private string prompt =
+        "Only respond in JSON and if you cannot follow the sample format, return success as 0. Do not respond with any text " +
         "Let's play a game " +
         "create a 50 by 50 by 50 3D grid " +
         "you can create a block of any color at any position in this grid, you will place a block when I say so " +
-        "return the properties of the block in this JSON format [{\"success\": 0,\"type\": \"block\",\"color\": \"#ffffff\",\"position\": { \"x\": ,\"y\": ,\"z\": }].";
+        "return the properties of the block in this JSON format [{\"success\": 1,\"type\": \"block\",\"color\": {\"r\": ,\"g\": ,\"b\": , \"a\": },\"position\": { \"x\": ,\"y\": ,\"z\": }].";
 
     private void Start() {
         dropdown.ClearOptions();
@@ -127,11 +127,6 @@ public class CommandInterpreter : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit() {
-        keywordRecognizer.Stop();
-        keywordRecognizer.Dispose();
-    }
-
     private async void CreateJSON(string command) {
         var newMessage = new ChatMessage() {
             Role = "user",
@@ -153,17 +148,12 @@ public class CommandInterpreter : MonoBehaviour
             var message = completionResponse.Choices[0].Message;
             message.Content = message.Content.Trim();
 
-            /*switch (message.Content[0]) {
-                case '[':
-                case '(':
-                    messages.Add(message);
-                    outputBox.text = message.Content;
-                    break;
-                default:
-                    outputBox.text = "{\"success\":1}";
-                    messages.Remove(newMessage);
-                    break;
-            }*/
+            JSONWrapper<ObjectData> obj = JSONParser.FromJSON(message.Content);
+            if (obj != null)
+            {
+                Debug.Log(obj.data[0].color);
+            }
+
             messages.Add(message);
             outputBox.text = message.Content;
         } else {

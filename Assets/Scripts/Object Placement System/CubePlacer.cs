@@ -4,7 +4,7 @@
         [[[TO DO]]]
     
     TO DO:
-        - update boundary check to include lower bounds
+        - include illegal placement check against currently existing occupied points (bitmaps)
         - script description
         - comment out Update() code once LLM can make placement requests
         - out of bounds request: inform user
@@ -48,30 +48,36 @@ public class CubePlacer : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if(Physics.Raycast(ray, out hitInfo))
             {
-                PlaceCube(hitInfo.point);
+                //PlaceCube(hitInfo.point);
             }
         }
     }
 
-    private void PlaceCube(Vector3 pos)
+    private void PlaceCube(ObjectData objData)
     {
-        //checking if pos is legal position
-        if(pos.x > 50
-            || pos.y > 50
-            || pos.z > 50)
+        //checking if pos is illegal position
+        if(objData.success == ParseSuccess.False)
         {
-            //[[[INCLUDE ERROR MESSAGE BACK TO USER]]]
+            //[[[AI ERROR MESSAGE]]]
             return;
         }
+        if(objData.position.x > 49 || objData.position.x < 1 
+            || objData.position.y > 49 || objData.position.y < 1
+            || objData.position.z > 49 || objData.position.z < 1)
+        {
+            //[[[AI ERROR MESSAGE]]]
+            return;
+        }
+        //[[[INCLUDE IF-CHECK FOR TRYING TO PLACE AT OCCUPIED SPACE]]]
 
         //placing
-        Vector3 adjustedPos = _grid.GetNearestPointOnGrid(pos);
-        GameObject block = GameObject.Instantiate(_block, pos, Quaternion.identity);
+        Vector3 adjustedPos = _grid.GetNearestPointOnGrid(objData.position);
+        GameObject block = GameObject.Instantiate(_block, objData.position, Quaternion.identity);
         block.transform.position = adjustedPos;
-        FindParent(block);
+        FindAndCreateParent(block);
     }
 
-    private void FindParent(GameObject obj)
+    private void FindAndCreateParent(GameObject obj)
     {
         GameObject parent;
         string parentName = obj.name + "s";
