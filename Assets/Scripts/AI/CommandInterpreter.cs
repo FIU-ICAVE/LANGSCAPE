@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Windows.Speech;
+//using UnityEngine.Windows.Speech;
 
 public class CommandInterpreter : MonoBehaviour
 {
@@ -35,10 +35,11 @@ public class CommandInterpreter : MonoBehaviour
     private bool isRecording;
     private float time = 0;
 
+    //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
     // Voice Command Trigger
-    [SerializeField] private string startKeyword;
-    [SerializeField] private string stopKeyword;
-    private KeywordRecognizer keywordRecognizer;
+    //[SerializeField] private string startKeyword;
+    //[SerializeField] private string stopKeyword;
+    //private KeywordRecognizer keywordRecognizer;
 
     // ChatGPT
     private List<ChatMessage> messages = new List<ChatMessage>();
@@ -48,7 +49,7 @@ public class CommandInterpreter : MonoBehaviour
         "create a 50 by 50 by 50 3D grid " +
         "you can create a block of any color at any position in this grid, you will place a block when I say so " +
         "return the properties of the block in this JSON format [{\"success\": 0,\"type\": \"block\",\"color\": \"#ffffff\",\"position\": { \"x\": ,\"y\": ,\"z\": }].";
-
+    
     private void Start() {
         dropdown.ClearOptions();
         foreach (var device in Microphone.devices) {
@@ -62,19 +63,21 @@ public class CommandInterpreter : MonoBehaviour
         dropdown.SetValueWithoutNotify(index);
         dropdown.RefreshShownValue();
 
-        string[] keywords = { startKeyword, stopKeyword };
+        //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
+        /*string[] keywords = { startKeyword, stopKeyword };
 
         keywordRecognizer = new KeywordRecognizer(keywords, ConfidenceLevel.Medium);
         keywordRecognizer.OnPhraseRecognized += OnCommandRecognition;
-        keywordRecognizer.Start();
+        keywordRecognizer.Start();*/
     }
 
-    private void OnCommandRecognition(PhraseRecognizedEventArgs args) {
+    //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
+    /*private void OnCommandRecognition(PhraseRecognizedEventArgs args) {
         if (!isRecording && args.text == startKeyword)
             StartRecording();
         else if (isRecording && args.text == stopKeyword)
             EndRecording();
-    }
+    }*/
 
     private void ChangeMicrophone(int index) {
         PlayerPrefs.SetInt("user-mic-device-index", index);
@@ -85,8 +88,9 @@ public class CommandInterpreter : MonoBehaviour
         symbol.enabled = true;
         inputBox.text = "Listening...";
 
-        var index = PlayerPrefs.GetInt("user-mic-device-index");
-        clip = Microphone.Start(dropdown.options[index].text, false, MAX_DURATION, 44100);
+        
+        //var index = PlayerPrefs.GetInt("user-mic-device-index");
+        clip = Microphone.Start(dropdown.options[0].text, false, MAX_DURATION, 44100);
     }
 
     private async void EndRecording() {
@@ -127,10 +131,11 @@ public class CommandInterpreter : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit() {
+    //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
+    /*private void OnApplicationQuit() {
         keywordRecognizer.Stop();
         keywordRecognizer.Dispose();
-    }
+    }*/
 
     private async void CreateJSON(string command) {
         var newMessage = new ChatMessage() {
