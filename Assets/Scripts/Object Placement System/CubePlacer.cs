@@ -60,18 +60,20 @@ public class CubePlacer : MonoBehaviour
         }
     }
 
-    private void PlaceObject(ObjectData objData)
+    public void PlaceCube(ObjectData objData)
     {
         //checking if pos is illegal position
-        if(objData.success == ParseSuccess.False) //AI was not able to process request
+        if(!objData.success)
         {
+            Debug.Log("OBJECT IS UNSUCCESSFUL.");
             //[[[AI ERROR MESSAGE]]]
             return;
         }
-        if(objData.position.x > 49 || objData.position.x < 1 
-            || objData.position.y > 49 || objData.position.y < 1
-            || objData.position.z > 49 || objData.position.z < 1) //out of bounds
+        if(objData.position.x > 49 || objData.position.x < 0 
+            || objData.position.y > 49 || objData.position.y < 0
+            || objData.position.z > 49 || objData.position.z < 0)
         {
+            Debug.Log("OBJECT IS OUT OF BOUNDS.");
             //[[[AI ERROR MESSAGE]]]
             return;
         }

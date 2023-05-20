@@ -18,6 +18,7 @@ using UnityEngine.Windows.Speech;
 
 public class CommandInterpreter : MonoBehaviour
 {
+    [SerializeField] private CubePlacer cubePlacer;
     // Display
     [SerializeField] private KeyCode PUSH_TO_TALK_KEY = KeyCode.V;
     [SerializeField] private TMP_Text inputBox;
@@ -47,7 +48,7 @@ public class CommandInterpreter : MonoBehaviour
         "Let's play a game " +
         "create a 50 by 50 by 50 3D grid " +
         "you can create a block of any color at any position in this grid, you will place a block when I say so " +
-        "return the properties of the block in this JSON format [{\"success\": 1,\"type\": \"block\",\"color\": {\"r\": ,\"g\": ,\"b\": , \"a\": },\"position\": { \"x\": ,\"y\": ,\"z\": }].";
+        "return the properties of the block in this JSON format {\"data\":[{\"success\":true,\"type\":\"block\",\"color\": {\"r\":1.0,\"g\":1.0,\"b\":1.0, \"a\":1.0},\"position\":{\"x\":0,\"y\":0,\"z\":0}}]}.";
 
     private void Start() {
         dropdown.ClearOptions();
@@ -148,14 +149,15 @@ public class CommandInterpreter : MonoBehaviour
             var message = completionResponse.Choices[0].Message;
             message.Content = message.Content.Trim();
 
+            messages.Add(message);
+            outputBox.text = message.Content;
+
             JSONWrapper<ObjectData> obj = JSONParser.FromJSON(message.Content);
             if (obj != null)
             {
+                cubePlacer.PlaceCube(obj.data[0]);
                 Debug.Log(obj.data[0].color);
             }
-
-            messages.Add(message);
-            outputBox.text = message.Content;
         } else {
             Debug.LogWarning("No text was generated from this prompt.");
         }

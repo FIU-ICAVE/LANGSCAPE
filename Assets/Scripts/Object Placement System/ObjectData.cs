@@ -22,8 +22,8 @@ public enum ParseSuccess
 [System.Serializable]
 public class ObjectData
 {
-    public ParseSuccess success = ParseSuccess.False;
-    public ObjectType type = ObjectType.Block;
+    public bool success = false;
+    public string type = "block";
     public Color color = Color.black;
     public Vector3 position;
 }

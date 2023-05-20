@@ -18,4 +18,6 @@ public class JSONParser
     {
         return JsonUtility.FromJson<JSONWrapper<ObjectData>>(jsonString);
     }
+
+    public static string ToJSON(ObjectData obj) => JsonUtility.ToJson(obj);
 }

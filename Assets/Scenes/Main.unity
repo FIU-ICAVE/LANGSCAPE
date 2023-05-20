@@ -1597,6 +1597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74cc12ad7a4453f47b5c9b6895689885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubePlacer: {fileID: 408374643}
   PUSH_TO_TALK_KEY: 118
   inputBox: {fileID: 724904876}
   outputBox: {fileID: 859677866}
