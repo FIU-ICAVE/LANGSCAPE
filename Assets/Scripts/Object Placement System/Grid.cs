@@ -17,9 +17,7 @@ using UnityEngine.UIElements;
 public class Grid : MonoBehaviour
 {
     [SerializeField]
-    private float _size = 1.0f; //no space between blocks
-    [SerializeField]
-    private bool _gridGizmoDebug = true;
+    private float _pointDensity = 1.0f; //no space between blocks
 
     // Start is called before the first frame update
     void Start()
@@ -38,37 +36,18 @@ public class Grid : MonoBehaviour
         pos -= transform.position; //for making sure points move if grid is moved
 
         //getting number of points across grid
-        int xCount = Mathf.RoundToInt(pos.x / _size);
-        int yCount = Mathf.RoundToInt(pos.y / _size);
-        int zCount = Mathf.RoundToInt(pos.z / _size);
+        int xCount = Mathf.RoundToInt(pos.x / _pointDensity);
+        int yCount = Mathf.RoundToInt(pos.y / _pointDensity);
+        int zCount = Mathf.RoundToInt(pos.z / _pointDensity);
 
         //adjusting according to "size"
         Vector3 result = new Vector3(
-            (float)xCount * _size,
-            (float)yCount * _size,
-            (float)zCount * _size);
+            (float)xCount * _pointDensity,
+            (float)yCount * _pointDensity,
+            (float)zCount * _pointDensity);
 
         result += transform.position; //for making sure points move if grid is moved
 
         return result;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (_gridGizmoDebug)
-        {
-            Gizmos.color = Color.red;
-            for (float y = 0; y < 10; y += _size)
-            {
-                for (float x = 0; x < 10; x += _size)
-                {
-                    for (float z = 0; z < 10; z += _size)
-                    {
-                        Vector3 point = GetNearestPointOnGrid(new Vector3(x, y, z));
-                        Gizmos.DrawSphere(point, 0.1f);
-                    }
-                }
-            }
-        } 
     }
 }

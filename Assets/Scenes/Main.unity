@@ -507,6 +507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _block: {fileID: 6003142102216242326, guid: b5db78b26072aae43ac4af24acd8359d, type: 3}
+  _pointAndClickDebug: 1
 --- !u!4 &408374644
 Transform:
   m_ObjectHideFlags: 0
@@ -2600,8 +2601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 954cad7f5228b154b82ed00a2006ebde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _size: 1
-  _gridGizmoDebug: 0
+  _pointDensity: 1
 --- !u!1 &1554216605
 GameObject:
   m_ObjectHideFlags: 0
