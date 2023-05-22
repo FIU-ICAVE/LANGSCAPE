@@ -47,7 +47,7 @@ public class CommandInterpreter : MonoBehaviour
         "Only respond in JSON and if you cannot follow the sample format, return success as 0. Do not respond with any text " +
         "Let's play a game " +
         "create a 50 by 50 by 50 3D grid " +
-        "you can create a block of any color at any position in this grid, you will place a block when I say so " +
+        "you can create a block of any color with any opacity at any position in this grid, you will place a block when I say so " +
         "return the properties of the block in this JSON format {\"data\":[{\"success\":true,\"type\":\"block\",\"color\": {\"r\":1.0,\"g\":1.0,\"b\":1.0, \"a\":1.0},\"position\":{\"x\":0,\"y\":0,\"z\":0}}]}.";
 
     private void Start() {
