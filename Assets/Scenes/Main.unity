@@ -507,7 +507,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _block: {fileID: 6003142102216242326, guid: b5db78b26072aae43ac4af24acd8359d, type: 3}
-  _pointAndClickDebug: 1
+  _pointAndClickDebug: 0
+  _baseBlockMat: {fileID: 2100000, guid: 15840218443527c4b938be8ad5cb5294, type: 2}
 --- !u!4 &408374644
 Transform:
   m_ObjectHideFlags: 0

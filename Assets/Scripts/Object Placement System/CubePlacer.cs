@@ -1,5 +1,5 @@
 /*
-    Author: Ian Rodriguez
+    Author: Ian Rodriguez, Justin Cardoso
     Script Description:
         [[[TO DO]]]
     
@@ -15,6 +15,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO.Pipes;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class CubePlacer : MonoBehaviour
@@ -25,6 +26,9 @@ public class CubePlacer : MonoBehaviour
     private GameObject _objectContainer;
     [SerializeField]
     private bool _pointAndClickDebug = true;
+
+    [SerializeField]
+    private Material _baseBlockMat;
 
     // Start is called before the first frame update
     void Start()
@@ -79,9 +83,16 @@ public class CubePlacer : MonoBehaviour
         }
         //[[[INCLUDE IF-CHECK FOR TRYING TO PLACE AT OCCUPIED SPACE]]]
 
-        //placing
-        Vector3 adjustedPos = _grid.GetNearestPointOnGrid(objData.position);
+        //instantiate block
         GameObject block = GameObject.Instantiate(_block, objData.position, Quaternion.identity);
+
+        //desired material
+        Renderer newBlockRend = block.GetComponent<Renderer>();
+        newBlockRend.material = new Material(_baseBlockMat);
+        newBlockRend.material.color = objData.color;
+
+        //desired position
+        Vector3 adjustedPos = _grid.GetNearestPointOnGrid(objData.position);
         block.transform.position = adjustedPos;
         FindAndCreateParent(block);
     }
