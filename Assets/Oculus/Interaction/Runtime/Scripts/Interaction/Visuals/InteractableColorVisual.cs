@@ -42,8 +42,9 @@ namespace Oculus.Interaction
             public Color Color = Color.white;
             public AnimationCurve ColorCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
             public float ColorTime = 0.1f;
+            
         }
-
+        public int selected = 0;
         [SerializeField]
         private ColorState _normalColorState = new ColorState() { Color = Color.white };
         [SerializeField]
@@ -117,12 +118,15 @@ namespace Oculus.Interaction
             switch (state)
             {
                 case InteractableState.Select:
+                    selected = 1;
                     return _selectColorState;
                 case InteractableState.Hover:
                     return _hoverColorState;
                 case InteractableState.Normal:
+                    selected = 0;
                     return _normalColorState;
                 case InteractableState.Disabled:
+                    selected = 0;
                     return _disabledColorState;
                 default:
                     return _normalColorState;

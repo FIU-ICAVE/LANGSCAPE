@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Oculus.Interaction;
 //using UnityEngine.Windows.Speech;
 
 public class CommandInterpreter : MonoBehaviour
@@ -34,6 +35,9 @@ public class CommandInterpreter : MonoBehaviour
     private AudioClip clip;
     private bool isRecording;
     private float time = 0;
+
+    //Push to talk Button GameObject
+    public GameObject button;
 
     //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
     // Voice Command Trigger
@@ -119,10 +123,16 @@ public class CommandInterpreter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isRecording && Input.GetKeyDown(PUSH_TO_TALK_KEY))
+        /*if (!isRecording && Input.GetKeyDown(PUSH_TO_TALK_KEY))
             StartRecording();
         if (isRecording && Input.GetKeyUp(PUSH_TO_TALK_KEY))
-            EndRecording();
+            EndRecording();*/
+        int selected = button.GetComponent<InteractableColorVisual>().selected;
+
+        if (!isRecording && selected == 1)
+            StartRecording();
+        if (isRecording && selected == 0)
+            EndRecording(); 
 
         if (isRecording) {
             time += Time.deltaTime;
