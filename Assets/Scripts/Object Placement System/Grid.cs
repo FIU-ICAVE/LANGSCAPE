@@ -37,17 +37,19 @@ public class Grid : MonoBehaviour
 
         //getting number of points across grid
         int xCount = Mathf.RoundToInt(pos.x / _pointDensity);
-        int yCount = Mathf.RoundToInt(pos.y / _pointDensity);
+        int yCount = Mathf.RoundToInt(pos.y / _pointDensity) ;
         int zCount = Mathf.RoundToInt(pos.z / _pointDensity);
 
         //adjusting according to "size"
         Vector3 result = new Vector3(
-            (float)xCount * _pointDensity,
-            (float)yCount * _pointDensity,
-            (float)zCount * _pointDensity);
+            (float)xCount * _pointDensity + (float)1/2,
+            (float)yCount * _pointDensity + (float)1/2,
+            (float)zCount * _pointDensity + (float)1/2);
 
         result += transform.position; //for making sure points move if grid is moved
-
+        
+        UnityEngine.Debug.Log("vector" + result);
+        
         return result;
     }
 }

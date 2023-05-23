@@ -1,5 +1,5 @@
 /*
- * Author: Jose Gonzalez Lopez, Christian Laverde, Justin Cardoso
+ * Author: Jose Gonzalez Lopez, Christian Laverde, Justin Cardoso, Ian Rodriguez
  * Script Description:
  *      Handles converting voice input into valid JSON object.
  *      
@@ -14,11 +14,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Oculus.Interaction;
-//using UnityEngine.Windows.Speech;
+using UnityEngine.Windows.Speech;
 
 public class CommandInterpreter : MonoBehaviour
 {
+    [SerializeField] private CubePlacer cubePlacer;
     // Display
     [SerializeField] private KeyCode PUSH_TO_TALK_KEY = KeyCode.V;
     [SerializeField] private TMP_Text inputBox;
@@ -36,24 +36,20 @@ public class CommandInterpreter : MonoBehaviour
     private bool isRecording;
     private float time = 0;
 
-    //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
     // Voice Command Trigger
-    //[SerializeField] private string startKeyword;
-    //[SerializeField] private string stopKeyword;
-    //private KeywordRecognizer keywordRecognizer;
-
-    //Gesture Detect
-    public GestureTest gesture;
+    [SerializeField] private string startKeyword;
+    [SerializeField] private string stopKeyword;
+    private KeywordRecognizer keywordRecognizer;
 
     // ChatGPT
     private List<ChatMessage> messages = new List<ChatMessage>();
-    private string prompt = 
-        "Only respond in JSON and if you cannot follow the sample format, return success as 1 " +
+    private string prompt =
+        "Only respond in JSON and if you cannot follow the sample format, return success as 0. Do not respond with any text " +
         "Let's play a game " +
         "create a 50 by 50 by 50 3D grid " +
-        "you can create a block of any color at any position in this grid, you will place a block when I say so " +
-        "return the properties of the block in this JSON format [{\"success\": 0,\"type\": \"block\",\"color\": \"#ffffff\",\"position\": { \"x\": ,\"y\": ,\"z\": }].";
-    
+        "you can create a block of any color with any opacity at any position in this grid, you will place a block when I say so " +
+        "return the properties of the block in this JSON format {\"data\":[{\"success\":true,\"type\":\"block\",\"color\": {\"r\":1.0,\"g\":1.0,\"b\":1.0, \"a\":1.0},\"position\":{\"x\":0,\"y\":0,\"z\":0}}]}.";
+
     private void Start() {
         dropdown.ClearOptions();
         foreach (var device in Microphone.devices) {
@@ -67,21 +63,19 @@ public class CommandInterpreter : MonoBehaviour
         dropdown.SetValueWithoutNotify(index);
         dropdown.RefreshShownValue();
 
-        //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
-        /*string[] keywords = { startKeyword, stopKeyword };
+        string[] keywords = { startKeyword, stopKeyword };
 
         keywordRecognizer = new KeywordRecognizer(keywords, ConfidenceLevel.Medium);
         keywordRecognizer.OnPhraseRecognized += OnCommandRecognition;
-        keywordRecognizer.Start();*/
+        keywordRecognizer.Start();
     }
 
-    //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
-    /*private void OnCommandRecognition(PhraseRecognizedEventArgs args) {
+    private void OnCommandRecognition(PhraseRecognizedEventArgs args) {
         if (!isRecording && args.text == startKeyword)
             StartRecording();
         else if (isRecording && args.text == stopKeyword)
             EndRecording();
-    }*/
+    }
 
     private void ChangeMicrophone(int index) {
         PlayerPrefs.SetInt("user-mic-device-index", index);
@@ -92,9 +86,8 @@ public class CommandInterpreter : MonoBehaviour
         symbol.enabled = true;
         inputBox.text = "Listening...";
 
-        
-        //var index = PlayerPrefs.GetInt("user-mic-device-index");
-        clip = Microphone.Start(dropdown.options[0].text, false, MAX_DURATION, 44100);
+        var index = PlayerPrefs.GetInt("user-mic-device-index");
+        clip = Microphone.Start(dropdown.options[index].text, false, MAX_DURATION, 44100);
     }
 
     private async void EndRecording() {
@@ -123,14 +116,9 @@ public class CommandInterpreter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (!isRecording && Input.GetKeyDown(PUSH_TO_TALK_KEY))
+        if (!isRecording && Input.GetKeyDown(PUSH_TO_TALK_KEY))
             StartRecording();
         if (isRecording && Input.GetKeyUp(PUSH_TO_TALK_KEY))
-            EndRecording();*/
-
-        if (!isRecording && gesture.selected)
-            StartRecording();
-        if (isRecording && !gesture.selected)
             EndRecording();
 
         if (isRecording) {
@@ -139,12 +127,6 @@ public class CommandInterpreter : MonoBehaviour
                 EndRecording();
         }
     }
-
-    //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
-    /*private void OnApplicationQuit() {
-        keywordRecognizer.Stop();
-        keywordRecognizer.Dispose();
-    }*/
 
     private async void CreateJSON(string command) {
         var newMessage = new ChatMessage() {
@@ -167,19 +149,15 @@ public class CommandInterpreter : MonoBehaviour
             var message = completionResponse.Choices[0].Message;
             message.Content = message.Content.Trim();
 
-            /*switch (message.Content[0]) {
-                case '[':
-                case '(':
-                    messages.Add(message);
-                    outputBox.text = message.Content;
-                    break;
-                default:
-                    outputBox.text = "{\"success\":1}";
-                    messages.Remove(newMessage);
-                    break;
-            }*/
             messages.Add(message);
             outputBox.text = message.Content;
+
+            JSONWrapper<ObjectData> obj = JSONParser.FromJSON(message.Content);
+            if (obj != null)
+            {
+                cubePlacer.PlaceCube(obj.data[0]);
+                Debug.Log(obj.data[0].color);
+            }
         } else {
             Debug.LogWarning("No text was generated from this prompt.");
         }
