@@ -36,14 +36,14 @@ public class CommandInterpreter : MonoBehaviour
     private bool isRecording;
     private float time = 0;
 
-    //Push to talk Button GameObject
-    public GameObject button;
-
     //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
     // Voice Command Trigger
     //[SerializeField] private string startKeyword;
     //[SerializeField] private string stopKeyword;
     //private KeywordRecognizer keywordRecognizer;
+
+    //Gesture Detect
+    public GestureTest gesture;
 
     // ChatGPT
     private List<ChatMessage> messages = new List<ChatMessage>();
@@ -127,12 +127,11 @@ public class CommandInterpreter : MonoBehaviour
             StartRecording();
         if (isRecording && Input.GetKeyUp(PUSH_TO_TALK_KEY))
             EndRecording();*/
-        int selected = button.GetComponent<InteractableColorVisual>().selected;
 
-        if (!isRecording && selected == 1)
+        if (!isRecording && gesture.selected)
             StartRecording();
-        if (isRecording && selected == 0)
-            EndRecording(); 
+        if (isRecording && !gesture.selected)
+            EndRecording();
 
         if (isRecording) {
             time += Time.deltaTime;
