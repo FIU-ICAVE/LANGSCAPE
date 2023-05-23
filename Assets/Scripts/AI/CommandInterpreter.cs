@@ -20,6 +20,7 @@ using Oculus.Interaction;
 public class CommandInterpreter : MonoBehaviour
 {
     // Display
+    [SerializeField] private CubePlacer cubePlacer;
     [SerializeField] private KeyCode PUSH_TO_TALK_KEY = KeyCode.V;
     [SerializeField] private TMP_Text inputBox;
     [SerializeField] private TMP_Text outputBox;
@@ -35,12 +36,6 @@ public class CommandInterpreter : MonoBehaviour
     private AudioClip clip;
     private bool isRecording;
     private float time = 0;
-
-    //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
-    // Voice Command Trigger
-    //[SerializeField] private string startKeyword;
-    //[SerializeField] private string stopKeyword;
-    //private KeywordRecognizer keywordRecognizer;
 
     //Gesture Detect
     public GestureTest gesture;
@@ -66,22 +61,9 @@ public class CommandInterpreter : MonoBehaviour
         var index = PlayerPrefs.GetInt("user-mic-device-index");
         dropdown.SetValueWithoutNotify(index);
         dropdown.RefreshShownValue();
-
-        //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
-        /*string[] keywords = { startKeyword, stopKeyword };
-
-        keywordRecognizer = new KeywordRecognizer(keywords, ConfidenceLevel.Medium);
-        keywordRecognizer.OnPhraseRecognized += OnCommandRecognition;
-        keywordRecognizer.Start();*/
     }
 
-    //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
-    /*private void OnCommandRecognition(PhraseRecognizedEventArgs args) {
-        if (!isRecording && args.text == startKeyword)
-            StartRecording();
-        else if (isRecording && args.text == stopKeyword)
-            EndRecording();
-    }*/
+
 
     private void ChangeMicrophone(int index) {
         PlayerPrefs.SetInt("user-mic-device-index", index);
@@ -109,7 +91,6 @@ public class CommandInterpreter : MonoBehaviour
 
         var req = new CreateAudioTranscriptionsRequest {
             FileData = new FileData() { Data = data, Name = "audio.wav" },
-            // File = Application.persistentDataPath + "/" + fileName,
             Model = "whisper-1",
             Language = "en"
         };
@@ -123,11 +104,6 @@ public class CommandInterpreter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (!isRecording && Input.GetKeyDown(PUSH_TO_TALK_KEY))
-            StartRecording();
-        if (isRecording && Input.GetKeyUp(PUSH_TO_TALK_KEY))
-            EndRecording();*/
-
         if (!isRecording && gesture.selected)
             StartRecording();
         if (isRecording && !gesture.selected)
@@ -139,12 +115,6 @@ public class CommandInterpreter : MonoBehaviour
                 EndRecording();
         }
     }
-
-    //REMOVED WITH THE REMOVAL OF UnityEngine.Windows.Speech
-    /*private void OnApplicationQuit() {
-        keywordRecognizer.Stop();
-        keywordRecognizer.Dispose();
-    }*/
 
     private async void CreateJSON(string command) {
         var newMessage = new ChatMessage() {
@@ -167,19 +137,15 @@ public class CommandInterpreter : MonoBehaviour
             var message = completionResponse.Choices[0].Message;
             message.Content = message.Content.Trim();
 
-            /*switch (message.Content[0]) {
-                case '[':
-                case '(':
-                    messages.Add(message);
-                    outputBox.text = message.Content;
-                    break;
-                default:
-                    outputBox.text = "{\"success\":1}";
-                    messages.Remove(newMessage);
-                    break;
-            }*/
             messages.Add(message);
             outputBox.text = message.Content;
+
+            JSONWrapper<ObjectData> obj = JSONParser.FromJSON(message.Content);
+            if (obj != null)
+            {
+                cubePlacer.PlaceCube(obj.data[0]);
+                Debug.Log(obj.data[0].color);
+            }
         } else {
             Debug.LogWarning("No text was generated from this prompt.");
         }
