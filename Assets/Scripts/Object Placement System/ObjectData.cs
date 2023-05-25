@@ -1,7 +1,8 @@
 /*
     Authors: Jose Gonzalez, Ian Rodriguez
     Script Description:
-        
+        This script defines the fields to describe an object.
+        The fields are filled by JSONParser.cs.
 */
 using System.Collections;
 using System.Collections.Generic;
