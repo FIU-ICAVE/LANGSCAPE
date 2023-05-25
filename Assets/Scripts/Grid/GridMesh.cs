@@ -97,17 +97,17 @@ public class GridMesh : MonoBehaviour
                     Vector3Int position = new Vector3Int(x, y, z);
                     bool isPartiallyFull = !cell.IsFullBlock();
 
-                    if (x == 0 || isPartiallyFull || CheckNeighbor(data[x - 1, y, z]))
+                    if (x == 0 || isPartiallyFull || CheckNeighbor(cell, data[x - 1, y, z]))
                         AddFace(cell, model.vertices, model.left, position);
-                    if (x == size.x - 1 || isPartiallyFull || CheckNeighbor(data[x + 1, y, z]))
+                    if (x == size.x - 1 || isPartiallyFull || CheckNeighbor(cell, data[x + 1, y, z]))
                         AddFace(cell, model.vertices, model.right, position);
-                    if (y == 0 || isPartiallyFull || CheckNeighbor(data[x, y - 1, z]))
+                    if (y == 0 || isPartiallyFull || CheckNeighbor(cell, data[x, y - 1, z]))
                         AddFace(cell, model.vertices, model.bottom, position);
-                    if (y == size.y - 1 || isPartiallyFull || CheckNeighbor(data[x, y + 1, z]))
+                    if (y == size.y - 1 || isPartiallyFull || CheckNeighbor(cell, data[x, y + 1, z]))
                         AddFace(cell, model.vertices, model.top, position);
-                    if (z == 0 || isPartiallyFull || CheckNeighbor(data[x, y, z - 1]))
+                    if (z == 0 || isPartiallyFull || CheckNeighbor(cell, data[x, y, z - 1]))
                         AddFace(cell, model.vertices, model.front, position);
-                    if (z == size.z - 1 || isPartiallyFull || CheckNeighbor(data[x, y, z + 1]))
+                    if (z == size.z - 1 || isPartiallyFull || CheckNeighbor(cell, data[x, y, z + 1]))
                         AddFace(cell, model.vertices, model.back, position);
                 }
             }
@@ -124,7 +124,7 @@ public class GridMesh : MonoBehaviour
     }
 
     // Check if neighbor is transparent or if there is a gap between the neighbor and cell.
-    public bool CheckNeighbor(GridCellData neighbor) => !neighbor.IsFullBlock() || neighbor.IsTransparent();
+    public bool CheckNeighbor(GridCellData cell, GridCellData neighbor) => !neighbor.IsFullBlock() || neighbor.IsTransparent() && !cell.IsTransparent();
 
     public static void TestPlacement() => Instance.Place(Instance.testCellData, Instance.testPosition);
 
@@ -150,6 +150,28 @@ public class GridMesh : MonoBehaviour
 
     public void Place(GridCellData cell, Vector3Int position) {
         data[position.x, position.y, position.z] = cell;
+
+        RegenerateMesh();
+    }
+
+    public void Multiplace(CommandObject[] objects) {
+        for (int i = 0; i < objects.Length; i++) {
+            CommandObject obj = objects[i];
+            Debug.Log(i);
+            if (obj.original_position.x >= 0 && obj.original_position.x < size.x &&
+                obj.original_position.y >= 0 && obj.original_position.y < size.y &&
+                obj.original_position.z >= 0 && obj.original_position.z < size.z)
+                data[obj.original_position.x, obj.original_position.y, obj.original_position.z].type = BlockType.Empty;
+            // Out of bounds into the negative
+            if (obj.new_position.x < 0 || obj.new_position.y < 0 || obj.new_position.z < 0)
+                continue;
+            // Greater than the size of the world
+            if (obj.new_position.x >= size.x || obj.new_position.y >= size.y || obj.new_position.z >= size.z)
+                continue;
+            // Set the cell to the new type
+            data[obj.new_position.x, obj.new_position.y, obj.new_position.z].type = obj.type;
+            data[obj.new_position.x, obj.new_position.y, obj.new_position.z].color = obj.color;
+        }
 
         RegenerateMesh();
     }

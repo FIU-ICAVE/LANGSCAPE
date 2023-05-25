@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public enum BlockType { 
     Empty, 
     Block, 
@@ -31,5 +32,5 @@ public struct GridCellData
     };
 
     public bool IsTransparent() => (properties[(int)type] & PROPERTY_TRANSPARENT) != 0;
-    public bool IsFullBlock() => (properties[(int)type] & PROPERTY_TRANSPARENT) != 0;
+    public bool IsFullBlock() => (properties[(int)type] & PROPERTY_FULL_BLOCK) != 0;
 }
