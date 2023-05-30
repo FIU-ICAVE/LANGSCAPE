@@ -15,12 +15,12 @@ public class JSONWrapper<T>
 
 [System.Serializable]
 public class CommandObject {
-    public BlockType type = 0;
+    public GridCellType type = 0;
     public Vector3Int original_position = new Vector3Int(-1, -1, -1);
     public Vector3Int new_position = new Vector3Int(-1, -1, -1);
     public Color color = Color.white;
 
-    public CommandObject(BlockType type, Vector3Int original_position, Vector3Int new_position, Color color) {
+    public CommandObject(GridCellType type, Vector3Int original_position, Vector3Int new_position, Color color) {
         this.type = type;
         this.original_position = original_position;
         this.new_position = new_position;

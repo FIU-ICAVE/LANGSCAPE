@@ -955,10 +955,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eadceb2c08d5bbe429ba9ed021c0bdfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialWorldSize: {x: 30, y: 30, z: 30}
+  initialWorldSize: {x: 25, y: 10, z: 25}
+  textureAtlasSize: {x: 2, y: 2}
   drawInEditor: 1
   testCellData:
     type: 1
+    texture: 0
     color: {r: 0, g: 0, b: 0, a: 0.65882355}
   testPosition: {x: 2, y: 0, z: 2}
 --- !u!23 &694905905

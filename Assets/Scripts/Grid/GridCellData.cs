@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public enum BlockType { 
+public enum GridCellType { 
     Empty, 
     Block, 
     Glass 
@@ -16,11 +16,13 @@ public struct GridCellData
     private const byte PROPERTY_TRANSPARENT = 1;    // Indicates using alpha material and renders surrounding blocks
     private const byte PROPERTY_FULL_BLOCK = 2;     // Indicates to not render any faces between another full block
 
-    public BlockType type;
+    public GridCellType type;
+    public GridTexture texture;
     public Color color;
 
-    public GridCellData(BlockType type, Color color) {
+    public GridCellData(GridCellType type, GridTexture texture, Color color) {
         this.type = type;
+        this.texture = texture;
         this.color = color;
     }
 

@@ -16,6 +16,7 @@ public class GridMesh : MonoBehaviour
 
     [Header("Configure")]
     [SerializeField] private Vector3Int initialWorldSize;
+    [SerializeField] private Vector2Int textureAtlasSize;
     [SerializeField] private bool drawInEditor = true;
 
     [Header("Test Placement")]
@@ -31,10 +32,12 @@ public class GridMesh : MonoBehaviour
     private List<int> opaqueTriangles;
     private List<int> transparentTriangles;
     private List<Color> colors;
+    private List<Vector2> uvs;
 
     public Vector3Int size { get; private set; }
 
     private GridModel[] models;
+    private GridTextureAtlas textureAtlas;
 
 
     // Start is called before the first frame update
@@ -54,16 +57,19 @@ public class GridMesh : MonoBehaviour
         Instance = this;
 
         models = new GridModel[3];
-        models[(int)BlockType.Block] = GridModel.Load("block");
-        if (models[(int)BlockType.Block] == null) {
+        models[(int)GridCellType.Block] = GridModel.Load("block");
+        if (models[(int)GridCellType.Block] == null) {
             Debug.LogError("Model Loader: Failed to load block model.");
         }
-        models[(int)BlockType.Glass] = models[(int)BlockType.Block];
+        models[(int)GridCellType.Glass] = models[(int)GridCellType.Block];
+
+        textureAtlas = new GridTextureAtlas(textureAtlasSize.x, textureAtlasSize.y);
 
         vertices = new List<Vector3>();
         opaqueTriangles = new List<int>();
         transparentTriangles = new List<int>();
         colors = new List<Color>();
+        uvs = new List<Vector2>();
 
         meshFilter = GetComponent<MeshFilter>();
 
@@ -78,8 +84,9 @@ public class GridMesh : MonoBehaviour
         opaqueTriangles.Clear();
         transparentTriangles.Clear();
         colors.Clear();
+        uvs.Clear();
 
-        GridCellData floorCell = new GridCellData(BlockType.Block, Color.white);
+        GridCellData floorCell = new GridCellData(GridCellType.Block, GridTexture.Grid, Color.white);
 
         for (int y = 0; y < size.y; y++) {
             for (int x = 0; x < size.x; x++) {
@@ -89,7 +96,7 @@ public class GridMesh : MonoBehaviour
                         AddFace(floorCell, models[1].vertices, models[1].top, new Vector3Int(x, -1, z));
                     }
 
-                    if (cell.type == BlockType.Empty)
+                    if (cell.type == GridCellType.Empty)
                         continue;
 
                     GridModel model = models[(int)cell.type];
@@ -120,6 +127,7 @@ public class GridMesh : MonoBehaviour
         worldMesh.SetTriangles(opaqueTriangles, 0);
         worldMesh.SetTriangles(transparentTriangles, 1);
         worldMesh.colors = colors.ToArray();
+        worldMesh.SetUVs(0, uvs);
         worldMesh.RecalculateNormals();
     }
 
@@ -137,6 +145,7 @@ public class GridMesh : MonoBehaviour
                 vertices.Add(verts[indices[t]] + position);
                 transparentTriangles.Add(v + t);
                 colors.Add(cell.color);
+                uvs.Add(Vector2.zero);
             }
             return;
         }
@@ -146,6 +155,7 @@ public class GridMesh : MonoBehaviour
             opaqueTriangles.Add(v + t);
             colors.Add(cell.color);
         }
+        uvs.AddRange(textureAtlas.GetTextureUVs(cell.texture));
     }
 
     public void Place(GridCellData cell, Vector3Int position) {
@@ -161,7 +171,7 @@ public class GridMesh : MonoBehaviour
             if (obj.original_position.x >= 0 && obj.original_position.x < size.x &&
                 obj.original_position.y >= 0 && obj.original_position.y < size.y &&
                 obj.original_position.z >= 0 && obj.original_position.z < size.z)
-                data[obj.original_position.x, obj.original_position.y, obj.original_position.z].type = BlockType.Empty;
+                data[obj.original_position.x, obj.original_position.y, obj.original_position.z].type = GridCellType.Empty;
             // Out of bounds into the negative
             if (obj.new_position.x < 0 || obj.new_position.y < 0 || obj.new_position.z < 0)
                 continue;
