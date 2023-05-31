@@ -97,6 +97,8 @@ public class CommandInterpreter : MonoBehaviour
         var res = await openai.CreateAudioTranscription(req);
 
         inputBox.text = res.Text;
+        if (res.Error != null)
+            inputBox.text = res.Error.ToString();
         if (res.Text != "")
             CreateJSON(res.Text);
     }
@@ -148,6 +150,7 @@ public class CommandInterpreter : MonoBehaviour
             }
         } else {
             Debug.LogWarning("No text was generated from this prompt.");
+            outputBox.text = "Ya done messed up";
         }
     }
 }
