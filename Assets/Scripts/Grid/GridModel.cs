@@ -1,12 +1,15 @@
+//
+// Authors: Jose Gonzalez
+//
+// Description: Loads a text file in 'Assets/Resources' and reads it as JSON to
+// obtain the vertex and face data of a model. These include the basic block and
+// any other object the AI should be able to place.
+//
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class FaceData {
-    public int[] indices;
-}
-
+// TODO: add init method and load all the different models here, not in the mesh.
 public class GridModel
 {
     public Vector3[] vertices;

@@ -1,5 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+//
+// Authors: Jose Gonzalez
+//
+// Description: Creates a button at runtime inside the editor that allows
+// us to create a block without having to call the AI. Excluded from build.
+//
+
 using UnityEditor;
 using UnityEngine;
 
@@ -9,8 +14,8 @@ public class GridTestingEditor : Editor {
         DrawDefaultInspector();
 
         if (GridMesh.Instance != null) {
-            if (GUILayout.Button("Place Object"))
-                GridMesh.TestPlacement();
+            if (GUILayout.Button("Run Command"))
+                GridMesh.TestCommandViaEditor();
         }
     }
 }
