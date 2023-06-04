@@ -16,17 +16,7 @@ public class JSONParser
 {
     public static JSONWrapper<ObjectData> FromJSON(string jsonString)
     {
-        JSONWrapper<ObjectData> data = new JSONWrapper<ObjectData>();
-        try
-        {
-            data = JsonUtility.FromJson<JSONWrapper<ObjectData>>(jsonString);
-        } 
-        catch(System.Exception exception)
-        {
-            Debug.LogError(exception.Message);
-        }
-
-        return data;
+        return JsonUtility.FromJson<JSONWrapper<ObjectData>>(jsonString);
     }
 
     public static string ToJSON(ObjectData obj) => JsonUtility.ToJson(obj);
