@@ -1,11 +1,9 @@
 /*
-    Author: Ian Rodriguez
+    Author: Ian Rodriguez, Herbert Cabrera
     Script Description:
-        [[[TO DO]]]
+        This script defines the grid system to which blocks are placed on.
     
     TO DO:
-        - script description
-        - change DrawSphere to DrawIcon
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -16,20 +14,7 @@ using UnityEngine.UIElements;
 
 public class Grid : MonoBehaviour
 {
-    [SerializeField]
     private float _pointDensity = 1.0f; //no space between blocks
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public Vector3 GetNearestPointOnGrid(Vector3 pos)
     {
@@ -48,7 +33,7 @@ public class Grid : MonoBehaviour
 
         result += transform.position; //for making sure points move if grid is moved
         
-        UnityEngine.Debug.Log("vector" + result);
+        //UnityEngine.Debug.Log("vector" + result);
         
         return result;
     }

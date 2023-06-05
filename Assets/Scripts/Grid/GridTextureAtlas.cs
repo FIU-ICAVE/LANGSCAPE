@@ -1,5 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+//
+// Authors: Jose Gonzalez
+//
+// Description: Simply converts an enum to a texture atlas tile and returns
+// the (x,y) of that enum from top left to right and bottom, as opposed to bottom
+// left to right and up. Also returns the proper UVs for a rectangle.
+//
+
 using UnityEngine;
 
 public enum GridTexture {

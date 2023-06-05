@@ -26,6 +26,14 @@ public struct GridCellData
         this.color = color;
     }
 
+    public GridCellData(int type, int texture, int r, int g, int b) {
+        this.type = (GridCellType)type;
+        this.texture = (GridTexture)texture;
+        this.color = new Color(r / 255.0f, g / 255.0f, b / 255.0f, 1);
+        if (this.type == GridCellType.Glass)
+            color.a = 0.4f;
+    }
+
     // By value of type
     private static readonly byte[] properties = new byte[]{
         PROPERTY_TRANSPARENT,                           // Empty
