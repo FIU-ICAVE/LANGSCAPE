@@ -1,15 +1,19 @@
-﻿using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 class FillCommand : Command {
     private Vector3Int position;
     private Vector3Int size;
     private GridCellData cell;
 
-    public FillCommand(int[] argv) {
+    // f <x> <y> <z> <sx> <sy> <sz> <block> [color]
+    public static new readonly char SIGNATURE = 'f';
+    public static new readonly int PARAM_COUNT = 8;
+    public static new readonly int REQUIRED_PARAMS = 7;
+
+    public FillCommand(int[] argv, Color color) {
         position = new Vector3Int(argv[0], argv[1], argv[2]);
         size = new Vector3Int(argv[3], argv[4], argv[5]);
-        cell = new GridCellData(argv[6], argv[7], argv[8], argv[9], argv[10]);
+        cell = new GridCellData(argv[6], color);
     }
 
     public override void Execute() {
@@ -18,9 +22,10 @@ class FillCommand : Command {
     }
 
     public override void Undo() { }
+    public override void Redo() { }
 
     public override string ToString() {
-        return Fill.signature +
+        return SIGNATURE +
             position.x + " " +
             position.y + " " +
             position.z + " " +
@@ -28,9 +33,6 @@ class FillCommand : Command {
             size.y + " " +
             size.z + " " +
             (int)cell.type + " " +
-            (int)cell.texture + " " +
-            (int)(cell.color.r * 255) + " " +
-            (int)(cell.color.g * 255) + " " +
-            (int)(cell.color.b * 255);
+            ColorUtility.ToHtmlStringRGB(cell.color);
     }
 }

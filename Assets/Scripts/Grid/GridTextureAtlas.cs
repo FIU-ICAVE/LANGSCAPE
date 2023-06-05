@@ -8,6 +8,14 @@
 
 using UnityEngine;
 
+// Add the texture atlas to the project as Sprite and UI
+// Modify in the world object the Texture Atlas Size
+// Add texture name to GridTexture
+// Add models to GridMesh.Awake()
+// Add block name to GridCellType in GridCellData.cs
+// Add block properties inside GridCellData.properties (KEEP TRACK OF THE INDEX)
+// Add block texture associated with it in GridCellData.properties
+
 public enum GridTexture {
     Default = 0,
     Grid = 1,

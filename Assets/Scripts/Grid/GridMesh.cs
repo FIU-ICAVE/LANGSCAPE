@@ -28,6 +28,7 @@ public class GridMesh : MonoBehaviour
     [SerializeField] private bool drawInEditor = true;
 
     [Header("Test Commands")]
+    [TextArea(1, 20)]
     [SerializeField] private string testCommands;
     [SerializeField] private int testOutputCode;
 #endif
@@ -64,12 +65,14 @@ public class GridMesh : MonoBehaviour
         Instance = this;
 
         // TODO: Move this into GridModel.cs
-        models = new GridModel[3];
+        models = new GridModel[(int)GridCellType.TYPE_MAX];
         models[(int)GridCellType.Block] = GridModel.Load("block");
         if (models[(int)GridCellType.Block] == null) {
             Debug.LogError("Model Loader: Failed to load block model.");
         }
         models[(int)GridCellType.Glass] = models[(int)GridCellType.Block];
+        models[(int)GridCellType.Outline] = models[(int)GridCellType.Block];
+        models[(int)GridCellType.Filter] = models[(int)GridCellType.Block];
 
         textureAtlas = new GridTextureAtlas(textureAtlasSize.x, textureAtlasSize.y);
 
@@ -147,7 +150,7 @@ public class GridMesh : MonoBehaviour
 #if UNITY_EDITOR
     public static void TestCommandViaEditor() {
         Command[] cmds;
-        Instance.testOutputCode = CommandParser.Parse(Instance.testCommands, ';', ' ', out cmds);
+        Instance.testOutputCode = CommandParser.Parse(Instance.testCommands, '\n', ' ', out cmds);
         
         if (Instance.testOutputCode == 0) {
             foreach (Command cmd in cmds)
@@ -205,8 +208,10 @@ public class GridMesh : MonoBehaviour
         RegenerateMesh();
     }
 
+    // Export the overwritten data
     public void Set(Vector3Int pos, GridCellData cell) => data[pos.x, pos.y, pos.z] = cell;
 
+    // Export the overwritten data
     public void Fill(Vector3Int pos0, Vector3Int pos1, GridCellData cell) {
         for (int x = pos0.x; x < pos1.x; x++) {
             for (int y = pos0.y; y < pos1.y; y++) {
@@ -217,6 +222,188 @@ public class GridMesh : MonoBehaviour
             }
         }
     }
+
+    public GridCellData[,,] Cut(Vector3Int position0, Vector3Int position1) {
+        int startX = position0.x, endX = position1.x;
+        int startY = position0.y, endY = position1.y;
+        int startZ = position0.z, endZ = position1.z;
+
+        // Establish start and end positions
+        if (position1.x < position0.x) {
+            startX = position1.x;
+            endX = position0.x;
+        }
+        if (position1.y < position0.y) {
+            startY = position1.y;
+            endY = position0.y;
+        }
+        if (position1.z < position0.z) {
+            startZ = position1.z;
+            endZ = position0.z;
+        }
+
+        // Clip content outside
+        if (endX < 0 || endY < 0 || endZ < 0)
+            return null;
+
+        // Clip content outside
+        if (startX >= size.x && startY >= size.y || startZ >= size.z)
+            return null;
+
+        // Cut upper bound to grid end
+        if (endX >= size.x)
+            endX = size.x;
+        if (endY >= size.y)
+            endY = size.y;
+        if (endZ >= size.z)
+            endZ = size.z;
+
+        // Cut lower bound to grid start
+        if (startX < 0)
+            startX = 0;
+        if (startY < 0)
+            startY = 0;
+        if (startZ < 0)
+            startZ = 0;
+
+        endX += 1;
+        endY += 1;
+        endZ += 1;
+
+        GridCellData[,,] copy = new GridCellData[endX - startX, endY - startY, endZ - startZ];
+
+        for (int x = startX; x < endX; x++) {
+            for (int y = startY; y < endY; y++) {
+                for (int z = startZ; z < endZ; z++) {
+                    copy[x - startX, y - startY, z - startZ] = data[x, y, z];
+                    data[x, y, z].type = GridCellType.Empty;
+                }
+            }
+        }
+
+        return data;
+    }
+
+    public GridCellData[,,] Copy(Vector3Int position0, Vector3Int position1) {
+        int startX = position0.x, endX = position1.x;
+        int startY = position0.y, endY = position1.y;
+        int startZ = position0.z, endZ = position1.z;
+
+        // Establish start and end positions
+        if (position1.x < position0.x) {
+            startX = position1.x;
+            endX = position0.x;
+        }
+        if (position1.y < position0.y) {
+            startY = position1.y;
+            endY = position0.y;
+        }
+        if (position1.z < position0.z) {
+            startZ = position1.z;
+            endZ = position0.z;
+        }
+
+        // Clip content outside
+        if (endX < 0 || endY < 0 || endZ < 0)
+            return null;
+
+        // Clip content outside
+        if (startX >= size.x && startY >= size.y || startZ >= size.z)
+            return null;
+
+        // Cut upper bound to grid end
+        if (endX >= size.x)
+            endX = size.x;
+        if (endY >= size.y)
+            endY = size.y;
+        if (endZ >= size.z)
+            endZ = size.z;
+
+        // Cut lower bound to grid start
+        if (startX < 0)
+            startX = 0;
+        if (startY < 0)
+            startY = 0;
+        if (startZ < 0)
+            startZ = 0;
+
+        endX += 1;
+        endY += 1;
+        endZ += 1;
+
+        GridCellData[,,] copy = new GridCellData[endX - startX, endY - startY, endZ - startZ];
+
+        for (int x = startX; x < endX; x++) {
+            for (int y = startY; y < endY; y++) {
+                for (int z = startZ; z < endZ; z++) {
+                    copy[x - startX, y - startY, z - startZ] = data[x, y, z];
+                }
+            }
+        }
+
+        return data;
+    }
+
+    public GridCellData[,,] Paste(Vector3Int position, GridCellData[,,] copy) {
+        if (copy == null)
+            return null;
+        if (position.x >= size.x || position.y >= size.y || position.z >= size.z)
+            return null;
+
+        // The length of the copy array
+        int lengthX = copy.GetLength(0);
+        int lengthY = copy.GetLength(1);
+        int lengthZ = copy.GetLength(2);
+
+        // The end of the area in worldspace
+        int endX = position.x + lengthX;
+        int endY = position.y + lengthY;
+        int endZ = position.z + lengthZ;
+
+        // Find if the area is inside the grid
+        if (endX - 1 < 0 || endY - 1 < 0 || endZ - 1 < 0)
+            return null;
+
+        // The starting index of the copy array
+        int indexX = 0;
+        int indexY = 0;
+        int indexZ = 0;
+
+        // Clip the area outside the grid.
+        if (position.x < 0) {
+            indexX = -position.x;
+        }
+        if (position.y < 0) {
+            indexY = -position.y;
+        }
+        if (position.z < 0) {
+            indexZ = -position.z;
+        }
+        if (endX > size.x) {
+            lengthX -= endX - size.x;
+        }
+        if (endY > size.y) {
+            lengthY -= endY - size.y;
+        }
+        if (endZ > size.z) {
+            lengthZ -= endZ - size.z;
+        }
+
+        GridCellData[,,] overwrite = new GridCellData[lengthX - indexX, lengthY - indexY, lengthZ - indexZ];
+
+        for (int x = 0; x < lengthX; x++) { 
+            for (int y = 0; y < lengthY; y++) {
+                for (int z = 0; z < lengthZ; z++) {
+                    overwrite[x - indexX, y - indexY, z - indexZ] = data[position.x + x, position.y + y, position.z + z];
+                    data[position.x + x, position.y + y, position.z + z] = copy[x, y, z];
+                }
+            }
+        }
+
+        return overwrite;
+    }
+
+    public static string GetDimensions() => "" + Instance.size.x + "x" + Instance.size.y + "x" + Instance.size.z;
 
     // Draws the outline of the world in the inspector
 #if UNITY_EDITOR
