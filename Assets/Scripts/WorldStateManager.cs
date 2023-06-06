@@ -4,6 +4,8 @@
     TO DO:
         - (maybe) implement some sort of threshold for checking if new pos is already taken
         - allow AI to query WorldState properties
+        - research how to save world state along with properties in this class
+        - GetWorldObjOfMaterial()
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -36,7 +38,6 @@ public class WorldStateManager : MonoBehaviour
     /*
         Adding or removing objects
     */
-    public int NumWorldObjects { get; set; }
     private Dictionary<Vector3, GameObject> worldObjectData = new Dictionary<Vector3, GameObject>();
 
     public void AddWorldObject(GameObject newObj)
@@ -57,7 +58,6 @@ public class WorldStateManager : MonoBehaviour
 
         worldObjectData.Add(newObjPos, newObj);
         //[[[add to undo/redo stack]]]
-        NumWorldObjects++;
     }
     public void RemoveWorldObject(GameObject objToRemove)
     {
@@ -67,7 +67,6 @@ public class WorldStateManager : MonoBehaviour
         }
 
         worldObjectData.Remove(objToRemove.transform.position);
-        NumWorldObjects--;
     }
     public void RemoveWorldObject(Vector3 posToRemove)
     {
@@ -77,7 +76,6 @@ public class WorldStateManager : MonoBehaviour
         }
 
         worldObjectData.Remove(posToRemove);
-        NumWorldObjects--;
     }
     /*
         ...further RemoveWorldObject's
@@ -90,7 +88,31 @@ public class WorldStateManager : MonoBehaviour
     /*
         Command stack
     */
+    private Stack<string> commandStack = new Stack<string>();
+    public void ExecutePush(Command cmd)
+    {
+        cmd.Execute();
+        commandStack.Push(cmd.ToString());
+    }
+    public void UndoPop(Command cmd)
+    {
+        cmd.Undo();
+        commandStack.Pop();
+    }
 
+    /*
+        World statistics
+    */
+    public int GetTotalWorldObjects()
+    {
+        return worldObjectData.Count;
+    }
+    public int GetWorldObjOfMaterial(Material mat)
+    {
+        //to do
+        //[[[how does this work with the single mesh implementation?]]]
+        return 0;
+    }
 
     /*
         Utility methods
