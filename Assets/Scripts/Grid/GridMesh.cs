@@ -10,6 +10,9 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEngine.Rendering.Universal.Internal;
+using Unity.VisualScripting;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -28,8 +31,10 @@ public class GridMesh : MonoBehaviour
     [SerializeField] private bool drawInEditor = true;
 
     [Header("Test Commands")]
+    [TextArea(1, 20)]
     [SerializeField] private string testCommands;
     [SerializeField] private int testOutputCode;
+    [SerializeField] private bool showCommandOutput = false;
 #endif
 
     private Mesh worldMesh;
@@ -64,12 +69,14 @@ public class GridMesh : MonoBehaviour
         Instance = this;
 
         // TODO: Move this into GridModel.cs
-        models = new GridModel[3];
+        models = new GridModel[(int)GridCellType.TYPE_MAX];
         models[(int)GridCellType.Block] = GridModel.Load("block");
         if (models[(int)GridCellType.Block] == null) {
             Debug.LogError("Model Loader: Failed to load block model.");
         }
         models[(int)GridCellType.Glass] = models[(int)GridCellType.Block];
+        models[(int)GridCellType.Outline] = models[(int)GridCellType.Block];
+        models[(int)GridCellType.Filter] = models[(int)GridCellType.Block];
 
         textureAtlas = new GridTextureAtlas(textureAtlasSize.x, textureAtlasSize.y);
 
@@ -147,11 +154,12 @@ public class GridMesh : MonoBehaviour
 #if UNITY_EDITOR
     public static void TestCommandViaEditor() {
         Command[] cmds;
-        Instance.testOutputCode = CommandParser.Parse(Instance.testCommands, ';', ' ', out cmds);
+        Instance.testOutputCode = CommandParser.Parse(Instance.testCommands, '\n', ' ', out cmds);
         
         if (Instance.testOutputCode == 0) {
             foreach (Command cmd in cmds)
                 cmd.Execute();
+            Instance.RegenerateMesh();
         }
     }
 #endif
@@ -205,18 +213,149 @@ public class GridMesh : MonoBehaviour
         RegenerateMesh();
     }
 
+    // Export the overwritten data
     public void Set(Vector3Int pos, GridCellData cell) => data[pos.x, pos.y, pos.z] = cell;
 
-    public void Fill(Vector3Int pos0, Vector3Int pos1, GridCellData cell) {
-        for (int x = pos0.x; x < pos1.x; x++) {
-            for (int y = pos0.y; y < pos1.y; y++) {
-                for (int z = pos0.z; z < pos1.z; z++) {
-                    if (x >= 0 && x < size.x && y >= 0 && y < size.y && z >= 0 && z < size.z)
-                        data[x, y, z] = cell;
+    public void Set(Vector3Int pos, GridCellData[,,] copy) {
+        if (copy == null)
+            return;
+
+        // The length of the copy array
+        Vector3Int size = new Vector3Int(copy.GetLength(0), copy.GetLength(1), copy.GetLength(2));
+
+        try {
+            for (int x = 0; x < size.x; x++) {
+                for (int y = 0; y < size.y; y++) {
+                    for (int z = 0; z < size.z; z++) {
+                        data[pos.x + x, pos.y + y, pos.z + z] = copy[x, y, z];
+                    }
+                }
+            }
+        } catch {
+            return;
+        }
+
+#if UNITY_EDITOR
+        if (showCommandOutput)
+            Debug.Log("[WORLD] (SET) from (" + pos.x + "," + pos.y + "," + pos.z + ") to (" + (pos.x + size.x - 1) + "," + (pos.y + size.y - 1) + "," + (pos.z + size.z - 1) + ").");
+#endif
+    }
+
+    // Export the overwritten data
+    public void Fill(Vector3Int pos, Vector3Int size, GridCellData cell) {
+        Vector3Int end = pos + size;
+        for (int x = pos.x; x < end.x; x++) {
+            for (int y = pos.y; y < end.y; y++) {
+                for (int z = pos.z; z < end.z; z++) {
+                    data[x, y, z] = cell;
                 }
             }
         }
     }
+
+    public GridCellData[,,] Copy(Vector3Int pos, Vector3Int size) {
+        GridCellData[,,] copy = new GridCellData[size.x, size.y, size.z];
+
+        try {
+            for (int x = 0; x < size.x; x++) {
+                for (int y = 0; y < size.y; y++) {
+                    for (int z = 0; z < size.z; z++) {
+                        copy[x, y, z] = data[pos.x + x, pos.y + y, pos.z + z];
+                    }
+                }
+            }
+        } catch {
+            return null;
+        }
+
+#if UNITY_EDITOR
+        if (showCommandOutput)
+            Debug.Log("[WORLD] (COPY) from (" + pos.x + "," + pos.y + "," + pos.z + ") to (" + (pos.x + size.x - 1) + "," + (pos.y + size.y - 1) + "," + (pos.z + size.z - 1) + ").");
+#endif
+
+        return copy;
+    }
+
+    public GridCellData[,,] Cut(Vector3Int pos, Vector3Int size) {
+        GridCellData[,,] copy = new GridCellData[size.x, size.y, size.z];
+        Vector3Int end = new Vector3Int(pos.x + size.x - 1, pos.y + size.y - 1, pos.z + size.z - 1);
+
+        try {
+            for (int x = pos.x; x <= end.x; x++) {
+                for (int y = pos.y; y <= end.y; y++) {
+                    for (int z = pos.z; z <= end.z; z++) {
+                        copy[x - pos.x, y - pos.y, z - pos.z] = data[x, y, z];
+                        data[x, y, z] = new GridCellData(0, Color.white);
+                    }
+                }
+            }
+        } catch {
+            return null;
+        }
+
+#if UNITY_EDITOR
+        if (showCommandOutput)
+            Debug.Log("[WORLD] (CUT) from (" + pos.x + "," + pos.y + "," + pos.z + ") to (" + end.x + "," + end.y + "," + end.z + ").");
+#endif
+
+        return copy;
+    }
+
+    public GridCellData[,,] Paste(Vector3Int pos, GridCellData[,,] copy) {
+        if (copy == null)
+            return null;
+
+        // The length of the copy array
+        Vector3Int size = new Vector3Int(copy.GetLength(0), copy.GetLength(1), copy.GetLength(2));
+
+        GridCellData[,,] paste = new GridCellData[size.x, size.y, size.z];
+        try {
+            for (int x = 0; x < size.x; x++) {
+                for (int y = 0; y < size.y; y++) {
+                    for (int z = 0; z < size.z; z++) {
+                        paste[x, y, z] = data[pos.x + x, pos.y + y, pos.z + z];
+                        data[pos.x + x, pos.y + y, pos.z + z] = copy[x, y, z];
+                    }
+                }
+            }
+        } catch {
+            return null;
+        }
+
+#if UNITY_EDITOR
+        if (showCommandOutput)
+            Debug.Log("[WORLD] (PASTE) from (" + pos.x + "," + pos.y + "," + pos.z + ") to (" + (pos.x + size.x - 1) + "," + (pos.y + size.y - 1) + "," + (pos.z + size.z - 1) + ").");
+#endif
+
+        return paste;
+    }
+
+    public GridCellData[,,] Replace(Vector3Int pos, Vector3Int size, GridCellData cell) {
+        GridCellData[,,] copy = new GridCellData[size.x, size.y, size.z];
+        Vector3Int end = new Vector3Int(pos.x + size.x - 1, pos.y + size.y - 1, pos.z + size.z - 1);
+
+        try {
+            for (int x = pos.x; x <= end.x; x++) {
+                for (int y = pos.y; y <= end.y; y++) {
+                    for (int z = pos.z; z <= end.z; z++) {
+                        copy[x - pos.x, y - pos.y, z - pos.z] = data[x, y, z];
+                        data[x, y, z] = cell;
+                    }
+                }
+            }
+        } catch {
+            return null;
+        }
+
+#if UNITY_EDITOR
+        if (showCommandOutput)
+            Debug.Log("[WORLD] (REPLACE) from (" + pos.x + "," + pos.y + "," + pos.z + ") to (" + end.x + "," + end.y + "," + end.z + ").");
+#endif
+
+        return copy;
+    }
+
+    public static string GetDimensions() => "" + Instance.size.x + "x" + Instance.size.y + "x" + Instance.size.z;
 
     // Draws the outline of the world in the inspector
 #if UNITY_EDITOR

@@ -1,36 +1,43 @@
-﻿using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 class FillCommand : Command {
     private Vector3Int position;
     private Vector3Int size;
     private GridCellData cell;
 
-    public FillCommand(int[] argv) {
+    private GridCellData[,,] replace;
+
+    // Fills the selected region with a specific block.
+    // Syntax Descriptor: <position: p> <size: s> <block: 0-4> [color: hexadecimal]
+    // f <x> <y> <z> <sx> <sy> <sz> <block> [color]
+    public static new readonly char SIGNATURE = 'f';
+    public static new readonly int PARAM_COUNT = 8;
+    public static new readonly int REQUIRED_PARAMS = 7;
+
+    public FillCommand(int[] argv, Color color) {
         position = new Vector3Int(argv[0], argv[1], argv[2]);
         size = new Vector3Int(argv[3], argv[4], argv[5]);
-        cell = new GridCellData(argv[6], argv[7], argv[8], argv[9], argv[10]);
-    }
+        cell = new GridCellData(argv[6], color);
+        valid = CODE_VALID;
 
+        if (IsInvalidPosition(position, size))
+            return;
+    }
     public override void Execute() {
-        GridMesh.Instance.Fill(position, position + size, cell);
-        GridMesh.Instance.RegenerateMesh();
+        replace = GridMesh.Instance.Replace(position, size, cell);
     }
-
-    public override void Undo() { }
+    public override void Undo() {
+        GridMesh.Instance.Set(position, replace);
+    }
+    public override void Redo() { 
+        GridMesh.Instance.Fill(position, size, cell);
+    }
 
     public override string ToString() {
-        return Fill.signature +
-            position.x + " " +
-            position.y + " " +
-            position.z + " " +
-            size.x + " " +
-            size.y + " " +
-            size.z + " " +
-            (int)cell.type + " " +
-            (int)cell.texture + " " +
-            (int)(cell.color.r * 255) + " " +
-            (int)(cell.color.g * 255) + " " +
-            (int)(cell.color.b * 255);
+        return SIGNATURE +
+            " <" + position.x + " " + position.y + " " + position.z + "> " +
+            "<" + size.x + " " + size.y + " " + size.z + "> " +
+            "<" + (int)cell.type + "> " +
+            "<" + ColorUtility.ToHtmlStringRGB(cell.color) + ">";
     }
 }

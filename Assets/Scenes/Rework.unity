@@ -950,7 +950,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 228074197}
   m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 12.5, y: 20, z: -8}
+  m_LocalPosition: {x: 10, y: 15, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1626,11 +1626,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eadceb2c08d5bbe429ba9ed021c0bdfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialWorldSize: {x: 25, y: 10, z: 25}
+  initialWorldSize: {x: 20, y: 20, z: 20}
   textureAtlasSize: {x: 2, y: 2}
   drawInEditor: 1
-  testCommands: f 0 0 0 2 2 2 1 2 0 0 255;f 1 1 1 1 1 1 2 # #
+  testCommands: 'f 0 0 0 4 2 2 4 #0000ff
+
+    f 2 1 1 2 1 1 2
+
+    m 0 0 0 4 2 2
+    2 2 2'
   testOutputCode: 0
+  showCommandOutput: 0
 --- !u!23 &694905905
 MeshRenderer:
   m_ObjectHideFlags: 0

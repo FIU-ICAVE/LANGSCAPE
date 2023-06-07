@@ -1,19 +1,15 @@
-//
-// Authors: Jose Gonzalez
-//
-// Description: This file includes the data structure of a grid cell. It stores
-// the type of block (solid block, empty, glass, etc.), the color, and texture ID.
-// It also stores the rendering properties of each type of cell so the renderer
-// knows what special cases to use for rendering the sides of the cell.
-//
-
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public enum GridCellType { 
-    Empty, 
-    Block, 
-    Glass 
+    Empty,
+    Block,
+    Glass,
+    Outline,
+    Filter,
+    TYPE_MAX
 }
 
 [System.Serializable]
@@ -33,12 +29,12 @@ public struct GridCellData
         this.color = color;
     }
 
-    public GridCellData(int type, int texture, int r, int g, int b) {
+    public GridCellData(int type, Color color) {
         this.type = (GridCellType)type;
-        this.texture = (GridTexture)texture;
-        this.color = new Color(r / 255.0f, g / 255.0f, b / 255.0f, 1);
+        this.texture = textures[type];
+        this.color = color;
         if (this.type == GridCellType.Glass)
-            color.a = 0.4f;
+            this.color.a = 0.4f;
     }
 
     // By value of type
@@ -46,6 +42,16 @@ public struct GridCellData
         PROPERTY_TRANSPARENT,                           // Empty
         PROPERTY_FULL_BLOCK,                            // Solid Block
         PROPERTY_TRANSPARENT | PROPERTY_FULL_BLOCK,     // Glass
+        PROPERTY_FULL_BLOCK,                            // Outline
+        PROPERTY_FULL_BLOCK,                            // Filter
+    };
+
+    private static readonly GridTexture[] textures = new GridTexture[] {
+        GridTexture.Default, 
+        GridTexture.Default, 
+        GridTexture.Default, 
+        GridTexture.Grid, 
+        GridTexture.Filter
     };
 
     public bool IsTransparent() => (properties[(int)type] & PROPERTY_TRANSPARENT) != 0;
