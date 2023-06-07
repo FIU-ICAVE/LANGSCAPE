@@ -15,7 +15,9 @@ class RotateCommand : Command {
     public const int ROTATE_CCW_180 = 2;
     public const int ROTATE_CCW_270 = 3;
 
-    // r <x0> <y0> <z0> <sx> <sy> <sz> <rotation>
+    // Rotates the selected region of the worldspace by multiples of 90 degrees counterclockwise.
+    // Syntax Description: <position: p> <size: s> <rotation: 0-3>
+    // r <px> <py> <pz> <sx> <sy> <sz> <rotation>
     public static new readonly char SIGNATURE = 'r';
     public static new readonly int PARAM_COUNT = 7;
     public static new readonly int REQUIRED_PARAMS = 7;
@@ -26,9 +28,9 @@ class RotateCommand : Command {
         rotation = argv[6];
         valid = CODE_VALID;
 
-        destination = new Vector3Int(position.x + (size.x - size.z) / 2, position.y, position.z + (size.z - size.x) / 2);
+        destination = (rotation == ROTATE_CCW_0 || rotation == ROTATE_CCW_180) ? position : new Vector3Int(position.x + (size.x - size.z) / 2, position.y, position.z + (size.z - size.x) / 2);
 
-        if (IsInvalidPosition(position, size) || IsInvalidDestination(destination, new Vector3Int(size.z, size.y, size.x)))
+        if (IsInvalidPosition(position, size) || IsInvalidDestination(destination, (rotation == ROTATE_CCW_0 || rotation == ROTATE_CCW_180) ? size : new Vector3Int(size.z, size.y, size.x)))
             return;
         if (rotation < ROTATE_CCW_0 || rotation > ROTATE_CCW_270) {
             valid = CODE_INVALID_VALUE;
@@ -38,11 +40,12 @@ class RotateCommand : Command {
 
     public override void Execute() {
         cut = GridMesh.Instance.Cut(position, size);
-        rotated = RotateCounterClockwise(cut, size, rotation);
+        rotated = RotateCounterClockwise(cut, rotation);
         paste = GridMesh.Instance.Paste(destination, rotated);
     }
 
-    public static GridCellData[,,] RotateCounterClockwise(GridCellData[,,] data, Vector3Int size, int rotation) {
+    public static GridCellData[,,] RotateCounterClockwise(GridCellData[,,] data, int rotation) {
+        Vector3Int size = new Vector3Int(data.GetLength(0), data.GetLength(1), data.GetLength(2));
         if (rotation == ROTATE_CCW_90) {
             GridCellData[,,] rotated = new GridCellData[size.z, size.y, size.x];
             for (int x = 0; x < size.x; x++) {

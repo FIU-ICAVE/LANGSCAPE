@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using Unity.Tutorials.Core.Editor;
-using UnityEditor.UIElements;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CommandParser 
@@ -53,7 +47,10 @@ public class CommandParser
                     return CODE_INVALID_RESPONSE;
                 if (!Command.TryBuildColor(args, out color, ref i))
                     return CODE_INVALID_RESPONSE;
-                cmdList.Add(new FillCommand(argv, color));
+                FillCommand cmd = new FillCommand(argv, color);
+                if (cmd.valid != Command.CODE_VALID)
+                    return cmd.valid;
+                cmdList.Add(cmd);
                 continue;
             }
 
@@ -64,7 +61,10 @@ public class CommandParser
                 int i = 0;
                 if (!Command.TryBuildArgs(args, MoveCommand.REQUIRED_PARAMS, ref argv, ref i))
                     return CODE_INVALID_RESPONSE;
-                cmdList.Add(new MoveCommand(argv));
+                MoveCommand cmd = new MoveCommand(argv);
+                if (cmd.valid != Command.CODE_VALID)
+                    return cmd.valid;
+                cmdList.Add(cmd);
                 continue;
             }
 
@@ -75,7 +75,10 @@ public class CommandParser
                 int i = 0;
                 if (!Command.TryBuildArgs(args, RotateCommand.REQUIRED_PARAMS, ref argv, ref i))
                     return CODE_INVALID_RESPONSE;
-                cmdList.Add(new RotateCommand(argv));
+                RotateCommand cmd = new RotateCommand(argv);
+                if (cmd.valid != Command.CODE_VALID)
+                    return cmd.valid;
+                cmdList.Add(cmd);
                 continue;
             }
 

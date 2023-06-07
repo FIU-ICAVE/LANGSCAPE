@@ -7,6 +7,8 @@ class FillCommand : Command {
 
     private GridCellData[,,] replace;
 
+    // Fills the selected region with a specific block.
+    // Syntax Descriptor: <position: p> <size: s> <block: 0-4> [color: hexadecimal]
     // f <x> <y> <z> <sx> <sy> <sz> <block> [color]
     public static new readonly char SIGNATURE = 'f';
     public static new readonly int PARAM_COUNT = 8;

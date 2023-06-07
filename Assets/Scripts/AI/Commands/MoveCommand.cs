@@ -9,6 +9,8 @@ class MoveCommand : Command {
 
     private GridCellData[,,] paste;
 
+    // Moves a region of the world by a displacement.
+    // Syntax Descriptor: <position: p> <size: s> <displacement: d>
     // m <x> <y> <z> <sx> <sy> <sz> <dx> <dy> <dz>
     public static new readonly char SIGNATURE = 'm';
     public static new readonly int PARAM_COUNT = 9;

@@ -1629,16 +1629,14 @@ MonoBehaviour:
   initialWorldSize: {x: 20, y: 20, z: 20}
   textureAtlasSize: {x: 2, y: 2}
   drawInEditor: 1
-  testCommands: 'f 0 0 0 2 2 2 4 #0000ff
+  testCommands: 'f 0 0 0 4 2 2 4 #0000ff
 
-    f 1 1 1 1 1 1 2
+    f 2 1 1 2 1 1 2
 
-    m 0 0 0 2 2 2
-    2 2 2
-
-    r 2 2 2 2 2 2 1'
+    m 0 0 0 4 2 2
+    2 2 2'
   testOutputCode: 0
-  showCommandOutput: 1
+  showCommandOutput: 0
 --- !u!23 &694905905
 MeshRenderer:
   m_ObjectHideFlags: 0

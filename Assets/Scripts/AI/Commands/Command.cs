@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public abstract class Command {
     public static readonly int CODE_VALID = 0;
@@ -56,7 +55,7 @@ public abstract class Command {
             return true;   
         }
         Vector3Int end = pos + size;
-        if (end.x <= 0 || end.x > size.x || end.y <= 0 || end.y > size.y || end.z <= 0 || end.z > size.z) {
+        if (end.x <= 0 || end.x > GridMesh.Instance.size.x || end.y <= 0 || end.y > GridMesh.Instance.size.y || end.z <= 0 || end.z > GridMesh.Instance.size.z) {
             valid = CODE_POSITION_OUT_OF_WORLD;
             return true;
         }
@@ -69,7 +68,7 @@ public abstract class Command {
             return true;
         }
         Vector3Int end = pos + size;
-        if (end.x <= 0 || end.x > size.x || end.y <= 0 || end.y > size.y || end.z <= 0 || end.z > size.z) {
+        if (end.x <= 0 || end.x > GridMesh.Instance.size.x || end.y <= 0 || end.y > GridMesh.Instance.size.y || end.z <= 0 || end.z > GridMesh.Instance.size.z) {
             valid = CODE_DESTINATION_OUT_OF_WORLD;
             return true;
         }

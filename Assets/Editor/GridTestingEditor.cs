@@ -17,5 +17,7 @@ public class GridTestingEditor : Editor {
             if (GUILayout.Button("Run Command"))
                 GridMesh.TestCommandViaEditor();
         }
+
+        EditorGUILayout.HelpBox("To see command syntax, please take a look at the respective command files located under [Assets > Scripts > AI > Commands] which should contain them in comments.", MessageType.Info);
     }
 }
