@@ -1634,7 +1634,9 @@ MonoBehaviour:
     f 1 1 1 1 1 1 2
 
     m 0 0 0 2 2 2
-    2 2 2'
+    2 2 2
+
+    r 2 2 2 2 2 2 1'
   testOutputCode: 0
   showCommandOutput: 1
 --- !u!23 &694905905
