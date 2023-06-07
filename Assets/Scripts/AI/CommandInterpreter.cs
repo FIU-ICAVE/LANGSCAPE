@@ -13,6 +13,7 @@ using OpenAI;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UI;
 using static System.Net.Mime.MediaTypeNames;
@@ -46,19 +47,6 @@ public class CommandInterpreter : MonoBehaviour {
 
     // ChatGPT
     private List<ChatMessage> messages = new List<ChatMessage>();
-    private string prompt =
-        "Only respond in JSON and if you cannot follow the sample format, return success as false with an empty modified array. " +
-        "Do not respond with any text. " +
-        "Let's play a game, create an empty 30 by 30 by 30 3D grid where each cell corresponds to an int. " +
-        "0 corresponds to empty, 1 corresponds to a solid block, 2 corresponds to glass, and 3 corresponds to a chair. " +
-        "You can create any of these at any position in this grid, you will place blocks when I say so. " +
-        "For each block modified by my commands, return the ID of the object to place, as well as the original_position of the object on the grid and the new_position it was moved to. " +
-        "If a new item is placed on the grid, return original_position as (-1,-1,-1), and if no color is specified then always default to white with 0.6 alpha. " +
-        "Follow this format: " +
-        "{\"success\":true,\"modified\":[{\"type\":1,\"original_position\":{\"x\":-1,\"y\":-1,\"z\":-1},\"new_position\":{\"x\":-1,\"y\":-1,\"z\":-1},\"color\":{\"r\":1.0,\"g\":1.0,\"b\":1.0,\"a\":1.0}}]}. " +
-        "The world vectors are up: (0,1,0), right:(1,0,0), and forward: (0,0,1).";
-
-    //"{\"success\":true,\"modified\":[{\"type\":0,\"original_position\":{\"x\":-1,\"y\":-1,\"z\":-1},\"new_position\":{\"x\":-1,\"y\":-1,\"z\":-1},\"color\":{\"r\":1.0,\"g\":1.0,\"b\":1.0,\"a\":1.0}}]}. "
 
     private void Start() {
         dropdown.ClearOptions();
@@ -128,16 +116,19 @@ public class CommandInterpreter : MonoBehaviour {
         }
     }
     private async void CreateJSON(string command) {
-        var newMessage = new ChatMessage() {
+        messages.Clear();
+        // TODO: Modify the prompt to include data depending on command history and player position
+        string prompt = "Create an empty 20x20x20 grid. Replace vectors like so: \"x y z\", where positions and sizes are vectors. Replace block a value from Empty: 0, Solid: 1, Glass: 2, Grid: 3, Filter: 4. Replace color using hexadecimal and ignore opacity. None of the parameters are optional. The x, y, and z axis represent right and width, up and height, and forward and length respectively. Do NOT respond with anything but commands to achieve my requests, and separate commands with new lines.\r\n\r\nCommands:\r\nUse \"n\" if the instructions are not valid, and do not explain anything.\r\nUse \"f <position> <size> <block> [color]\" to fill an area starting from position, with the dimensions of size using block of color.\r\n\r\nRules:\r\nWalls lie either on the XY plane or YZ plane and the last axis equals 1. Floors and ceilings lie on the XZ plane, and the Y axis equals 1. Windows are walls made of glass.\r\n\r\nExamples:\r\nSet a grid block at 0 0 0: f 0 0 0 1 1 1 3\r\nBuild a wall along the XY plane: f 0 0 0 10 10 1 1\r\nBuild a wall along the YZ plane: f 0 0 0 1 10 10 1\r\nBuild a blue wall that is 10 blocks tall and 3 blocks wide at the origin: f 0 0 0 3 10 1 1 #0000ff\r\nBuild a wall that is 10x5 at 0 0 0: f 0 0 0 10 5 1 1\r\nCreate a red floor: f 0 0 0 10 1 10 1 #ff0000.\r\nCreate a 10x5 window at the origin: f 0 0 0 10 5 1 2";
+        messages.Add(new ChatMessage() { Role = "system", Content = prompt });
+
+        ChatMessage userInstructions = new ChatMessage() {
             Role = "user",
             Content = command
         };
 
-        if (messages.Count == 0) 
-            newMessage.Content = prompt + "\n" + command;
+        messages.Add(userInstructions);
 
-        messages.Add(newMessage);
-        outputBox.text = "Loading...";
+        outputBox.text = "Loading response...";
 
         // Complete the instruction
         var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest() {
@@ -154,14 +145,25 @@ public class CommandInterpreter : MonoBehaviour {
             //messages.Add(message);
             outputBox.text = message.Content;
 
+#if TEST_CUBEPLACER
             WorldCommand commands = JSONParser.ParseCommand(message.Content);
             if (commands != null && commands.success && commands.modified != null) {
                 Debug.Log("Placing: " + commands.modified.Length);
                 GridMesh.Instance.Multiplace(commands.modified);
             }
+#else
+            int parseCode = CommandParser.Parse(message.Content, '\n', ' ', out Command[] cmds);
+            if (parseCode == 0) {
+                foreach (Command cmd in cmds)
+                    cmd.Execute();
+                GridMesh.Instance.RegenerateMesh();
+            }
+#endif
         } else {
+#if UNITY_EDITOR
             Debug.LogWarning("No text was generated from this prompt.");
-            outputBox.text = "You done goofed up.";
+#endif
+            outputBox.text = "No text was generated from this prompt.";
         }
     }
 }
