@@ -118,7 +118,7 @@ public class CommandInterpreter : MonoBehaviour {
     private async void CreateJSON(string command) {
         messages.Clear();
         // TODO: Modify the prompt to include data depending on command history and player position
-        string prompt = "Create an empty 20x20x20 grid. Replace vectors like so: \"x y z\", where positions and sizes are vectors. Replace block a value from Empty: 0, Solid: 1, Glass: 2, Grid: 3, Filter: 4. Replace color using hexadecimal and ignore opacity. None of the parameters are optional. The x, y, and z axis represent right and width, up and height, and forward and length respectively. Do NOT respond with anything but commands to achieve my requests, and separate commands with new lines.\r\n\r\nCommands:\r\nUse \"n\" if the instructions are not valid, and do not explain anything.\r\nUse \"f <position> <size> <block> [color]\" to fill an area starting from position, with the dimensions of size using block of color.\r\n\r\nRules:\r\nWalls lie either on the XY plane or YZ plane and the last axis equals 1. Floors and ceilings lie on the XZ plane, and the Y axis equals 1.\r\n\r\nExamples:\r\nSet a grid block at 0 0 0: f 0 0 0 1 1 1 3\r\nBuild a wall along the XY plane: f 0 0 0 10 10 1 1\r\nBuild a wall along the YZ plane: f 0 0 0 1 10 10 1\r\nBuild a blue wall that is 10 blocks tall and 3 blocks wide at the origin: f 0 0 0 3 10 1 1 #0000ff\r\nBuild a wall that is 10x5 at 0 0 0: f 0 0 0 10 5 1 1\r\nCreate a red floor: f 0 0 0 10 1 10 1 #ff0000";
+        string prompt = "Create an empty 20x20x20 grid. Replace vectors like so: \"x y z\", where positions and sizes are vectors. Replace block a value from Empty: 0, Solid: 1, Glass: 2, Grid: 3, Filter: 4. Replace color using hexadecimal and ignore opacity. None of the parameters are optional. The x, y, and z axis represent right and width, up and height, and forward and length respectively. Do NOT respond with anything but commands to achieve my requests, and separate commands with new lines.\r\n\r\nCommands:\r\nUse \"n\" if the instructions are not valid, and do not explain anything.\r\nUse \"f <position> <size> <block> [color]\" to fill an area starting from position, with the dimensions of size using block of color.\r\n\r\nRules:\r\nWalls lie either on the XY plane or YZ plane and the last axis equals 1. Floors and ceilings lie on the XZ plane, and the Y axis equals 1. Windows are walls made of glass.\r\n\r\nExamples:\r\nSet a grid block at 0 0 0: f 0 0 0 1 1 1 3\r\nBuild a wall along the XY plane: f 0 0 0 10 10 1 1\r\nBuild a wall along the YZ plane: f 0 0 0 1 10 10 1\r\nBuild a blue wall that is 10 blocks tall and 3 blocks wide at the origin: f 0 0 0 3 10 1 1 #0000ff\r\nBuild a wall that is 10x5 at 0 0 0: f 0 0 0 10 5 1 1\r\nCreate a red floor: f 0 0 0 10 1 10 1 #ff0000.\r\nCreate a 10x5 window at the origin: f 0 0 0 10 5 1 2";
         messages.Add(new ChatMessage() { Role = "system", Content = prompt });
 
         ChatMessage userInstructions = new ChatMessage() {
@@ -154,11 +154,9 @@ public class CommandInterpreter : MonoBehaviour {
 #else
             int parseCode = CommandParser.Parse(message.Content, '\n', ' ', out Command[] cmds);
             if (parseCode == 0) {
-#if UNITY_EDITOR
-                Debug.Log("Running " + cmds.Length + " commands from GPT response.");
-#endif
                 foreach (Command cmd in cmds)
                     cmd.Execute();
+                GridMesh.Instance.RegenerateMesh();
             }
 #endif
         } else {

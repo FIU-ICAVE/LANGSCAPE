@@ -1,13 +1,21 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public abstract class Command {
+    public static readonly int CODE_VALID = 0;
+    public static readonly int CODE_UNINITIALIZED = 1;
+    public static readonly int CODE_POSITION_OUT_OF_WORLD = -1;
+    public static readonly int CODE_DESTINATION_OUT_OF_WORLD = -2;
+    public static readonly int CODE_INVALID_BLOCK = -3;
 
     // Override in other commands
     public static readonly char SIGNATURE = 'n';
     public static readonly int PARAM_COUNT = 0;
     public static readonly int REQUIRED_PARAMS = 0;
 
-    public static bool TryBuildRequired(string[] args, int count, ref int[] argv, ref int i) {
+    public int valid = CODE_UNINITIALIZED;
+
+    public static bool TryBuildArgs(string[] args, int count, ref int[] argv, ref int i) {
         int argc = args.Length;
         int end = count + i;
 
@@ -40,6 +48,31 @@ public abstract class Command {
         // Otherwise set the color to the last stored.
         color = CommandParser.GetLastColor();
         return true;
+    }
+    public bool IsInvalidPosition(Vector3Int pos, Vector3Int size) {
+        if (pos.x < 0 || pos.x >= GridMesh.Instance.size.x || pos.y < 0 || pos.y >= GridMesh.Instance.size.y || pos.z < 0 || pos.z >= GridMesh.Instance.size.z) {
+            valid = CODE_POSITION_OUT_OF_WORLD;
+            return true;   
+        }
+        Vector3Int end = pos + size;
+        if (end.x <= 0 || end.x > size.x || end.y <= 0 || end.y > size.y || end.z <= 0 || end.z > size.z) {
+            valid = CODE_POSITION_OUT_OF_WORLD;
+            return true;
+        }
+        return false;
+    }
+
+    public bool IsInvalidDestination(Vector3Int pos, Vector3Int size) {
+        if (pos.x < 0 || pos.x >= GridMesh.Instance.size.x || pos.y < 0 || pos.y >= GridMesh.Instance.size.y || pos.z < 0 || pos.z >= GridMesh.Instance.size.z) {
+            valid = CODE_DESTINATION_OUT_OF_WORLD;
+            return true;
+        }
+        Vector3Int end = pos + size;
+        if (end.x <= 0 || end.x > size.x || end.y <= 0 || end.y > size.y || end.z <= 0 || end.z > size.z) {
+            valid = CODE_DESTINATION_OUT_OF_WORLD;
+            return true;
+        }
+        return false;
     }
 
     // Runs whatever the command does.

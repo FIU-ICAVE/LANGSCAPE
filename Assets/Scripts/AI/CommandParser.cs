@@ -47,7 +47,7 @@ public class CommandParser
                 argv = new int[FillCommand.REQUIRED_PARAMS];
                 Color color;
                 int i = 0;
-                if (!Command.TryBuildRequired(args, FillCommand.REQUIRED_PARAMS, ref argv, ref i))
+                if (!Command.TryBuildArgs(args, FillCommand.REQUIRED_PARAMS, ref argv, ref i))
                     return CODE_INVALID_RESPONSE;
                 if (!Command.TryBuildColor(args, out color, ref i))
                     return CODE_INVALID_RESPONSE;
@@ -59,7 +59,7 @@ public class CommandParser
             if (signature == MoveCommand.SIGNATURE) {
                 argv = new int[MoveCommand.REQUIRED_PARAMS];
                 int i = 0;
-                if (!Command.TryBuildRequired(args, FillCommand.REQUIRED_PARAMS, ref argv, ref i))
+                if (!Command.TryBuildArgs(args, MoveCommand.REQUIRED_PARAMS, ref argv, ref i))
                     return CODE_INVALID_RESPONSE;
                 cmdList.Add(new MoveCommand(argv));
                 continue;
