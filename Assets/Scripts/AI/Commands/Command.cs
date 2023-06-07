@@ -4,9 +4,10 @@ using UnityEngine.UIElements;
 public abstract class Command {
     public static readonly int CODE_VALID = 0;
     public static readonly int CODE_UNINITIALIZED = 1;
-    public static readonly int CODE_POSITION_OUT_OF_WORLD = -1;
-    public static readonly int CODE_DESTINATION_OUT_OF_WORLD = -2;
-    public static readonly int CODE_INVALID_BLOCK = -3;
+    public static readonly int CODE_POSITION_OUT_OF_WORLD = 2;
+    public static readonly int CODE_DESTINATION_OUT_OF_WORLD = 3;
+    public static readonly int CODE_INVALID_BLOCK = 4;
+    public static readonly int CODE_INVALID_VALUE = 4;
 
     // Override in other commands
     public static readonly char SIGNATURE = 'n';

@@ -44,6 +44,8 @@ public class CommandParser
 
             // If the signature is equal to the fill command, attempt to parse it.
             if (signature == FillCommand.SIGNATURE) {
+                if (args.Length < FillCommand.REQUIRED_PARAMS + 1)
+                    return CODE_INVALID_RESPONSE;
                 argv = new int[FillCommand.REQUIRED_PARAMS];
                 Color color;
                 int i = 0;
@@ -56,6 +58,8 @@ public class CommandParser
             }
 
             if (signature == MoveCommand.SIGNATURE) {
+                if (args.Length < MoveCommand.REQUIRED_PARAMS + 1)
+                    return CODE_INVALID_RESPONSE;
                 argv = new int[MoveCommand.REQUIRED_PARAMS];
                 int i = 0;
                 if (!Command.TryBuildArgs(args, MoveCommand.REQUIRED_PARAMS, ref argv, ref i))
@@ -65,6 +69,8 @@ public class CommandParser
             }
 
             if (signature == RotateCommand.SIGNATURE) {
+                if (args.Length < RotateCommand.REQUIRED_PARAMS + 1)
+                    return CODE_INVALID_RESPONSE;
                 argv = new int[RotateCommand.REQUIRED_PARAMS];
                 int i = 0;
                 if (!Command.TryBuildArgs(args, RotateCommand.REQUIRED_PARAMS, ref argv, ref i))
