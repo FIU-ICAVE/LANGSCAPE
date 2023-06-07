@@ -55,7 +55,6 @@ public class CommandParser
                 continue;
             }
 
-
             if (signature == MoveCommand.SIGNATURE) {
                 argv = new int[MoveCommand.REQUIRED_PARAMS];
                 int i = 0;
@@ -64,6 +63,16 @@ public class CommandParser
                 cmdList.Add(new MoveCommand(argv));
                 continue;
             }
+
+            if (signature == RotateCommand.SIGNATURE) {
+                argv = new int[RotateCommand.REQUIRED_PARAMS];
+                int i = 0;
+                if (!Command.TryBuildArgs(args, RotateCommand.REQUIRED_PARAMS, ref argv, ref i))
+                    return CODE_INVALID_RESPONSE;
+                cmdList.Add(new RotateCommand(argv));
+                continue;
+            }
+
             return CODE_INVALID_RESPONSE;
         }
 
