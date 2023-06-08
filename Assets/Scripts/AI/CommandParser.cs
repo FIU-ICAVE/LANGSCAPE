@@ -38,14 +38,13 @@ public class CommandParser
 
             // If the signature is equal to the fill command, attempt to parse it.
             if (signature == FillCommand.SIGNATURE) {
-                if (args.Length < FillCommand.REQUIRED_PARAMS + 1)
+                if (args.Length <= FillCommand.REQUIRED_PARAMS)
                     return CODE_INVALID_RESPONSE;
                 argv = new int[FillCommand.REQUIRED_PARAMS];
-                Color color;
                 int i = 0;
                 if (!Command.TryBuildArgs(args, FillCommand.REQUIRED_PARAMS, ref argv, ref i))
                     return CODE_INVALID_RESPONSE;
-                if (!Command.TryBuildColor(args, out color, ref i))
+                if (!Command.TryBuildColor(args, out Color color, ref i))
                     return CODE_INVALID_RESPONSE;
                 FillCommand cmd = new FillCommand(argv, color);
                 if (cmd.valid != Command.CODE_VALID)
@@ -55,7 +54,7 @@ public class CommandParser
             }
 
             if (signature == MoveCommand.SIGNATURE) {
-                if (args.Length < MoveCommand.REQUIRED_PARAMS + 1)
+                if (args.Length <= MoveCommand.REQUIRED_PARAMS)
                     return CODE_INVALID_RESPONSE;
                 argv = new int[MoveCommand.REQUIRED_PARAMS];
                 int i = 0;
@@ -69,13 +68,29 @@ public class CommandParser
             }
 
             if (signature == RotateCommand.SIGNATURE) {
-                if (args.Length < RotateCommand.REQUIRED_PARAMS + 1)
+                if (args.Length <= RotateCommand.REQUIRED_PARAMS)
                     return CODE_INVALID_RESPONSE;
                 argv = new int[RotateCommand.REQUIRED_PARAMS];
                 int i = 0;
                 if (!Command.TryBuildArgs(args, RotateCommand.REQUIRED_PARAMS, ref argv, ref i))
                     return CODE_INVALID_RESPONSE;
                 RotateCommand cmd = new RotateCommand(argv);
+                if (cmd.valid != Command.CODE_VALID)
+                    return cmd.valid;
+                cmdList.Add(cmd);
+                continue;
+            }
+
+            if (signature == ModifyCommand.SIGNATURE) {
+                if (args.Length <= ModifyCommand.REQUIRED_PARAMS)
+                    return CODE_INVALID_RESPONSE;
+                argv = new int[ModifyCommand.REQUIRED_PARAMS];
+                int i = 0;
+                if (!Command.TryBuildArgs(args, ModifyCommand.REQUIRED_PARAMS, ref argv, ref i))
+                    return CODE_INVALID_RESPONSE;
+                if (!Command.TryBuildColor(args, out Color color, ref i))
+                    return CODE_INVALID_RESPONSE;
+                ModifyCommand cmd = new ModifyCommand(argv, color);
                 if (cmd.valid != Command.CODE_VALID)
                     return cmd.valid;
                 cmdList.Add(cmd);

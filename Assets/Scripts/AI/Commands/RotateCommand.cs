@@ -19,7 +19,6 @@ class RotateCommand : Command {
     // Syntax Description: <position: p> <size: s> <rotation: 0-3>
     // r <px> <py> <pz> <sx> <sy> <sz> <rotation>
     public static new readonly char SIGNATURE = 'r';
-    public static new readonly int PARAM_COUNT = 7;
     public static new readonly int REQUIRED_PARAMS = 7;
 
     public RotateCommand(int[] argv) {

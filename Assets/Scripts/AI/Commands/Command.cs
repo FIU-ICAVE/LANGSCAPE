@@ -10,7 +10,6 @@ public abstract class Command {
 
     // Override in other commands
     public static readonly char SIGNATURE = 'n';
-    public static readonly int PARAM_COUNT = 0;
     public static readonly int REQUIRED_PARAMS = 0;
 
     public int valid = CODE_UNINITIALIZED;

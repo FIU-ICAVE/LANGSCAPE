@@ -355,6 +355,33 @@ public class GridMesh : MonoBehaviour
         return copy;
     }
 
+    public GridCellData[,,] Replace(Vector3Int pos, Vector3Int size, GridCellData cell, GridCellData target, out GridCellData[,,] modified) {
+        GridCellData[,,] copy = new GridCellData[size.x, size.y, size.z];
+        Vector3Int end = new Vector3Int(pos.x + size.x - 1, pos.y + size.y - 1, pos.z + size.z - 1);
+        modified = copy;
+
+        try {
+            for (int x = pos.x; x <= end.x; x++) {
+                for (int y = pos.y; y <= end.y; y++) {
+                    for (int z = pos.z; z <= end.z; z++) {
+                        copy[x - pos.x, y - pos.y, z - pos.z] = data[x, y, z];
+                        if (data[x, y, z].type == cell.type)
+                            data[x, y, z] = cell;
+                    }
+                }
+            }
+        } catch {
+            return null;
+        }
+
+#if UNITY_EDITOR
+        if (showCommandOutput)
+            Debug.Log("[WORLD] (REPLACE) from (" + pos.x + "," + pos.y + "," + pos.z + ") to (" + end.x + "," + end.y + "," + end.z + ").");
+#endif
+        modified = copy;
+        return copy;
+    }
+
     public static string GetDimensions() => "" + Instance.size.x + "x" + Instance.size.y + "x" + Instance.size.z;
 
     // Draws the outline of the world in the inspector
