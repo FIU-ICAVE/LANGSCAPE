@@ -1,4 +1,10 @@
 /*
+    Author: Ian Rodriguez
+    Script Description:
+        This manager class provides several utilties for the project.
+        Currently, it:
+            - Executes all the commands & keeps a stack of commands to support undo/redo functionality.
+            - Keeps track of various world statistics (such as total number of objects in the world).
     NOTES:
         - consider making a GameManager to Init properties in this class
     TO DO:
@@ -15,6 +21,11 @@ using UnityEngine;
 public class WorldStateManager : MonoBehaviour
 {
     /*
+        World statistics fields
+    */
+    public int TotalNumWorldObjects {  get; private set; }
+
+    /*
         Singleton
     */
     private static WorldStateManager _instance;
@@ -30,60 +41,16 @@ public class WorldStateManager : MonoBehaviour
             return _instance;
         }
     }
+
+
     private void Awake()
     {
+        //singleton
         _instance = this;
+
+        //initializing world stats
+        TotalNumWorldObjects = 0;
     }
-
-    /*
-        Adding or removing objects
-    */
-    private Dictionary<Vector3, GameObject> worldObjectData = new Dictionary<Vector3, GameObject>();
-
-    public void AddWorldObject(GameObject newObj)
-    {
-        Vector3 newObjPos = newObj.transform.position;
-
-        if (newObj == null)
-        {
-            //[[[ERROR MESSAGE BACK TO AI]]]
-            Debug.LogError("WorldStateManager::AddWorldObject - The new object is null");
-        }
-        if (!worldObjectData.TryGetValue(newObj.transform.position, out GameObject o))
-        {
-            //[[[ERROR MESSAGE BACK TO AI]]]
-            //[[[inform user that position was occupied]]]
-            Debug.LogError("WorldStateManager::AddWorldObject - There is already an object there!");
-        }
-
-        worldObjectData.Add(newObjPos, newObj);
-        //[[[add to undo/redo stack]]]
-    }
-    public void RemoveWorldObject(GameObject objToRemove)
-    {
-        if (!worldObjectData.TryGetValue(objToRemove.transform.position, out GameObject o))
-        {
-            Debug.LogError("WorldStateManager::RemoveWorldObject - That object was not found.");
-        }
-
-        worldObjectData.Remove(objToRemove.transform.position);
-    }
-    public void RemoveWorldObject(Vector3 posToRemove)
-    {
-        if (!worldObjectData.TryGetValue(posToRemove, out GameObject o))
-        {
-            Debug.LogError("WorldStateManager::RemoveWorldObject - That object was not found.");
-        }
-
-        worldObjectData.Remove(posToRemove);
-    }
-    /*
-        ...further RemoveWorldObject's
-        ideas:
-            - color
-            - material
-            - custom model type (requires further implementation)
-     */
 
     /*
         Command stack
@@ -124,15 +91,15 @@ public class WorldStateManager : MonoBehaviour
     }
 
     /*
-        World statistics
+        World statistics methods
     */
-    public int GetTotalWorldObjects()
+    //[[[get data from "private GridCellData[,,] data;" when GridMesh.RegenerateMesh() is called, since it already loops through GridCellData[,,] ]]]
+    public void UpdateTotalWorldObjects()
     {
-        return worldObjectData.Count;
+        TotalNumWorldObjects++;
     }
-    public int GetWorldObjOfMaterial(Material mat)
+    public int GetWorldObjOfMaterial(Material mat) //[[[TO DO]]]
     {
-        //to do
         //[[[how does this work with the single mesh implementation?]]]
         return 0;
     }
@@ -140,18 +107,6 @@ public class WorldStateManager : MonoBehaviour
     /*
         Utility methods
     */
-    public bool PositionOccupied(Vector3 pos)
-    {
-        foreach(Vector3 currentPositions in worldObjectData.Keys)
-        {
-            if(pos == currentPositions)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
     public string[] GetCommandStackAsArray()
     {
         return commandStack.ToArray();

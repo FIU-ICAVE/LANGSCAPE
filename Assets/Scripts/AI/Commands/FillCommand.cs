@@ -25,6 +25,9 @@ class FillCommand : Command {
     }
     public override void Execute() {
         replace = GridMesh.Instance.Replace(position, size, cell);
+
+        //updating world stats
+        WorldStateManager.Instance.UpdateTotalWorldObjects();
     }
     public override void Undo() {
         GridMesh.Instance.Set(position, replace);

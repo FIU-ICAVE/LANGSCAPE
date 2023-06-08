@@ -137,7 +137,6 @@ public class GridMesh : MonoBehaviour
             }
         }
 
-
         worldMesh.Clear();
         worldMesh.subMeshCount = 2;
         worldMesh.vertices = vertices.ToArray();

@@ -1,4 +1,7 @@
 /*
+    Author: Ian Rodriguez
+    Script Description:
+        This class serves as a central hub for debugging all features of the project. All fields are *SET HERE*, for cohesiveness.
     NOTES:
         - consider moving methods in Update() to wherever they would be updated throughout the codebase (for performance)
             - i.e., consider moving FillCommandStacks() to whenever WorldStateManager's commandStack actually gets updated
@@ -15,7 +18,11 @@ public class DebugSuite : MonoBehaviour
 
     private void Update()
     {
+        //command stacks
         FillCommandStacks();
+
+        //world statistics
+        totalWorldObjects = WorldStateManager.Instance.TotalNumWorldObjects;
     }
 
     [Header("[[[REMIND IAN LATER THIS IS NOT FINISHED!]]]")]
@@ -27,21 +34,22 @@ public class DebugSuite : MonoBehaviour
         if(debugAll)
         {
             commandStackDebug = true;
+            worldStatisticsDebug = true;
         }
     }*/
 
     [Header("Command Stacks (as arrays)")]
     //[SerializeField] private bool commandStackDebug = false;
-
     [SerializeField] private string[] commandStack;
     [SerializeField] private string[] undoStack;
-
     private void FillCommandStacks()
     {
         commandStack = WorldStateManager.Instance.GetCommandStackAsArray();
         undoStack = WorldStateManager.Instance.GetUndoStackAsArray();
-
-        //commandStack[3] = "amongus";
     }
+
+    [Header("World Statistics")]
+    //[SerializeField] private bool worldStatisticsDebug = false;
+    [SerializeField] private int totalWorldObjects;
 #endif
 }

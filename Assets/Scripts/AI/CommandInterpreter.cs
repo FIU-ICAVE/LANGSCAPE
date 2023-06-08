@@ -2,7 +2,8 @@
  * Author: Jose Gonzalez Lopez, Christian Laverde, Justin Cardoso
  * Script Description:
  *      Handles converting voice input into valid JSON object.
- *      
+ * NOTES:
+ *      - consider moving Debug.Log() that outputs the command to DebugSuite
  * TO DO:
  *      - Interpret JSON string to valid JSON
  *      - Expand on the instructions for the prompt
@@ -151,7 +152,7 @@ public class CommandInterpreter : MonoBehaviour {
                 GridMesh.Instance.Multiplace(commands.modified);
             }
 #else
-            Debug.Log("CommandInterpreter message: " + message.Content.ToString());
+            Debug.Log("CommandInterpreter message: " + message.Content.ToString()); //[[[CONSIDER MOVING THIS TO DEBUG SUITE]]]
             WorldStateManager.Instance.BuildCommand(message.Content.ToString());
 #endif
         } else {
