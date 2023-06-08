@@ -13,7 +13,6 @@ using OpenAI;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UI;
 using static System.Net.Mime.MediaTypeNames;
@@ -152,12 +151,8 @@ public class CommandInterpreter : MonoBehaviour {
                 GridMesh.Instance.Multiplace(commands.modified);
             }
 #else
-            int parseCode = CommandParser.Parse(message.Content, '\n', ' ', out Command[] cmds);
-            if (parseCode == 0) {
-                foreach (Command cmd in cmds)
-                    cmd.Execute();
-                GridMesh.Instance.RegenerateMesh();
-            }
+            Debug.Log("CommandInterpreter message: " + message.Content.ToString());
+            WorldStateManager.Instance.BuildCommand(message.Content.ToString());
 #endif
         } else {
 #if UNITY_EDITOR

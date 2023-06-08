@@ -87,17 +87,40 @@ public class WorldStateManager : MonoBehaviour
 
     /*
         Command stack
+            For undoing/redoing commands.
     */
     private Stack<string> commandStack = new Stack<string>();
+    private Stack<string> undoCommandStack = new Stack<string>();
     public void ExecutePush(Command cmd)
     {
         cmd.Execute();
         commandStack.Push(cmd.ToString());
     }
+    public void RedoPush(Command cmd)
+    {
+        cmd.Redo();
+        commandStack.Push(cmd.ToString());
+
+        undoCommandStack.Pop();
+    }
     public void UndoPop(Command cmd)
     {
         cmd.Undo();
         commandStack.Pop();
+
+        undoCommandStack.Push(cmd.ToString());
+    }
+    public void BuildCommand(string message) //located here to avoid repeating this code throughout other scripts
+    {
+        int parseCode = CommandParser.Parse(message, '\n', ' ', out Command[] cmds);
+        if (parseCode == 0)
+        {
+            foreach (Command cmd in cmds)
+            {
+                ExecutePush(cmd);
+            }
+            GridMesh.Instance.RegenerateMesh();
+        }
     }
 
     /*
@@ -128,5 +151,13 @@ public class WorldStateManager : MonoBehaviour
         }
 
         return false;
+    }
+    public string[] GetCommandStackAsArray()
+    {
+        return commandStack.ToArray();
+    }
+    public string[] GetUndoStackAsArray()
+    {
+        return undoCommandStack.ToArray();
     }
 }
