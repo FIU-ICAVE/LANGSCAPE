@@ -2,7 +2,8 @@
  * Author: Jose Gonzalez Lopez, Christian Laverde, Justin Cardoso
  * Script Description:
  *      Handles converting voice input into valid JSON object.
- *      
+ * NOTES:
+ *      - consider moving Debug.Log() that outputs the command to DebugSuite
  * TO DO:
  *      - Interpret JSON string to valid JSON
  *      - Expand on the instructions for the prompt
@@ -13,7 +14,6 @@ using OpenAI;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UI;
 using static System.Net.Mime.MediaTypeNames;
@@ -152,12 +152,8 @@ public class CommandInterpreter : MonoBehaviour {
                 GridMesh.Instance.Multiplace(commands.modified);
             }
 #else
-            int parseCode = CommandParser.Parse(message.Content, '\n', ' ', out Command[] cmds);
-            if (parseCode == 0) {
-                foreach (Command cmd in cmds)
-                    cmd.Execute();
-                GridMesh.Instance.RegenerateMesh();
-            }
+            Debug.Log("CommandInterpreter message: " + message.Content.ToString()); //[[[CONSIDER MOVING THIS TO DEBUG SUITE]]]
+            WorldStateManager.Instance.BuildCommand(message.Content.ToString());
 #endif
         } else {
 #if UNITY_EDITOR

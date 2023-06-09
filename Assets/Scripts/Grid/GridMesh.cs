@@ -32,7 +32,7 @@ public class GridMesh : MonoBehaviour
 
     [Header("Test Commands")]
     [TextArea(1, 20)]
-    [SerializeField] private string testCommands;
+    [SerializeField] public string testCommands;
     [SerializeField] private int testOutputCode;
     [SerializeField] private bool showCommandOutput = false;
 #endif
@@ -137,7 +137,6 @@ public class GridMesh : MonoBehaviour
             }
         }
 
-
         worldMesh.Clear();
         worldMesh.subMeshCount = 2;
         worldMesh.vertices = vertices.ToArray();
@@ -151,18 +150,6 @@ public class GridMesh : MonoBehaviour
     // Check if neighbor is transparent or if there is a gap between the neighbor and cell.
     public bool CheckNeighbor(GridCellData cell, GridCellData neighbor) => !neighbor.IsFullBlock() || neighbor.IsTransparent() && !cell.IsTransparent();
 
-#if UNITY_EDITOR
-    public static void TestCommandViaEditor() {
-        Command[] cmds;
-        Instance.testOutputCode = CommandParser.Parse(Instance.testCommands, '\n', ' ', out cmds);
-        
-        if (Instance.testOutputCode == 0) {
-            foreach (Command cmd in cmds)
-                cmd.Execute();
-            Instance.RegenerateMesh();
-        }
-    }
-#endif
 
     // TODO: Reduce the number of vertices needed, and therefore reduce the number of colors. 6 to 4 is possible.
     private void AddFace(GridCellData cell, Vector3[] verts, int[] indices, Vector3Int position) {
