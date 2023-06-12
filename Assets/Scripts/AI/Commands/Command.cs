@@ -10,7 +10,6 @@ public abstract class Command {
 
     // Override in other commands
     public static readonly char SIGNATURE = 'n';
-    public static readonly int PARAM_COUNT = 0;
     public static readonly int REQUIRED_PARAMS = 0;
 
     public int valid = CODE_UNINITIALIZED;
@@ -42,11 +41,10 @@ public abstract class Command {
                 return false;
             // Else set alpha to 1 and return true
             color.a = 1f;
-            CommandParser.SetLastColor(color);
             return true;
         }
         // Otherwise set the color to the last stored.
-        color = CommandParser.GetLastColor();
+        color = Color.white;
         return true;
     }
     public bool IsInvalidPosition(Vector3Int pos, Vector3Int size) {

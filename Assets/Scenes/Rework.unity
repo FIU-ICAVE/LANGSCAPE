@@ -1673,12 +1673,19 @@ MonoBehaviour:
   initialWorldSize: {x: 20, y: 20, z: 20}
   textureAtlasSize: {x: 2, y: 2}
   drawInEditor: 1
-  testCommands: 'f 0 0 0 4 2 2 4 #0000ff
+  testCommands: 'f 0 0 0 20 20 20 0 #ffffff
 
-    f 2 1 1 2 1 1 2
+    f 0 0 0 4 2 2 4 #0000ff
 
-    m 0 0 0 4 2 2
-    2 2 2'
+    f 2
+    1 1 2 1 1 2
+
+    m 0 0 0 4 2 2 2 2 2
+
+    r 2 2 2 4 2 2 3
+
+    c 3 2 1 2 2 4
+    2 2 #ff0000'
   testOutputCode: 0
   showCommandOutput: 0
 --- !u!23 &694905905
@@ -3990,7 +3997,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1596460115
 Transform:
   m_ObjectHideFlags: 0
@@ -4230,6 +4237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commandStack: []
   undoStack: []
+  totalWorldObjects: 0
 --- !u!1 &1724621260
 GameObject:
   m_ObjectHideFlags: 0
