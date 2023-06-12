@@ -7,9 +7,6 @@ public class CommandParser
     public static readonly int CODE_INVALID_COMMAND = 1;    // Returned if the command returned was null. (Ex: A question was asked or no proper response could be given)
     public static readonly int CODE_INVALID_RESPONSE = 2;   // Returned if a command was improperly parsed. (Ex: fill had the wrong number of arguments/an invalid token)
 
-    private static int lastBlock = 1;
-    private static Color lastColor = Color.white;
-
     public static int Parse(string str, char commandSeparator, char argSeparator, out Command[] cmds) {
         cmds = null;
 
@@ -103,11 +100,4 @@ public class CommandParser
         cmds = cmdList.ToArray();
         return CODE_SUCCESS;
     }
-
-    public static void SetLastBlock(int blockID) {
-        lastBlock = blockID;
-    }
-
-    public static void SetLastColor(Color color) => lastColor = color;
-    public static Color GetLastColor() => lastColor;
 }

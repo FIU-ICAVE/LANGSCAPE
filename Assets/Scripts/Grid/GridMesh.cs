@@ -352,7 +352,7 @@ public class GridMesh : MonoBehaviour
                 for (int y = pos.y; y <= end.y; y++) {
                     for (int z = pos.z; z <= end.z; z++) {
                         copy[x - pos.x, y - pos.y, z - pos.z] = data[x, y, z];
-                        if (data[x, y, z].type == cell.type)
+                        if (data[x, y, z].type == target.type)
                             data[x, y, z] = cell;
                     }
                 }
