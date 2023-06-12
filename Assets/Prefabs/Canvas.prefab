@@ -1334,12 +1334,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74cc12ad7a4453f47b5c9b6895689885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PUSH_TO_TALK_KEY: 118
+  cubePlacer: {fileID: 0}
   inputBox: {fileID: 5920351539474686035}
   outputBox: {fileID: 5920351539661420619}
   symbol: {fileID: 5920351540475032689}
   dropdown: {fileID: 5920351541041902460}
-  gesture: {fileID: 0}
 --- !u!1 &5920351540007820517
 GameObject:
   m_ObjectHideFlags: 0
