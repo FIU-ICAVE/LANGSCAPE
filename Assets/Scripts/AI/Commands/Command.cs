@@ -1,35 +1,83 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Command {
-    public struct Syntax {
-        public char signature { get; private set; }
-        public int[] argc { get; private set; } // Store in decreasing order.
+    public static readonly int CODE_VALID = 0;
+    public static readonly int CODE_UNINITIALIZED = 1;
+    public static readonly int CODE_POSITION_OUT_OF_WORLD = 2;
+    public static readonly int CODE_DESTINATION_OUT_OF_WORLD = 3;
+    public static readonly int CODE_INVALID_BLOCK = 4;
+    public static readonly int CODE_INVALID_VALUE = 4;
 
-        public Syntax(char signature, int[] argc) { this.signature = signature; this.argc = argc;}
+    // Override in other commands
+    public static readonly char SIGNATURE = 'n';
+    public static readonly int REQUIRED_PARAMS = 0;
+
+    public int valid = CODE_UNINITIALIZED;
+
+    public static bool TryBuildArgs(string[] args, int count, ref int[] argv, ref int i) {
+        int argc = args.Length;
+        int end = count + i;
+
+        if (argc < end)
+            return false;
+
+        // Parse the parameters known to only be integers.
+        for (; i < count; i++) {
+            if (!int.TryParse(args[i + 1], out argv[i]))
+                return false;
+        }
+
+        return true;
     }
 
-    /*
-        LIST OF COMMANDS:
-            NULL, FILL, MOVE, ROTATE
-        <signature> <params>
-        Field: surrounded by <>
-        Argument: separated by spaces
-     */
-    public static Syntax Null = new Syntax('n', null);
-    /* 
-     *      fill <x0 y0 z0> <sx sy sz> <cell> <texture> <r g b> // 12 arguments, 5 fields
-     *      fill <x0 y0 z0> <sx sy sz> <cell> # <r g b>         // 12 arguments, 5 fields
-     *      fill <x0 y0 z0> <sx sy sz> <cell> # #               // 10 arguments, 5 fields
-     */
-    public static Syntax Fill = new Syntax('f', new int[] { 12, 10 });
+    public static bool TryBuildColor(string[] args, out Color color, ref int i) {
+        // Parse hexadecimal into unity color
+        if (i < args.Length - 1) {
+            // Add # if it is missing it
+            if (args[i + 1][0] != '#')
+                args[i + 1] = "#" + args[i + 1];
+            // Return false if failed
+            if (!ColorUtility.TryParseHtmlString(args[i + 1], out color))
+                return false;
+            // Else set alpha to 1 and return true
+            color.a = 1f;
+            return true;
+        }
+        // Otherwise set the color to the last stored.
+        color = Color.white;
+        return true;
+    }
+    public bool IsInvalidPosition(Vector3Int pos, Vector3Int size) {
+        if (pos.x < 0 || pos.x >= GridMesh.Instance.size.x || pos.y < 0 || pos.y >= GridMesh.Instance.size.y || pos.z < 0 || pos.z >= GridMesh.Instance.size.z) {
+            valid = CODE_POSITION_OUT_OF_WORLD;
+            return true;   
+        }
+        Vector3Int end = pos + size;
+        if (end.x <= 0 || end.x > GridMesh.Instance.size.x || end.y <= 0 || end.y > GridMesh.Instance.size.y || end.z <= 0 || end.z > GridMesh.Instance.size.z) {
+            valid = CODE_POSITION_OUT_OF_WORLD;
+            return true;
+        }
+        return false;
+    }
+
+    public bool IsInvalidDestination(Vector3Int pos, Vector3Int size) {
+        if (pos.x < 0 || pos.x >= GridMesh.Instance.size.x || pos.y < 0 || pos.y >= GridMesh.Instance.size.y || pos.z < 0 || pos.z >= GridMesh.Instance.size.z) {
+            valid = CODE_DESTINATION_OUT_OF_WORLD;
+            return true;
+        }
+        Vector3Int end = pos + size;
+        if (end.x <= 0 || end.x > GridMesh.Instance.size.x || end.y <= 0 || end.y > GridMesh.Instance.size.y || end.z <= 0 || end.z > GridMesh.Instance.size.z) {
+            valid = CODE_DESTINATION_OUT_OF_WORLD;
+            return true;
+        }
+        return false;
+    }
 
     // Runs whatever the command does.
     public abstract void Execute();
     // Undes whatever the command does.
     public abstract void Undo();
+    public abstract void Redo();
 
     public abstract new string ToString();
 }
