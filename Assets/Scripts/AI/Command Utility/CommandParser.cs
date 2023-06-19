@@ -6,6 +6,7 @@ public class CommandParser
     public static readonly int CODE_SUCCESS = 0;            // Returned if a command was properly parsed. (Ex: fill was successfully created)
     public static readonly int CODE_INVALID_COMMAND = 1;    // Returned if the command returned was null. (Ex: A question was asked or no proper response could be given)
     public static readonly int CODE_INVALID_RESPONSE = 2;   // Returned if a command was improperly parsed. (Ex: fill had the wrong number of arguments/an invalid token)
+    public static readonly int CODE_EMPTY_COMMAND = 3;      // Returned if a new line was returned with no command.
 
     public static int Parse(string str, char commandSeparator, char argSeparator, out Command[] cmds) {
         cmds = null;
@@ -14,11 +15,15 @@ public class CommandParser
             return CODE_INVALID_RESPONSE;
 
         List<Command> cmdList = new List<Command>();
+        List<Command> utilList = new List<Command>(); // Undo and redo commands
 
         string[] commandStrings = str.Split(commandSeparator);
 
         // fill 0 0 0 1 10 10 1 #
         foreach (string command in commandStrings) {
+            if (command == "")
+                continue;
+            
             string[] args = command.Split(argSeparator);
             int[] argv;
 
@@ -51,7 +56,7 @@ public class CommandParser
             }
 
             if (signature == MoveCommand.SIGNATURE) {
-                if (args.Length <= MoveCommand.REQUIRED_PARAMS)
+                if (args.Length != MoveCommand.REQUIRED_PARAMS + 1)
                     return CODE_INVALID_RESPONSE;
                 argv = new int[MoveCommand.REQUIRED_PARAMS];
                 int i = 0;
@@ -65,7 +70,7 @@ public class CommandParser
             }
 
             if (signature == RotateCommand.SIGNATURE) {
-                if (args.Length <= RotateCommand.REQUIRED_PARAMS)
+                if (args.Length != RotateCommand.REQUIRED_PARAMS + 1)
                     return CODE_INVALID_RESPONSE;
                 argv = new int[RotateCommand.REQUIRED_PARAMS];
                 int i = 0;
@@ -94,9 +99,42 @@ public class CommandParser
                 continue;
             }
 
+            if (signature == UndoCommand.SIGNATURE) {
+                if (args.Length != UndoCommand.REQUIRED_PARAMS + 1)
+                    return CODE_INVALID_RESPONSE;
+                argv = new int[1];
+                int i = 0;
+                if (!Command.TryBuildArgs(args, UndoCommand.REQUIRED_PARAMS, ref argv, ref i))
+                    return CODE_INVALID_RESPONSE;
+                UndoCommand cmd = new UndoCommand(argv[0]);
+                if (cmd.valid != Command.CODE_VALID)
+                    return cmd.valid;
+                utilList.Add(cmd);
+                continue;
+            }
+
+            if (signature == RedoCommand.SIGNATURE) {
+                if (args.Length != RedoCommand.REQUIRED_PARAMS + 1)
+                    return CODE_INVALID_RESPONSE;
+                argv = new int[1];
+                int i = 0;
+                if (!Command.TryBuildArgs(args, RedoCommand.REQUIRED_PARAMS, ref argv, ref i))
+                    return CODE_INVALID_RESPONSE;
+                RedoCommand cmd = new RedoCommand(argv[0]);
+                if (cmd.valid != Command.CODE_VALID)
+                    return cmd.valid;
+                utilList.Add(cmd);
+                continue;
+            }
+
             return CODE_INVALID_RESPONSE;
         }
-
+        // Undo and Redo
+        foreach (Command cmd in utilList)
+            cmd.Execute();
+        // Regenerate the mesh after undo/redo if that is all there was to do.
+        if (cmdList.Count == 0 && utilList.Count != 0)
+            GridMesh.Instance.RegenerateMesh();
         cmds = cmdList.ToArray();
         return CODE_SUCCESS;
     }

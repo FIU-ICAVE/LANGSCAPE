@@ -342,10 +342,10 @@ public class GridMesh : MonoBehaviour
         return copy;
     }
 
-    public GridCellData[,,] Replace(Vector3Int pos, Vector3Int size, GridCellData cell, GridCellData target, out GridCellData[,,] modified) {
+    public GridCellData[,,] Replace(Vector3Int pos, Vector3Int size, GridCellData cell, GridCellData target, out GridCellData[,,] modification) {
         GridCellData[,,] copy = new GridCellData[size.x, size.y, size.z];
+        modification = new GridCellData[size.x, size.y, size.z];
         Vector3Int end = new Vector3Int(pos.x + size.x - 1, pos.y + size.y - 1, pos.z + size.z - 1);
-        modified = copy;
 
         try {
             for (int x = pos.x; x <= end.x; x++) {
@@ -354,6 +354,7 @@ public class GridMesh : MonoBehaviour
                         copy[x - pos.x, y - pos.y, z - pos.z] = data[x, y, z];
                         if (data[x, y, z].type == target.type)
                             data[x, y, z] = cell;
+                        modification[x - pos.x, y - pos.y, z - pos.z] = data[x, y, z];
                     }
                 }
             }
@@ -365,7 +366,6 @@ public class GridMesh : MonoBehaviour
         if (showCommandOutput)
             Debug.Log("[WORLD] (REPLACE) from (" + pos.x + "," + pos.y + "," + pos.z + ") to (" + end.x + "," + end.y + "," + end.z + ").");
 #endif
-        modified = copy;
         return copy;
     }
 
