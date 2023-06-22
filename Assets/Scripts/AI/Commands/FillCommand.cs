@@ -23,6 +23,10 @@ class FillCommand : Command {
             return;
     }
     public override void Execute() {
+
+        //[[[TEST CODE]]]
+        LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
+
         replace = GridMesh.Instance.Replace(position, size, cell);
 
         //updating world stats

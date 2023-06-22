@@ -23,7 +23,7 @@ public class WorldStateManager : MonoBehaviour
     /*
         World statistics fields
     */
-    public int TotalNumWorldObjects {  get; private set; }
+    public int TotalNumWorldObjects { get; private set; }
 
     /*
         Singleton

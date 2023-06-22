@@ -2,8 +2,10 @@
     TO DO:
         - ThrowErrorToUser
 */
+using Meta.WitAi.TTS.Samples;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using Unity.Tutorials.Core.Editor;
@@ -21,7 +23,7 @@ public class LangscapeError : MonoBehaviour
         {
             if(_instance == null)
             {
-                UnityEngine.Debug.LogError("LangscapeError::Instance - LangscapeManager is null");
+                UnityEngine.Debug.LogError("LangscapeError::Instance - LangscapeError is null");
             }
 
             return _instance;
@@ -33,11 +35,16 @@ public class LangscapeError : MonoBehaviour
     }
 
     /*
+        Fields
+    */
+    [SerializeField] private TTSSpeakerInput _speakerInput;
+
+    /*
         Constructor
     */
     private int code;
     private string message;
-    private LangscapeError(int code, string messageToUser)
+    public LangscapeError(int code, string messageToUser)
     {
         StackFrame callerClass = new StackTrace().GetFrame(1);
         MethodBase callerMethod = callerClass.GetMethod();
@@ -49,9 +56,9 @@ public class LangscapeError : MonoBehaviour
         {
             UnityEngine.Debug.LogError(callerClass.GetFileName().ToString() + "::" + callerMethod.Name.ToString() + " - Error message cannot be empty or ull");
         }
-        
+
         this.code = code;
-        this.message = messageToUser;
+        message = messageToUser;
     }
 
     /*
@@ -59,19 +66,19 @@ public class LangscapeError : MonoBehaviour
         
         Format:
             - Unity errors: 1XXXX
-                - command errors: second digit = 11XXX
+                - command errors: 11XXX
 
             - LLM errors: 2XXXX
     */
     //command errors
-    public static LangscapeError ERROR_POSITION_OUT_OF_WORLD = new LangscapeError(11001, ErrorMessageUserGeneric.genericMessages["ERROR_POSITION_OUT_OF_WORLD"]);
+    public static LangscapeError CMD_POSITION_OUT_OF_WORLD = new LangscapeError(11001, "That position is out of bounds!");
 
     /*
         Methods
     */
-    public void ThrowErrorToUser(LangscapeError e)
+    public void ThrowUserError(LangscapeError e)
     {
-        //[[[TO DO]]]
-        //call whisper to do text-to-speech
+        _speakerInput.input = e.message;
+        _speakerInput.SpeakClick();
     }
 }
