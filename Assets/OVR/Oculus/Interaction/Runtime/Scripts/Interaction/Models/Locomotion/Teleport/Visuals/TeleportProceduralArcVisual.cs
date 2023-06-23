@@ -157,7 +157,7 @@ namespace Oculus.Interaction.Locomotion
                 return;
             }
 
-            Color tint = Color.white;
+            Color tint = Color.blue;
             if (_interactor.Interactable == null
                 || !_interactor.Interactable.AllowTeleport)
             {
