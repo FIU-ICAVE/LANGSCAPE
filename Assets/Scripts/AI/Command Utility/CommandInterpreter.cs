@@ -119,13 +119,13 @@ public class CommandInterpreter : MonoBehaviour {
                 EndRecording();
         }
     }
-    private async void CreateJSON(string command) {
-        ChatMessage userInstructions = new ChatMessage() {
+    private async void CreateJSON(string request) {
+        ChatMessage userRequest = new ChatMessage() {
             Role = "user",
-            Content = command
+            Content = request
         };
 
-        messages.Add(userInstructions);
+        messages.Add(userRequest);
 
         outputBox.text = "Loading response...";
 
@@ -141,11 +141,11 @@ public class CommandInterpreter : MonoBehaviour {
             });
 
             if (completionResponse.Choices != null && completionResponse.Choices.Count > 0) {
-                var message = completionResponse.Choices[0].Message;
-                message.Content = message.Content.Trim();
+                var aiResponse = completionResponse.Choices[0].Message;
+                aiResponse.Content = aiResponse.Content.Trim();
 
-                messages.Add(message);
-                outputBox.text = message.Content;
+                messages.Add(aiResponse);
+                outputBox.text = aiResponse.Content;
 
 #if TEST_CUBEPLACER
             WorldCommand commands = JSONParser.ParseCommand(message.Content);
@@ -155,7 +155,7 @@ public class CommandInterpreter : MonoBehaviour {
             }
 #else
                 //Debug.Log("CommandInterpreter message: " + message.Content.ToString()); //[[[CONSIDER MOVING THIS TO DEBUG SUITE]]]
-                WorldStateManager.Instance.BuildCommand(,message.Content.ToString());
+                WorldStateManager.Instance.BuildCommandBatch(aiResponse.Content, userRequest.Content);
 #endif
             } else {
                 outputBox.text = "No text was generated from this prompt.";

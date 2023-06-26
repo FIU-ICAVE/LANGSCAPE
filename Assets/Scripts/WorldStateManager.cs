@@ -33,7 +33,7 @@ public class WorldStateManager : MonoBehaviour
     {
         get
         {
-            if (_instance == null)
+            if(_instance == null)
             {
                 Debug.LogError("WorldStateManager::Instance - WorldStateManager is null");
             }
@@ -61,15 +61,14 @@ public class WorldStateManager : MonoBehaviour
 
     public void ExecutePush(CommandBatch batch)
     {
-        if (undoStack.Count == 0)
+        if (undoStack.Count == 0) 
             undoStack.Clear();
         batch.Execute();
         commandStack.Push(batch);
     }
     public void RedoCommandBatch(int count)
     {
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             if (undoStack.Count == 0)
                 return;
             CommandBatch batch = undoStack.Pop();
@@ -79,8 +78,7 @@ public class WorldStateManager : MonoBehaviour
     }
     public void UndoCommandBatch(int count)
     {
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             if (commandStack.Count == 0)
                 return;
             CommandBatch batch = commandStack.Pop();
@@ -134,7 +132,7 @@ public class WorldStateManager : MonoBehaviour
         Stack<string> undoStringStack = new Stack<string>();
         foreach (CommandBatch batch in commandStack)
         {
-            foreach (Command cmd in batch.commands)
+            foreach (Command cmd in batch.commands) 
             {
                 undoStringStack.Push(cmd.ToString());
             }
