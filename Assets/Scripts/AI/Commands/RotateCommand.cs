@@ -32,6 +32,7 @@ class RotateCommand : Command {
         if (IsInvalidPosition(position, size) || IsInvalidDestination(destination, (rotation == ROTATE_CCW_0 || rotation == ROTATE_CCW_180) ? size : new Vector3Int(size.z, size.y, size.x)))
             return;
         if (rotation < ROTATE_CCW_0 || rotation > ROTATE_CCW_270) {
+            LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_ROTATION_INVALID);
             valid = CODE_INVALID_VALUE;
             return;
         }

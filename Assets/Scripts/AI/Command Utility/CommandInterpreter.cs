@@ -155,7 +155,7 @@ public class CommandInterpreter : MonoBehaviour {
             }
 #else
                 //Debug.Log("CommandInterpreter message: " + message.Content.ToString()); //[[[CONSIDER MOVING THIS TO DEBUG SUITE]]]
-                WorldStateManager.Instance.BuildCommand(message.Content.ToString());
+                WorldStateManager.Instance.BuildCommand(,message.Content.ToString());
 #endif
             } else {
                 outputBox.text = "No text was generated from this prompt.";

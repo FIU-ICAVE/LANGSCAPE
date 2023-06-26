@@ -30,12 +30,12 @@ namespace Meta.WitAi.TTS.Samples
             }
         }
 
-        [SerializeField] private Text _title;
+        //[SerializeField] private Text _title;
         public string input = "Default_Error"; // Text to be spoken
         [SerializeField] private TTSSpeaker _speaker;
-        [SerializeField] private Button _stopButton;
-        [SerializeField] private Button _speakButton;
-        [SerializeField] private Button _speakQueuedButton;
+        //[SerializeField] private Button _stopButton;
+        //[SerializeField] private Button _speakButton;
+        //[SerializeField] private Button _speakQueuedButton;
 
         [SerializeField] private string _dateId = "[DATE]";
         [SerializeField] private string[] _queuedText;
@@ -44,6 +44,7 @@ namespace Meta.WitAi.TTS.Samples
         private bool _loading;
         private bool _speaking;
 
+        /*
         // Add delegates
         private void OnEnable()
         {
@@ -52,6 +53,7 @@ namespace Meta.WitAi.TTS.Samples
             _speakButton.onClick.AddListener(SpeakClick);
             _speakQueuedButton.onClick.AddListener(SpeakQueuedClick);
         }
+        */
 
         /*
             NOTE TO LANGSCAPE DEVELOPERS:
@@ -83,6 +85,7 @@ namespace Meta.WitAi.TTS.Samples
             }
             return result;
         }
+        /*
         // Remove delegates
         private void OnDisable()
         {
@@ -90,7 +93,9 @@ namespace Meta.WitAi.TTS.Samples
             _speakButton.onClick.RemoveListener(SpeakClick);
             _speakQueuedButton.onClick.RemoveListener(SpeakQueuedClick);
         }
+        */
 
+        /*
         // Preset text fields
         private void Update()
         {
@@ -112,10 +117,14 @@ namespace Meta.WitAi.TTS.Samples
                 RefreshButtons();
             }
         }
+        */
+
+        /*
         // Refresh interactable based on states
         private void RefreshButtons()
         {
             _stopButton.interactable = _loading || _speaking;
         }
+        */
     }
 }

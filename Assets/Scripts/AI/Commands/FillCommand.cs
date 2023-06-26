@@ -19,13 +19,19 @@ class FillCommand : Command {
         cell = new GridCellData(argv[6], color);
         valid = CODE_VALID;
 
+        Debug.Log("got to fill constructor");
+
         if (IsInvalidPosition(position, size))
+        {
+            LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
+            Debug.Log("got to invalid pos");
             return;
+        }
     }
     public override void Execute() {
 
         //[[[TEST CODE]]]
-        LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
+        //LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
 
         replace = GridMesh.Instance.Replace(position, size, cell);
 

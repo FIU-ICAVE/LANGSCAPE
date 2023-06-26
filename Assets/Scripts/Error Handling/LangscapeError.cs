@@ -71,7 +71,16 @@ public class LangscapeError : MonoBehaviour
             - LLM errors: 2XXXX
     */
     //command errors
-    public static LangscapeError CMD_POSITION_OUT_OF_WORLD = new LangscapeError(11001, "That position is out of bounds!");
+    public static LangscapeError CMD_NULL = new LangscapeError(11000, "Sorry, I didn't understand that. Could you repeat or rephrase?");
+    public static LangscapeError CMD_INVALID = new LangscapeError(11001, "That is not a valid command. Please rephrase or try something else.");
+    public static LangscapeError CMD_INVALID_PARAM = new LangscapeError(11002, "That value is invalid. Please try another value.");
+    public static LangscapeError CMD_INVALID_PARAMS = new LangscapeError(11002, "One of those values is invalid. Please try another value.");
+    public static LangscapeError CMD_POSITION_OUT_OF_WORLD = new LangscapeError(11003, "That position is out of bounds.");
+    public static LangscapeError CMD_DESTINATION_OUT_OF_WORLD = new LangscapeError(11004, "The new destination would be out of bounds.");
+    public static LangscapeError CMD_ROTATION_INVALID = new LangscapeError(11005, "That rotation is invalid. Rotations must be greater than zero and less than two-hundred and seventy.");
+
+    //LLM errors
+    public static LangscapeError LLM_INVALID_RESPONSE = new LangscapeError(20000, "Sorry, the LLM did not understand. Could you repeat or rephrase?");
 
     /*
         Methods

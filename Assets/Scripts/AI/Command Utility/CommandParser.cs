@@ -11,7 +11,10 @@ public class CommandParser
         cmds = null;
 
         if (str.Length == 0)
-            return CODE_INVALID_RESPONSE;
+        {
+            LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_INVALID);
+            return CODE_INVALID_COMMAND;
+        }
 
         List<Command> cmdList = new List<Command>();
 
@@ -31,7 +34,10 @@ public class CommandParser
 
             // If the signature is equal to the null command, exit the process with null.
             if (signature == Command.SIGNATURE)
+            {
+                LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_INVALID);
                 return CODE_INVALID_COMMAND;
+            }
 
             // If the signature is equal to the fill command, attempt to parse it.
             if (signature == FillCommand.SIGNATURE) {

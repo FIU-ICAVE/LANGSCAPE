@@ -21,8 +21,16 @@ class MoveCommand : Command {
         displacement = new Vector3Int(argv[6], argv[7], argv[8]);
         valid = CODE_VALID;
 
-        if (IsInvalidPosition(position, size) || IsInvalidDestination(position + displacement, size))
+        if(IsInvalidPosition(position, size))
+        {
+            LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
             return;
+        }
+        if(IsInvalidDestination(position + displacement, size))
+        {
+            LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_DESTINATION_OUT_OF_WORLD);
+            return;
+        }
     }
 
     public override void Execute() {

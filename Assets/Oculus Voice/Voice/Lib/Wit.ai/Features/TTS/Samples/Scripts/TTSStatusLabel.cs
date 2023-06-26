@@ -17,7 +17,7 @@ namespace Meta.WitAi.TTS.Samples
     public class TTSStatusLabel : MonoBehaviour
     {
         [SerializeField] private TTSSpeaker _speaker;
-        [SerializeField] private Text _label;
+        //[SerializeField] private Text _label;
 
         private void OnEnable()
         {
@@ -66,7 +66,7 @@ namespace Meta.WitAi.TTS.Samples
             {
                 status.Remove(status.Length - 1, 1);
             }
-            _label.text = status.ToString();
+            //_label.text = status.ToString();
         }
     }
 }
