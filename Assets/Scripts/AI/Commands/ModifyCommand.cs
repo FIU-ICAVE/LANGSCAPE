@@ -20,7 +20,7 @@ class ModifyCommand : Command {
         size = new Vector3Int(argv[3], argv[4], argv[5]);
         target = new GridCellData(argv[6], Color.white);
         cell = new GridCellData(argv[7], color);
-        valid = CODE_VALID;
+        valid = LangscapeError.CMD_VALID.code;
 
         if (IsInvalidPosition(position, size))
             return;

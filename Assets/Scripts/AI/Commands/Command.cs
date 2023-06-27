@@ -1,18 +1,20 @@
 using UnityEngine;
 
 public abstract class Command {
+    /*
     public static readonly int CODE_VALID = 0;
     public static readonly int CODE_UNINITIALIZED = 1;
     public static readonly int CODE_POSITION_OUT_OF_WORLD = 2;
     public static readonly int CODE_DESTINATION_OUT_OF_WORLD = 3;
     public static readonly int CODE_INVALID_BLOCK = 4;
     public static readonly int CODE_INVALID_VALUE = 4;
+    */
 
     // Override in other commands
     public static readonly char SIGNATURE = 'n';
     public static readonly int REQUIRED_PARAMS = 0;
 
-    public int valid = CODE_UNINITIALIZED;
+    public int valid = LangscapeError.CMD_UNINITIALIZED.code;
 
     public static bool TryBuildArgs(string[] args, int count, ref int[] argv, ref int i) {
         int argc = args.Length;
@@ -49,12 +51,12 @@ public abstract class Command {
     }
     public bool IsInvalidPosition(Vector3Int pos, Vector3Int size) {
         if (pos.x < 0 || pos.x >= GridMesh.Instance.size.x || pos.y < 0 || pos.y >= GridMesh.Instance.size.y || pos.z < 0 || pos.z >= GridMesh.Instance.size.z) {
-            valid = CODE_POSITION_OUT_OF_WORLD;
+            valid = LangscapeError.CMD_POSITION_OUT_OF_WORLD.code;
             return true;   
         }
         Vector3Int end = pos + size;
         if (end.x <= 0 || end.x > GridMesh.Instance.size.x || end.y <= 0 || end.y > GridMesh.Instance.size.y || end.z <= 0 || end.z > GridMesh.Instance.size.z) {
-            valid = CODE_POSITION_OUT_OF_WORLD;
+            valid = LangscapeError.CMD_POSITION_OUT_OF_WORLD.code;
             return true;
         }
         return false;
@@ -62,12 +64,12 @@ public abstract class Command {
 
     public bool IsInvalidDestination(Vector3Int pos, Vector3Int size) {
         if (pos.x < 0 || pos.x >= GridMesh.Instance.size.x || pos.y < 0 || pos.y >= GridMesh.Instance.size.y || pos.z < 0 || pos.z >= GridMesh.Instance.size.z) {
-            valid = CODE_DESTINATION_OUT_OF_WORLD;
+            valid = LangscapeError.CMD_DESTINATION_OUT_OF_WORLD.code;
             return true;
         }
         Vector3Int end = pos + size;
         if (end.x <= 0 || end.x > GridMesh.Instance.size.x || end.y <= 0 || end.y > GridMesh.Instance.size.y || end.z <= 0 || end.z > GridMesh.Instance.size.z) {
-            valid = CODE_DESTINATION_OUT_OF_WORLD;
+            valid = LangscapeError.CMD_DESTINATION_OUT_OF_WORLD.code;
             return true;
         }
         return false;

@@ -17,12 +17,19 @@ class FillCommand : Command {
         position = new Vector3Int(argv[0], argv[1], argv[2]);
         size = new Vector3Int(argv[3], argv[4], argv[5]);
         cell = new GridCellData(argv[6], color);
-        valid = CODE_VALID;
+        valid = LangscapeError.CMD_VALID.code;
 
         if (IsInvalidPosition(position, size))
+        {
+            LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
             return;
+        }
     }
     public override void Execute() {
+
+        //[[[TEST CODE]]]
+        //LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
+
         replace = GridMesh.Instance.Replace(position, size, cell);
 
         //updating world stats

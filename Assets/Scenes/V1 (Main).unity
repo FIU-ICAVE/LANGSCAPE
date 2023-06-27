@@ -1497,6 +1497,75 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!1001 &567059658
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1951956280192151176, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_Name
+      value: ErrorHandling
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951956280192151177, guid: b2844115ca77bdb489f8d49c9e271d48,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b2844115ca77bdb489f8d49c9e271d48, type: 3}
 --- !u!1 &670937560
 GameObject:
   m_ObjectHideFlags: 0
@@ -2315,7 +2384,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &960626322
 Transform:
   m_ObjectHideFlags: 0
@@ -3685,7 +3754,6 @@ MonoBehaviour:
   outputBox: {fileID: 2061979187}
   symbol: {fileID: 972437545}
   dropdown: {fileID: 2045702329}
-  gesture: {fileID: 0}
 --- !u!1 &1314719261
 GameObject:
   m_ObjectHideFlags: 0
@@ -4194,18 +4262,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
---- !u!114 &1585221464 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8229932394553529491, guid: 92fe722de3dc2f544b35127b16386907,
-    type: 3}
-  m_PrefabInstance: {fileID: 2085123041}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0641f92adc0b7c14caa54af0604db2ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1592363760
 GameObject:
   m_ObjectHideFlags: 0
@@ -4877,7 +4933,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1814872754
 Transform:
   m_ObjectHideFlags: 0
@@ -5743,7 +5799,6 @@ MonoBehaviour:
   outputBox: {fileID: 864055565}
   symbol: {fileID: 293211998}
   dropdown: {fileID: 1074691674}
-  gesture: {fileID: 1585221464}
 --- !u!1 &2139137254
 GameObject:
   m_ObjectHideFlags: 0
