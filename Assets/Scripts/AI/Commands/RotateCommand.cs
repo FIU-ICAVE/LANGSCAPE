@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 class RotateCommand : Command {
@@ -25,15 +26,14 @@ class RotateCommand : Command {
         position = new Vector3Int(argv[0], argv[1], argv[2]);
         size = new Vector3Int(argv[3], argv[4], argv[5]);
         rotation = argv[6];
-        valid = CODE_VALID;
+        valid = LangscapeError.CMD_VALID.code;
 
         destination = (rotation == ROTATE_CCW_0 || rotation == ROTATE_CCW_180) ? position : new Vector3Int(position.x + (size.x - size.z) / 2, position.y, position.z + (size.z - size.x) / 2);
 
         if (IsInvalidPosition(position, size) || IsInvalidDestination(destination, (rotation == ROTATE_CCW_0 || rotation == ROTATE_CCW_180) ? size : new Vector3Int(size.z, size.y, size.x)))
             return;
         if (rotation < ROTATE_CCW_0 || rotation > ROTATE_CCW_270) {
-            LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_ROTATION_INVALID);
-            valid = CODE_INVALID_VALUE;
+            valid = LangscapeError.LLM_INVALID_RESPONSE.code;
             return;
         }
     }

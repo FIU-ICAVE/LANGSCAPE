@@ -19,7 +19,7 @@ class MoveCommand : Command {
         position = new Vector3Int(argv[0], argv[1], argv[2]);
         size = new Vector3Int(argv[3], argv[4], argv[5]);
         displacement = new Vector3Int(argv[6], argv[7], argv[8]);
-        valid = CODE_VALID;
+        valid = LangscapeError.CMD_VALID.code;
 
         if(IsInvalidPosition(position, size))
         {
