@@ -23,7 +23,7 @@ public class WorldStateManager : MonoBehaviour
     /*
         World statistics fields
     */
-    public int TotalNumWorldObjects {  get; private set; }
+    public int TotalNumWorldObjects { get; private set; }
 
     /*
         Singleton
@@ -56,38 +56,47 @@ public class WorldStateManager : MonoBehaviour
         Command stack
             For undoing/redoing commands.
     */
-    private Stack<string> commandStack = new Stack<string>();
-    private Stack<string> undoCommandStack = new Stack<string>();
-    public void ExecutePush(Command cmd)
-    {
-        cmd.Execute();
-        commandStack.Push(cmd.ToString());
-    }
-    public void RedoPush(Command cmd)
-    {
-        cmd.Redo();
-        commandStack.Push(cmd.ToString());
+    private Stack<CommandBatch> commandStack = new Stack<CommandBatch>();
+    private Stack<CommandBatch> undoStack = new Stack<CommandBatch>();
 
-        undoCommandStack.Pop();
-    }
-    public void UndoPop(Command cmd)
+    public void ExecutePush(CommandBatch batch)
     {
-        cmd.Undo();
-        commandStack.Pop();
-
-        undoCommandStack.Push(cmd.ToString());
+        if (undoStack.Count == 0) 
+            undoStack.Clear();
+        batch.Execute();
+        commandStack.Push(batch);
     }
-    public void BuildCommand(string message) //located here to avoid repeating this code throughout other scripts
+    public void RedoCommandBatch(int count)
     {
-        int parseCode = CommandParser.Parse(message, '\n', ' ', out Command[] cmds);
-        if (parseCode == 0)
+        for (int i = 0; i < count; i++) {
+            if (undoStack.Count == 0)
+                return;
+            CommandBatch batch = undoStack.Pop();
+            batch.Redo();
+            commandStack.Push(batch);
+        }
+    }
+    public void UndoCommandBatch(int count)
+    {
+        for (int i = 0; i < count; i++) {
+            if (commandStack.Count == 0)
+                return;
+            CommandBatch batch = commandStack.Pop();
+            batch.Undo();
+            undoStack.Push(batch);
+        }
+    }
+    public void BuildCommandBatch(string response, string request) //located here to avoid repeating this code throughout other scripts
+    {
+        int parseCode = CommandParser.Parse(response, '\n', ' ', out Command[] cmds);
+        if (parseCode == 0 && cmds != null && cmds.Length != 0)
         {
-            foreach (Command cmd in cmds)
-            {
-                ExecutePush(cmd);
-            }
+            CommandBatch batch = new(cmds, request, response);
+            ExecutePush(batch);
             GridMesh.Instance.RegenerateMesh();
         }
+
+        LangscapeError.Instance.ThrowUserError(parseCode);
     }
 
     /*
@@ -109,10 +118,28 @@ public class WorldStateManager : MonoBehaviour
     */
     public string[] GetCommandStackAsArray()
     {
-        return commandStack.ToArray();
+        Stack<string> commandStringStack = new Stack<string>();
+        foreach (CommandBatch batch in commandStack)
+        {
+            foreach (Command cmd in batch.commands)
+            {
+                commandStringStack.Push(cmd.ToString());
+            }
+        }
+
+        return commandStringStack.ToArray();
     }
     public string[] GetUndoStackAsArray()
     {
-        return undoCommandStack.ToArray();
+        Stack<string> undoStringStack = new Stack<string>();
+        foreach (CommandBatch batch in commandStack)
+        {
+            foreach (Command cmd in batch.commands) 
+            {
+                undoStringStack.Push(cmd.ToString());
+            }
+        }
+
+        return undoStringStack.ToArray();
     }
 }

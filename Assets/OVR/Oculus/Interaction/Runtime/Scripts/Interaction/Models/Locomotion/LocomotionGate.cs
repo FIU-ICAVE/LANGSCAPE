@@ -145,14 +145,15 @@ namespace Oculus.Interaction.Locomotion
             this.AssertField(_teleportState, nameof(_teleportState));
             this.AssertField(_turningState, nameof(_turningState));
             this.EndStart(ref _started);
+            ActiveMode = LocomotionMode.TeleportUp;
         }
 
-        protected virtual void OnEnable()
+        /*protected virtual void OnEnable()
         {
             if (_started)
             {
                 Hand.WhenHandUpdated += HandleHandupdated;
-                Disable();
+                //Disable();
             }
         }
 
@@ -163,13 +164,13 @@ namespace Oculus.Interaction.Locomotion
                 Hand.WhenHandUpdated -= HandleHandupdated;
                 Disable();
             }
-        }
+        } */
 
         private void HandleHandupdated()
         {
             if (!Hand.GetRootPose(out Pose handPose))
             {
-                Disable();
+                //Disable();
                 return;
             }
 
@@ -198,7 +199,7 @@ namespace Oculus.Interaction.Locomotion
             StabilizationPose = new Pose(_shoulder.position, Quaternion.LookRotation(shoulderToHand));
             WristDirection = wristDir;
 
-            bool shapeGateEnabled = false;
+            /*bool shapeGateEnabled = false;
             if (EnableShape.Active && !_previousShapeEnabled)
             {
                 shapeGateEnabled = true;
@@ -255,24 +256,23 @@ namespace Oculus.Interaction.Locomotion
                     ActiveMode = LocomotionMode.TeleportDown;
                 }
             }
-        }
+        }*/
 
-        private void Disable()
+        /*private void Disable()
         {
             ActiveMode = LocomotionMode.None;
+        } */
         }
 
         #region Inject
 
-        public void InjectAllLocomotionGate(IHand hand, Transform shoulder,
-            IActiveState enableShape, IActiveState disableShape,
-            VirtualActiveState turningState, VirtualActiveState teleportState)
+        /*public void InjectAllLocomotionGate(IHand hand, Transform shoulder, VirtualActiveState teleportState)
         {
             InjectHand(hand);
             InjectShoulder(shoulder);
-            InjectEnableShape(enableShape);
-            InjectDisableShape(disableShape);
-            InjectTurningState(turningState);
+            //InjectEnableShape(enableShape);
+            //InjectDisableShape(disableShape);
+            //InjectTurningState(turningState);
             InjectTeleportState(teleportState);
         }
 
@@ -299,7 +299,7 @@ namespace Oculus.Interaction.Locomotion
             DisableShape = disableShape;
         }
 
-        public void InjectTurningState(VirtualActiveState turningState)
+        /*public void InjectTurningState(VirtualActiveState turningState)
         {
             _turningState = turningState;
         }
@@ -307,8 +307,9 @@ namespace Oculus.Interaction.Locomotion
         public void InjectTeleportState(VirtualActiveState teleportState)
         {
             _teleportState = teleportState;
-        }
+        }*/
 
         #endregion
+        
     }
 }

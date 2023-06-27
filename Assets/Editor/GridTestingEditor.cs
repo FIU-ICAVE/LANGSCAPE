@@ -15,7 +15,7 @@ public class GridTestingEditor : Editor {
 
         if (GridMesh.Instance != null) {
             if (GUILayout.Button("Run Command"))
-                WorldStateManager.Instance.BuildCommand(GridMesh.Instance.testCommands);
+                WorldStateManager.Instance.BuildCommandBatch(GridMesh.Instance.testCommands, "Test prompt, no AI");
         }
 
         EditorGUILayout.HelpBox("To see command syntax, please take a look at the respective command files located under [Assets > Scripts > AI > Commands] which should contain them in comments.", MessageType.Info);
