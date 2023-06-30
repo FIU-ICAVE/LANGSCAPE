@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public enum GridCellType { 
     Empty,
-    Block,
+    Solid,
     Glass,
     Outline,
     Filter,
