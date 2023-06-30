@@ -12,7 +12,7 @@ class RedoCommand : Command {
 
     public RedoCommand(int count) {
         this.count = count;
-        valid = CODE_VALID;
+        valid = LangscapeError.CMD_VALID.code;
     }
     public override void Execute() {
         WorldStateManager.Instance.RedoCommandBatch(count);
