@@ -369,6 +369,20 @@ public class GridMesh : MonoBehaviour
         return copy;
     }
 
+    public int[] GetCount(GridCellType[] type) {
+        int[] count = new int[type.Length];
+        for (int x = 0; x < size.x; x++) {
+            for (int y = 0; y < size.y; y++) {
+                for (int z = 0; z < size.z; z++) {
+                    for (int i = 0; i < type.Length; i++)
+                        if (data[x,y,z].type == type[i])
+                            count[i]++;
+                }
+            }
+        }
+        return count;
+    }
+
     public static string GetDimensions() => "" + Instance.size.x + "x" + Instance.size.y + "x" + Instance.size.z;
 
     // Draws the outline of the world in the inspector
