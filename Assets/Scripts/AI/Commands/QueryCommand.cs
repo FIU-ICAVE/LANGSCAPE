@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 class QueryCommand : Command {
     private GridCellType[] id;
@@ -14,11 +15,20 @@ class QueryCommand : Command {
         for (int i = 0; i < argv.Length; i++) {
             id[i] = (GridCellType)argv[i];
         }
-        valid = CODE_VALID;
+        valid = LangscapeError.CMD_VALID.code;
     }
     public override void Execute() {
-        GridMesh.Instance.GetCount(id);
+        int[] counts = GridMesh.Instance.GetCount(id);
         //TODO: speak this to the player
+        string speak = $"There are a total of {counts[0]} {id[0].ToString().ToLower()} blocks";
+        for (int i = 1; i < counts.Length - 1; i++) {
+            speak += $", {counts[i]} {id[i].ToString().ToLower()} blocks";
+        }
+        if (counts.Length > 1)
+            speak += $"{((counts.Length == 2) ? "" : ",")} and {counts[counts.Length - 1]} {id[counts.Length - 1].ToString().ToLower()} blocks";
+        speak += '.';
+        //Debug.Log(speak);
+        LangscapeError.Instance.ThrowUserError(new LangscapeError(0, speak));
     }
     public override void Undo() { }
     public override void Redo() { }

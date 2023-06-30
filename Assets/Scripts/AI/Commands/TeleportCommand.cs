@@ -11,7 +11,7 @@ public class TeleportCommand : Command {
 
     public TeleportCommand(int[] argv) {
         displacement = new Vector3Int(argv[0], argv[1], argv[2]);
-        valid = CODE_VALID;
+        valid = LangscapeError.CMD_VALID.code;
     }
     public override void Execute() {
         // Set player position

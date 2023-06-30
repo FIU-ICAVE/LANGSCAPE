@@ -128,6 +128,21 @@ public class CommandParser
                 continue;
             }
 
+            if (signature == QueryCommand.SIGNATURE) {
+                if (args.Length <= QueryCommand.REQUIRED_PARAMS)
+                    return LangscapeError.LLM_INVALID_RESPONSE.code;
+                int totalParamCount = args.Length - 1;
+                argv = new int[totalParamCount];
+                int i = 0;
+                if (!Command.TryBuildArgs(args, totalParamCount, ref argv, ref i))
+                    return LangscapeError.LLM_INVALID_RESPONSE.code;
+                QueryCommand cmd = new QueryCommand(argv);
+                if (cmd.valid != LangscapeError.CMD_VALID.code)
+                    return cmd.valid;
+                utilList.Add(cmd);
+                continue;
+            }
+
             return LangscapeError.LLM_INVALID_RESPONSE.code;
         }
         // Undo and Redo

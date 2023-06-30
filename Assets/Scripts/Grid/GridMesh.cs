@@ -70,13 +70,13 @@ public class GridMesh : MonoBehaviour
 
         // TODO: Move this into GridModel.cs
         models = new GridModel[(int)GridCellType.TYPE_MAX];
-        models[(int)GridCellType.Block] = GridModel.Load("block");
-        if (models[(int)GridCellType.Block] == null) {
+        models[(int)GridCellType.Solid] = GridModel.Load("block");
+        if (models[(int)GridCellType.Solid] == null) {
             Debug.LogError("Model Loader: Failed to load block model.");
         }
-        models[(int)GridCellType.Glass] = models[(int)GridCellType.Block];
-        models[(int)GridCellType.Outline] = models[(int)GridCellType.Block];
-        models[(int)GridCellType.Filter] = models[(int)GridCellType.Block];
+        models[(int)GridCellType.Glass] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Outline] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Filter] = models[(int)GridCellType.Solid];
 
         textureAtlas = new GridTextureAtlas(textureAtlasSize.x, textureAtlasSize.y);
 
@@ -99,7 +99,7 @@ public class GridMesh : MonoBehaviour
         colors.Clear();
         uvs.Clear();
 
-        GridCellData floorCell = new GridCellData(GridCellType.Block, GridTexture.Grid, Color.white);
+        GridCellData floorCell = new GridCellData(GridCellType.Solid, GridTexture.Grid, Color.white);
 
         int xMax = size.x - 1;
         int yMax = size.y - 1;
