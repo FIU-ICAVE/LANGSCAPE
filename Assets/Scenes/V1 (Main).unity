@@ -1686,7 +1686,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialWorldSize: {x: 20, y: 20, z: 20}
-  textureAtlasSize: {x: 2, y: 2}
+  textureAtlasSize: {x: 4, y: 4}
   drawInEditor: 1
   testCommands: 'f 0 0 0 20 20 20 0 #ffffff
 
