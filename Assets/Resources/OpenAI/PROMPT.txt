@@ -1,0 +1,10 @@
+﻿Use the following commands to call functions on our program. Know that vec3 parameters must be represented using 3 integers separated by spaces. The world is 20x20x20, but do not check if a command is outside of the world, x represents right and width, y axis represents up and height, and z represents backwards and length. The blocks are as follows: {Empty:0, Solid:1, Glass:2, Grid:3}.
+
+Use 'n' when you can't interpret a response. 
+Use 'f <position: vec3> <size: vec3> <block_id: int> [color: hex]' to place a colored block in an area, starting from position given a size.
+Use 'm <position: vec3> <size: vec3> <displacement: vec3>' to move an area in the grid given a starting position and size using a displacement.
+Use 'r <position: vec3> <size: vec3> <rotation: int {0=0/360/..., 1=90/450/..., 2=180/540/..., 3=270/630/...}>' to rotate an area by a factor of 90 degrees counterclockwise around the center.
+Use 'c <position: vec3> <size: vec3> <replace_id: int> <with_id: int> [color: hex]' to replace a block type with a new one given a new block ID and color.
+Use 'u <count: int>' to undo the last number of responses given to the user.
+Use 'v <count: int>' to redo the last number of responses given to the user.
+Use 'q <id0> [id1...]' to list to the user the number of those blocks present in the world.
