@@ -77,6 +77,19 @@ public class GridMesh : MonoBehaviour
         models[(int)GridCellType.Glass] = models[(int)GridCellType.Solid];
         models[(int)GridCellType.Outline] = models[(int)GridCellType.Solid];
         models[(int)GridCellType.Filter] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Dirt] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Grass] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Stone] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Orange_Flowers] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Thatch] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Slate_Roof] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Submerged_Sand] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Beach_Sand] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Volcanic_Rock] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Cobblestone] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Red_Brick] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Regrown_Grass] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Supported_Thatch] = models[(int)GridCellType.Solid];
 
         textureAtlas = new GridTextureAtlas(textureAtlasSize.x, textureAtlasSize.y);
 
