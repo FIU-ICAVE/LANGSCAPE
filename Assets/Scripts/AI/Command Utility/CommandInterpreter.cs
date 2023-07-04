@@ -25,7 +25,6 @@ using Oculus.Interaction;
 
 public class CommandInterpreter : MonoBehaviour {
     // Display
-    [SerializeField] private CubePlacer cubePlacer;
     [SerializeField] private TMP_Text inputBox;
     [SerializeField] private TMP_Text outputBox;
     [SerializeField] private UnityEngine.UI.Image symbol;
@@ -142,7 +141,7 @@ public class CommandInterpreter : MonoBehaviour {
         // Complete the instruction
         try {
             var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest() {
-                Model = "gpt-3.5-turbo",
+                Model = "gpt-3.5-turbo-16k",
                 Messages = messages,
                 Temperature = 0f,
                 MaxTokens = 256,

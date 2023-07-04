@@ -97,12 +97,12 @@ public class LangscapeError : MonoBehaviour
         //developer utility errors
         if (code == CMD_VALID)
         {
-            Debug.LogWarning(CMD_VALID.message);
+            //Debug.LogWarning(CMD_VALID.message);
             return;
         }
         if (code == CMD_UNINITIALIZED)
         {
-            Debug.LogWarning(CMD_UNINITIALIZED.message);
+            //Debug.LogWarning(CMD_UNINITIALIZED.message);
             return;
         }
 
