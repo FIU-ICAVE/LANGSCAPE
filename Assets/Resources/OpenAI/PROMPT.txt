@@ -553,3 +553,119 @@ f 0 2 2 1 6 6 2
 f 9 2 2 1 6 6 2
 f 2 4 9 6 4 1 2
 f 7 0 0 2 6 1 0
+
+input: Create a house with 3 doors.
+output: f 0 0 0 10 7 1 1 #ff0000
+f 0 0 10 10 7 1 1 #ff0000
+f 0 0 0 1 7 10 1 #ff0000
+f 9 0 0 1 7 10 1 #ff0000
+f 0 6 0 10 1 10 1 #ff0000
+f 4 0 0 2 4 1 0
+f 0 0 4 1 4 2 0
+f 9 0 4 1 4 2 0
+
+input: Build a house starting at position 0 0 5 with two windows on the sides and a door at the front.
+output: f 0 0 5 10 14 1 1 #ff0000
+f 0 0 15 10 14 1 1 #ff0000
+f 0 0 5 1 14 10 1 #ff0000
+f 9 0 5 1 14 10 1 #ff0000
+f 0 6 5 10 1 10 1 #ff0000
+f 0 13 5 10 1 10 1 #ff0000
+f 4 0 5 2 5 1 0
+f 0 2 10 1 10 4 2
+f 9 2 10 1 10 4 2
+
+input: Build a gray house with a black roof, one door and two black windows.
+output: f 0 0 0 10 7 1 1 #808080
+f 0 0 10 10 7 1 1 #808080
+f 0 0 0 1 7 10 1 #808080
+f 9 0 0 1 7 10 1 #808080
+f 0 6 0 10 1 10 1 #000000
+f 4 0 0 2 4 1 0
+f 2 2 0 1 2 1 2 #000000
+f 7 2 0 1 2 1 2 #000000
+
+input: Build a two houses one white and one blue one next to the other.
+output: f 0 0 0 10 7 1 1 #ffffff
+f 0 0 10 10 7 1 1 #ffffff
+f 0 0 0 1 7 10 1 #ffffff
+f 9 0 0 1 7 10 1 #ffffff
+f 0 6 0 10 1 10 1 #ffffff
+f 4 0 0 2 4 1 0
+f 10 0 0 10 7 1 1 #0000ff
+f 10 0 10 10 7 1 1 #0000ff
+f 10 0 0 1 7 10 1 #0000ff
+f 19 0 0 1 7 10 1 #0000ff
+f 10 6 0 10 1 10 1 #0000ff
+f 14 0 0 2 4 1 0
+
+input: Create a small red house with a door and two windows.
+output: f 0 0 0 6 5 1 1 #ff0000
+f 0 0 5 6 5 1 1 #ff0000
+f 0 0 0 1 5 5 1 #ff0000
+f 5 0 0 1 5 5 1 #ff0000
+f 0 4 0 5 1 5 1 #ff0000
+f 3 0 0 2 3 1 0
+f 1 2 0 1 1 1 2
+f 5 2 1 1 2 2 2
+
+input: Create a tall yellow house with three floors, a door, and four windows.
+output: f 0 0 0 8 20 1 1 #ffff00
+f 0 0 8 8 20 1 1 #ffff00
+f 0 0 0 1 20 8 1 #ffff00
+f 7 0 0 1 20 8 1 #ffff00
+f 0 19 0 8 1 8 1 #ffff00
+f 0 14 0 8 1 8 1 #ffff00
+f 0 7 0 8 1 8 1 #ffff00
+f 2 0 0 4 6 1 0
+f 1 11 0 1 2 1 2
+f 6 11 0 1 2 1 2
+f 1 16 0 1 2 1 2
+f 6 16 0 1 2 1 2
+
+input: Create a large blue house with a glass roof, one door, and six windows.
+output: f 0 0 0 14 10 1 1 #0000ff
+f 0 0 10 14 10 1 1 #0000ff
+f 0 0 0 1 10 10 1 #0000ff
+f 13 0 0 1 10 10 1 #0000ff
+f 0 9 0 14 1 10 1 #0000ff
+f 6 0 0 4 6 1 0
+f 2 7 0 10 2 1 2
+f 2 4 10 10 2 1 2
+f 2 7 10 10 2 1 2
+f 13 2 1 1 4 9 2
+f 0 2 1 1 4 9 2
+f 2 2 0 1 4 1 2
+
+input: Create a small green house at the farther corner with a door and two windows.
+output: f 14 0 14 6 5 1 1 #00ff00
+f 14 0 19 6 5 1 1 #00ff00
+f 14 0 14 1 5 6 1 #00ff00
+f 19 0 14 1 5 6 1 #00ff00
+f 14 5 14 6 1 5 1 #00ff00
+f 16 0 14 2 3 1 0
+f 18 4 14 1 1 1 2
+f 15 4 14 1 1 1 2
+
+input: Create a tall orange house with two floors, two doors, and one window.
+output: f 0 0 0 8 20 1 1 #ff8000
+f 0 0 8 8 20 1 1 #ff8000
+f 0 0 0 1 20 8 1 #ff8000
+f 7 0 0 1 20 8 1 #ff8000
+f 0 19 0 8 1 8 1 #ff8000
+f 0 10 0 8 1 8 1 #ff8000
+f 2 0 0 2 4 1 0
+f 5 0 0 2 4 1 0
+f 1 6 0 6 2 1 2
+
+input: Create a medium-sized purple house with a white roof, one door, and four windows.
+output: f 0 0 0 10 10 1 1 #800080
+f 0 0 10 10 10 1 1 #800080
+f 0 0 0 1 10 10 1 #800080
+f 9 0 0 1 10 10 1 #800080
+f 0 9 0 10 1 11 1 #ffffff
+f 2 0 0 2 4 1 0
+f 2 5 10 6 2 1 2
+f 2 8 10 6 1 1 2
+f 1 5 0 2 2 1 2
+f 5 5 0 2 2 1 2
