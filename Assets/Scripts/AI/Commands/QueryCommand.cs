@@ -28,7 +28,7 @@ class QueryCommand : Command {
             speak += $"{((counts.Length == 2) ? "" : ",")} and {counts[counts.Length - 1]} {id[counts.Length - 1].ToString().ToLower()} blocks";
         speak += '.';
         //Debug.Log(speak);
-        LangscapeError.Instance.ThrowUserError(new LangscapeError(0, speak));
+        ErrorInterface.Instance.ThrowUserError(new LangscapeError(0, speak));
     }
     public override void Undo() { }
     public override void Redo() { }

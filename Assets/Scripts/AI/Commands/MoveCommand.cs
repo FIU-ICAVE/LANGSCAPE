@@ -23,12 +23,12 @@ class MoveCommand : Command {
 
         if(IsInvalidPosition(position, size))
         {
-            LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
+            ErrorInterface.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
             return;
         }
         if(IsInvalidDestination(position + displacement, size))
         {
-            LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_DESTINATION_OUT_OF_WORLD);
+            ErrorInterface.Instance.ThrowUserError(LangscapeError.CMD_DESTINATION_OUT_OF_WORLD);
             return;
         }
     }

@@ -226,5 +226,10 @@ namespace Meta.WitAi.Data
                 v.VoiceEvents.OnStoppedListening?.Invoke();
             }
         }
+
+        private void OnApplicationQuit()
+        {
+            Destroy(gameObject);
+        }
     }
 }

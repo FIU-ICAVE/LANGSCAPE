@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.5881241, g: 0.59516996, b: 0.59948856, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 72142381ac12178428d7804c88f7c131, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 72142381ac12178428d7804c88f7c131,
+    type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -167,9 +168,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2d3ff93ff48bd40ab5bca3cf4e6d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wit: {fileID: 737401905}
+  Voice: {fileID: 737401905}
+  ValidateEarly: 0
   intent: wit$pause_timer
-  confidence: 0.6
+  confidenceThreshold: 0.6
   onIntentTriggered:
     m_PersistentCalls:
       m_Calls:
@@ -316,9 +318,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2d3ff93ff48bd40ab5bca3cf4e6d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wit: {fileID: 737401905}
+  Voice: {fileID: 737401905}
+  ValidateEarly: 0
   intent: wit$create_timer
-  confidence: 0.9
+  confidenceThreshold: 0.9
   onIntentTriggered:
     m_PersistentCalls:
       m_Calls:
@@ -380,7 +383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 591c3d6f017c11b4faa41506d75635b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wit: {fileID: 737401905}
+  Voice: {fileID: 737401905}
+  ValidateEarly: 0
   intent: wit$subtract_time_timer
   confidenceThreshold: 0.6
   valueMatchers:
@@ -391,6 +395,7 @@ MonoBehaviour:
     comparisonMethod: 0
     matchValue: 
     floatingPointComparisonTolerance: 0.00009999999747378752
+    allowConfidenceOverlap: 0
     confidenceRanges: []
   - path: entities.wit$duration:duration[0].unit
     witValueReference: {fileID: 0}
@@ -399,6 +404,7 @@ MonoBehaviour:
     comparisonMethod: 0
     matchValue: 
     floatingPointComparisonTolerance: 0.00009999999747378752
+    allowConfidenceOverlap: 0
     confidenceRanges: []
   formattedValueEvents: []
   onMultiValueEvent:
@@ -416,6 +422,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onDidNotMatch:
+    m_PersistentCalls:
+      m_Calls: []
+  onOutOfDomain:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &479022271
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,9 +697,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2d3ff93ff48bd40ab5bca3cf4e6d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wit: {fileID: 737401905}
+  Voice: {fileID: 737401905}
+  ValidateEarly: 0
   intent: wit$resume_timer
-  confidence: 0.6
+  confidenceThreshold: 0.6
   onIntentTriggered:
     m_PersistentCalls:
       m_Calls:
@@ -749,7 +762,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 591c3d6f017c11b4faa41506d75635b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wit: {fileID: 737401905}
+  Voice: {fileID: 737401905}
+  ValidateEarly: 0
   intent: wit$create_timer
   confidenceThreshold: 0.6
   valueMatchers:
@@ -760,6 +774,7 @@ MonoBehaviour:
     comparisonMethod: 0
     matchValue: 
     floatingPointComparisonTolerance: 0.00009999999747378752
+    allowConfidenceOverlap: 0
     confidenceRanges: []
   - path: entities.wit$duration:duration[0].unit
     witValueReference: {fileID: 0}
@@ -768,6 +783,7 @@ MonoBehaviour:
     comparisonMethod: 0
     matchValue: 
     floatingPointComparisonTolerance: 0.00009999999747378752
+    allowConfidenceOverlap: 0
     confidenceRanges: []
   formattedValueEvents: []
   onMultiValueEvent:
@@ -785,6 +801,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onDidNotMatch:
+    m_PersistentCalls:
+      m_Calls: []
+  onOutOfDomain:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &737401904
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,7 +838,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   events:
     _overriddenCallbacks: []
-    OnResponse:
+    _onRequestOptionSetup:
+      m_PersistentCalls:
+        m_Calls: []
+    _onRequestInitialized:
+      m_PersistentCalls:
+        m_Calls: []
+    _onRequestCreated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onSend:
+      m_PersistentCalls:
+        m_Calls: []
+    _onMinimumWakeThresholdHit:
+      m_PersistentCalls:
+        m_Calls: []
+    _onMicDataSent:
+      m_PersistentCalls:
+        m_Calls: []
+    _onStoppedListeningDueToDeactivation:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1764557023}
@@ -831,13 +871,25 @@ MonoBehaviour:
             m_StringArgument: Activate
             m_BoolArgument: 0
           m_CallState: 2
-    OnPartialResponse:
+    _onStoppedListeningDueToInactivity:
       m_PersistentCalls:
         m_Calls: []
-    OnValidatePartialResponse:
+    _onStoppedListeningDueToTimeout:
       m_PersistentCalls:
         m_Calls: []
-    OnError:
+    _onAborting:
+      m_PersistentCalls:
+        m_Calls: []
+    _onAborted:
+      m_PersistentCalls:
+        m_Calls: []
+    _onCanceled:
+      m_PersistentCalls:
+        m_Calls: []
+    _onPartialResponse:
+      m_PersistentCalls:
+        m_Calls: []
+    _onResponse:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1764557023}
@@ -852,25 +904,28 @@ MonoBehaviour:
             m_StringArgument: Activate
             m_BoolArgument: 0
           m_CallState: 2
-    OnAborting:
+    _onError:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1764557023}
+          m_TargetAssemblyTypeName: 
+          m_MethodName: set_text
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Activate
+            m_BoolArgument: 0
+          m_CallState: 2
+    _onRequestCompleted:
       m_PersistentCalls:
         m_Calls: []
-    OnAborted:
+    _onComplete:
       m_PersistentCalls:
         m_Calls: []
-    OnRequestCompleted:
-      m_PersistentCalls:
-        m_Calls: []
-    OnMicLevelChanged:
-      m_PersistentCalls:
-        m_Calls: []
-    OnRequestOptionSetup:
-      m_PersistentCalls:
-        m_Calls: []
-    OnRequestCreated:
-      m_PersistentCalls:
-        m_Calls: []
-    OnStartListening:
+    _onStartListening:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1764557023}
@@ -885,46 +940,25 @@ MonoBehaviour:
             m_StringArgument: Deactivate
             m_BoolArgument: 0
           m_CallState: 2
-    OnStoppedListening:
+    _onStoppedListening:
       m_PersistentCalls:
         m_Calls: []
-    OnStoppedListeningDueToInactivity:
+    _onMicLevelChanged:
       m_PersistentCalls:
         m_Calls: []
-    OnStoppedListeningDueToTimeout:
+    _onPartialTranscription:
       m_PersistentCalls:
         m_Calls: []
-    OnStoppedListeningDueToDeactivation:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1764557023}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: set_text
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Activate
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnMicDataSent:
+    _onFullTranscription:
       m_PersistentCalls:
         m_Calls: []
-    OnMinimumWakeThresholdHit:
+    _onByteDataReady:
       m_PersistentCalls:
         m_Calls: []
-    onPartialTranscription:
+    _onByteDataSent:
       m_PersistentCalls:
         m_Calls: []
-    onFullTranscription:
-      m_PersistentCalls:
-        m_Calls: []
-    OnByteDataReady:
-      m_PersistentCalls:
-        m_Calls: []
-    OnByteDataSent:
+    _onValidatePartialResponse:
       m_PersistentCalls:
         m_Calls: []
   witRuntimeConfiguration:
@@ -967,51 +1001,63 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1934948696}
     m_Modifications:
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.19318089
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.23133183
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: 10.433537
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8853415545987821519, guid: 0381539164984dc4ca193f001869c526, type: 3}
+    - target: {fileID: 8853415545987821519, guid: 0381539164984dc4ca193f001869c526,
+        type: 3}
       propertyPath: m_Name
       value: Environment
       objectReference: {fileID: 0}
@@ -1019,7 +1065,8 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 0381539164984dc4ca193f001869c526, type: 3}
 --- !u!4 &842905515 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8853415545987821512, guid: 0381539164984dc4ca193f001869c526,
+    type: 3}
   m_PrefabInstance: {fileID: 842905514}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &885437325
@@ -1250,7 +1297,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 591c3d6f017c11b4faa41506d75635b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wit: {fileID: 737401905}
+  Voice: {fileID: 737401905}
+  ValidateEarly: 0
   intent: wit$add_time_timer
   confidenceThreshold: 0.6
   valueMatchers:
@@ -1261,6 +1309,7 @@ MonoBehaviour:
     comparisonMethod: 0
     matchValue: 
     floatingPointComparisonTolerance: 0.00009999999747378752
+    allowConfidenceOverlap: 0
     confidenceRanges: []
   - path: entities.wit$duration:duration[0].unit
     witValueReference: {fileID: 0}
@@ -1269,6 +1318,7 @@ MonoBehaviour:
     comparisonMethod: 0
     matchValue: 
     floatingPointComparisonTolerance: 0.00009999999747378752
+    allowConfidenceOverlap: 0
     confidenceRanges: []
   formattedValueEvents: []
   onMultiValueEvent:
@@ -1286,6 +1336,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onDidNotMatch:
+    m_PersistentCalls:
+      m_Calls: []
+  onOutOfDomain:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1036777633
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,6 +1353,7 @@ GameObject:
   - component: {fileID: 1036777636}
   - component: {fileID: 1036777635}
   - component: {fileID: 1036777634}
+  - component: {fileID: 1036777637}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1370,6 +1427,39 @@ Transform:
   m_Father: {fileID: 1934948696}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0.3, y: 0, z: 0}
+--- !u!114 &1036777637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036777633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &1040784993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1703,9 +1793,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2d3ff93ff48bd40ab5bca3cf4e6d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wit: {fileID: 737401905}
+  Voice: {fileID: 737401905}
+  ValidateEarly: 0
   intent: wit$delete_timer
-  confidence: 0.6
+  confidenceThreshold: 0.6
   onIntentTriggered:
     m_PersistentCalls:
       m_Calls:
@@ -1857,6 +1948,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1520245540}
   m_CullTransparentMesh: 0
+--- !u!1 &1532666797 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8853415547494044118, guid: 0381539164984dc4ca193f001869c526,
+    type: 3}
+  m_PrefabInstance: {fileID: 842905514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1532666799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532666797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
 --- !u!1 &1542268272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1949,6 +2066,32 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &1672957412 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1110266669, guid: 0381539164984dc4ca193f001869c526,
+    type: 3}
+  m_PrefabInstance: {fileID: 842905514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1672957414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672957412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
 --- !u!1 &1744916049
 GameObject:
   m_ObjectHideFlags: 0
@@ -2267,6 +2410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2067783870}
   - component: {fileID: 2067783871}
+  - component: {fileID: 2067783872}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -2351,3 +2495,23 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &2067783872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2067783869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}

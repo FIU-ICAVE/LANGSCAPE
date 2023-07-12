@@ -21,7 +21,7 @@ class FillCommand : Command {
 
         if (IsInvalidPosition(position, size))
         {
-            LangscapeError.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
+            ErrorInterface.Instance.ThrowUserError(LangscapeError.CMD_POSITION_OUT_OF_WORLD);
             return;
         }
     }

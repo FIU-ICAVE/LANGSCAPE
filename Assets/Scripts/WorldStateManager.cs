@@ -8,6 +8,7 @@
     NOTES:
         - consider making a GameManager to Init properties in this class
     TO DO:
+        - get rid of TotalWorldObjects getter method and just use property
         - (maybe) implement some sort of threshold for checking if new pos is already taken
         - allow AI to query WorldState properties
         - research how to save world state along with properties in this class
@@ -41,7 +42,6 @@ public class WorldStateManager : MonoBehaviour
             return _instance;
         }
     }
-
 
     private void Awake()
     {
@@ -95,8 +95,7 @@ public class WorldStateManager : MonoBehaviour
             ExecutePush(batch);
             GridMesh.Instance.RegenerateMesh();
         }
-
-        LangscapeError.Instance.ThrowUserError(parseCode);
+        ErrorInterface.Instance.ThrowUserError(parseCode);
     }
 
     /*
