@@ -92,6 +92,7 @@ namespace Oculus.Interaction.Locomotion
                 LocomotionEvent locomotionEvent = _deferredEvent.Dequeue();
                 Pose originalPose = _playerOrigin.GetPose();
                 MovePlayer(locomotionEvent.Pose.position, locomotionEvent.Translation);
+                Debug.Log(locomotionEvent.Pose.position);
                 RotatePlayer(locomotionEvent.Pose.rotation, locomotionEvent.Rotation);
                 Pose delta = PoseUtils.Delta(originalPose, _playerOrigin.GetPose());
                 _whenLocomotionEventHandled.Invoke(locomotionEvent, delta);
