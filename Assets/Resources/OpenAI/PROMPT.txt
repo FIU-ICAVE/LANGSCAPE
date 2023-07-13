@@ -873,7 +873,8 @@ f 3 9 0 2 2 1 2
 f 15 9 0 2 2 1 2
 
 input: Create a house with three windows, and a chimney at position 10 0 5.
-output: f 10 0 5 10 10 1 1
+output: 
+f 10 0 5 10 10 1 1
 f 10 0 14 10 10 1 1
 f 10 0 5 1 10 10 1
 f 19 0 5 1 10 10 1
@@ -889,3 +890,127 @@ f 15 3 11 4 1 3 7
 f 15 0 13 4 3 1 7
 f 16 4 13 2 7 1 7
 f 16 0 11 2 2 1 0
+
+input: Create a house with a brown roof, two doors, four windows and a backyard with grass at position 0 0 0.
+output: f 0 0 0 10 7 1 1
+f 0 0 10 10 7 1 1
+f 0 0 0 1 7 10 1
+f 9 0 0 1 7 10 1
+f 0 6 0 10 1 11 1 #964B00
+f 4 0 0 2 4 1 0
+f 0 0 3 1 4 2 0
+f 1 2 0 2 2 1 2
+f 7 2 0 2 2 1 2
+f 0 2 8 1 2 2 2
+f 9 2 7 1 2 2 2
+f 0 0 11 1 3 7 1
+f 9 0 11 1 3 7 1
+f 0 0 18 10 3 1 1
+f 1 0 11 8 1 7 6
+
+input: Build a beachfront house with a large glass window, a balcony with a door, and a backyard at position 5 0 0.
+output: 
+f 5 0 0 10 10 1 1
+f 5 0 9 10 10 1 1
+f 5 0 0 1 10 9 1
+f 14 0 0 1 10 9 1
+f 5 9 0 10 1 10 1
+f 7 0 0 2 5 1 0
+f 10 2 0 4 3 1 2
+f 15 6 2 3 3 6 1
+f 15 7 3 2 2 4 0
+f 14 6 3 1 3 4 0
+f 5 0 10 1 3 8 1
+f 14 0 10 1 3 8 1
+f 5 0 17 10 3 1 1
+f 6 0 10 8 1 7 6 	
+
+input: Create a house with a white roof, three doors, six windows and a garden at position 0 0 2.
+output: f 0 0 10 10 7 1 1 #ffffff
+f 0 0 19 10 7 1 1 #ffffff
+f 0 0 10 1 7 10 1 #ffffff
+f 9 0 10 1 7 10 1 #ffffff
+f 0 6 10 10 1 10 1 #ffffff
+f 4 0 10 2 4 1 0
+f 1 2 10 2 2 1 2
+f 7 2 10 2 2 1 2
+f 0 0 14 1 4 2 0
+f 9 0 14 1 4 2 0
+f 1 2 19 2 2 1 2
+f 4 2 19 2 2 1 2
+f 7 2 19 2 2 1 2
+f 0 2 17 1 2 2 2
+f 0 0 2 1 3 8 1
+f 9 0 2 1 3 8 1
+f 0 0 2 10 3 1 1
+f 4 0 2 2 3 1 0
+f 1 0 3 8 1 7 6
+
+input: Build a house with a yellow roof, one door, three windows and a small garden at position 12 0 1.
+output: f 12 0 5 8 7 1 1
+f 12 0 14 8 7 1 1
+f 12 0 5 1 7 10 1 
+f 19 0 5 1 7 10 1
+f 12 6 5 8 1 10 1 #ffff00
+f 14 0 5 2 4 1 0
+f 17 2 5 2 2 1 2
+f 12 2 8 1 2 2 2
+f 19 2 8 1 2 2 2
+f 12 0 1 1 3 4 1
+f 19 0 1 1 3 4 1
+f 12 0 1 8 3 1 1
+f 14 0 1 2 3 1 0
+f 13 0 2 6 1 3 6
+
+input: Create a house with a blue roof, two doors, and four windows at position 8 0 10.
+output: f 8 0 10 8 7 1 1
+f 8 0 19 8 7 1 1
+f 8 0 10 1 7 10 1
+f 15 0 10 1 7 10 1
+f 8 6 10 8 1 10 1 #0000ff
+f 10 0 10 2 4 1 0
+f 8 0 14 1 4 2 0
+f 9 2 10 1 2 1 2
+f 13 2 10 2 2 1 2
+f 8 2 11 1 2 2 2
+f 8 2 17 1 2 2 2
+	 
+input: Build a house with a red roof, two windows, and a backyard with a swimming pool and a door at position 0 0 0.
+output: f 0 0 0 10 7 1 1
+f 0 0 10 10 7 1 1
+f 0 0 0 1 7 10 1
+f 9 0 0 1 7 10 1
+f 0 6 0 10 1 11 1 #ff0000
+f 4 0 0 2 4 1 0
+f 6 0 10 2 4 1 0
+f 7 2 0 2 2 1 2
+f 0 2 8 1 2 2 2
+f 0 0 11 1 3 9 1
+f 9 0 11 1 3 9 1
+f 0 0 19 10 3 1 1
+f 1 0 11 8 1 8 6
+f 0 0 12 3 3 7 1
+f 1 1 13 2 2 6 1 #0000ff
+
+input: Build a house with a fñat roof, a chimney, two windows, two doors, and a front garden at position 3 0 2.
+output: f 3 0 5 10 7 1 1
+f 3 0 14 10 7 1 1
+f 3 0 5 1 7 10 1
+f 12 0 5 1 7 10 1
+f 3 6 5 10 1 10 1
+f 5 0 5 2 4 1 0
+f 3 0 9 1 4 2 0
+f 8 2 5 2 2 1 2
+f 3 2 12 1 2 2 2
+f 3 0 2 1 2 3 1
+f 12 0 2 1 2 3 1
+f 3 0 2 10 2 1 1
+f 5 0 2 2 2 1 0
+f 4 0 3 8 1 2 6
+f 5 0 11 1 3 3 1 #000000
+f 5 0 11 4 3 1 1 #000000
+f 8 0 11 1 3 3 1 #000000
+f 5 3 11 4 1 3 1 #000000
+f 5 0 13 4 3 1 1 #000000
+f 6 4 13 2 4 1 1 #000000
+f 6 0 11 2 2 1 0
