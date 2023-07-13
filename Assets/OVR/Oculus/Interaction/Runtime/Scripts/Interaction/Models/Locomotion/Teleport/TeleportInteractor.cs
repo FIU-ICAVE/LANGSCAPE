@@ -94,6 +94,7 @@ namespace Oculus.Interaction.Locomotion
 
         private TeleportHit _arcEnd;
         public TeleportHit ArcEnd => _arcEnd;
+        public TeleportInteractable teleObject;
 
         public Pose TeleportTarget
         {
@@ -158,6 +159,8 @@ namespace Oculus.Interaction.Locomotion
 
         protected override void InteractableSelected(TeleportInteractable interactable)
         {
+            Debug.Log(interactable.name);
+            teleObject = interactable;
             base.InteractableSelected(interactable);
             if (interactable == null
                 || !interactable.AllowTeleport)
@@ -187,6 +190,7 @@ namespace Oculus.Interaction.Locomotion
             TeleportInteractable bestCandidate = null;
             TeleportHit bestHit = new TeleportHit(null, arcEndPosition, Vector3.up);
             var interactables = TeleportInteractable.Registry.List(this);
+            
 
             Pose headPose = Pose.identity;
             if (Hmd != null)
@@ -196,6 +200,7 @@ namespace Oculus.Interaction.Locomotion
 
             foreach (TeleportInteractable interactable in interactables)
             {
+                
                 if (interactable.AllowTeleport)
                 {
                     continue;
@@ -217,6 +222,7 @@ namespace Oculus.Interaction.Locomotion
             }
 
             _arcEnd = bestHit;
+
             return bestCandidate;
 
             void CheckViewToOriginBlockers(Vector3 viewPosition, TeleportInteractable candidate)
@@ -239,6 +245,8 @@ namespace Oculus.Interaction.Locomotion
             void CheckCandidate(TeleportInteractable candidate)
             {
                 Vector3 prevPoint = origin.position;
+                
+                
                 float accumulatedDistance = 0;
                 for (int i = 1; i < TeleportArc.PointsCount; i++)
                 {
@@ -273,12 +281,15 @@ namespace Oculus.Interaction.Locomotion
                             bestScore = score;
                             bestHit = hit;
                             bestCandidate = candidate;
+                            
+                            
                             break;
                         }
                     }
                     accumulatedDistance += Vector3.Distance(prevPoint, point);
                     prevPoint = point;
                 }
+            
             }
         }
 
