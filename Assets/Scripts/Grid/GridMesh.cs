@@ -102,6 +102,7 @@ public class GridMesh : MonoBehaviour
         worldMesh = new Mesh();
         GetComponent<MeshFilter>().mesh = worldMesh;
 
+
         RegenerateMesh();
     }
 
