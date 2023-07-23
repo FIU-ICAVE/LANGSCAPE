@@ -8,7 +8,7 @@ Use 'r <position: vec3> <size: vec3> <rotation: int {0=0/360/..., 1=90/450/..., 
 Use 'c <position: vec3> <size: vec3> <replace_id: int> <with_id: int> [color: hex]' to replace a block type with a new one given a new block ID and color.
 Use 'u <count: int>' to undo the last number of responses given to the user.
 Use 'v <count: int>' to redo the last number of responses given to the user.
-Use 'q <id0> [id1...]' to list to the user the number of those blocks present in the world.
+Use 'q <id0> [id: int]' to list to the user the number of those block ids in the world, and the user can also ask for the following { floor: 1000, wall: 1001, window: 1002 }. 
 Use 't <position: vec3>' to teleport the position of the player to the given position.
 
 Architectural terms:
@@ -919,36 +919,99 @@ f 9 0 3 2 5 1 0
 f 6 4 3 2 3 1 2
 f 5 4 4 1 3 4 2
 
-input: Transport me to coordinates 0 5 0.
-output: t 0 5 0
-
-input: Move me to position 7 15 7.
-output: t 7 15 7
-
-input: Teleport me to the location 19 19 0.
-output: t 19 19 0
-
-input: Send me to the spot at 12 8 6.
-output: t 12 8 6
-
-input: Warp me to the point 5 0 15.
-output: t 5 0 15
-
-input: Relocate me to the place 10 10 10.
-output: t 10 10 10
-
-input: Take me to the coordinates 3 3 3.
-output: t 3 3 3
-
-input: Move my position to 17 0 10.
-output: t 17 0 10
-
-input: Shift me to position 1 1 1.
-output: t 1 1 1
-
-input: Teleport me to point 0 19 0.
-output: t 0 19 0
-
 input: Create a wall that is 4 block width and 3 height and placed me on top of it.
 output: f 0 0 0 4 3 1 1
 t 0 3 0 
+
+input: Teleport me to a position 5 units to the left, 4 units up, and 3 units forward from the current position.
+output: t -5 4 3
+
+input: Teleport me to the center of the world (10, 10, 10).
+output: t 10 10 10
+
+input: Shift my position 3 units to the left.
+output: m -3 0 0
+
+input: Relocate me 5 units forward and 2 units downward.
+output: m 0 -2 5
+
+input: Move me 4 units backward and 3 units up.
+output: m 0 3 -4
+
+input: Shift my position 6 units to the right and 1 unit downward.
+output: m 6 -1 0
+
+input: Move me 2 units upward and 7 units forward.
+output: m 0 2 7
+
+input: Shift me 4 units backward and 2 units to the right.
+output: m 2 0 -4
+
+input: Relocate me 6 units forward and 3 units upward.
+output: m 0 3 6
+
+input: Move me 5 units to the left and 2 units downward.
+output: m -5 -2 0
+
+input: Shift my position 3 units to the right and 4 units upward.
+output: m 3 4 0
+
+input: Move me 2 units downward and 5 units backward.
+output: m 0 -2 -5
+
+input: Count how many dirt blocks exist in the world.
+output: q 5
+
+input: Count how many volcanic rocks are in the world.
+output: q 13
+
+input: Count how many walls exist in the world.
+output: q 1001
+
+input: How many cobblestone blocks are there in the world?
+output: q 14
+
+input: List the number of supported thatch blocks in the world.
+output: q 17
+
+input: Tell me the quantity of red bricks present in the world.
+output: q 15
+
+input: Inform me about the total count of submerged sand blocks.
+output: q 11
+
+input: How many grid blocks are in the world?
+output: q 3
+
+input: How many floors have I placed
+output: q 1000
+
+input: Tell me the total count of glass blocks in the world.
+output: q 2
+
+input: List the quantity of grass blocks in the world.
+output: q 6
+
+input: Count how many slate roofs are there in the world.
+output: q 10
+
+input: Inform me about the number of empty blocks in the world.
+output: q 0
+
+input: How many orange flowers exist in the world?
+output: q 8
+
+input: List the total number of beach sand blocks.
+output: q 12
+
+input: Tell me the count of solid blocks in the world.
+output: q 1
+
+input: How many windows exist in the world?
+output: q 1002
+
+input: Tell me the count of floors in the world.
+output: q 1000
+
+input: Tell me the quantity of walls present in the world.
+output: q 1001
