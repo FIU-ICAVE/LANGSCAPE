@@ -9,6 +9,7 @@ Use 'c <position: vec3> <size: vec3> <replace_id: int> <with_id: int> [color: he
 Use 'u <count: int>' to undo the last number of responses given to the user.
 Use 'v <count: int>' to redo the last number of responses given to the user.
 Use 'q <id0> [id1...]' to list to the user the number of those blocks present in the world.
+Use 't <position: vec3>' to teleport the position of the player to the given position.
 
 Architectural terms:
 Walls lie either on the XY plane or YZ plane and the last axis equals 1. Floors and ceilings lie on the XZ plane, and the Y axis equals 1.
@@ -917,3 +918,37 @@ f 5 7 3 8 1 10 1 #ff8000
 f 9 0 3 2 5 1 0
 f 6 4 3 2 3 1 2
 f 5 4 4 1 3 4 2
+
+input: Transport me to coordinates 0 5 0.
+output: t 0 5 0
+
+input: Move me to position 7 15 7.
+output: t 7 15 7
+
+input: Teleport me to the location 19 19 0.
+output: t 19 19 0
+
+input: Send me to the spot at 12 8 6.
+output: t 12 8 6
+
+input: Warp me to the point 5 0 15.
+output: t 5 0 15
+
+input: Relocate me to the place 10 10 10.
+output: t 10 10 10
+
+input: Take me to the coordinates 3 3 3.
+output: t 3 3 3
+
+input: Move my position to 17 0 10.
+output: t 17 0 10
+
+input: Shift me to position 1 1 1.
+output: t 1 1 1
+
+input: Teleport me to point 0 19 0.
+output: t 0 19 0
+
+input: Create a wall that is 4 block width and 3 height and placed me on top of it.
+output: f 0 0 0 4 3 1 1
+t 0 3 0 
