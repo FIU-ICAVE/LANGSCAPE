@@ -500,9 +500,9 @@ MonoBehaviour:
   - Finger: 0
     StateThresholds: {fileID: 11400000, guid: 1ee82d2d63daf8b4c93040e331f8e801, type: 2}
   - Finger: 1
-    StateThresholds: {fileID: 11400000, guid: 8b470e0c4b48d474c9a42d7f661d48c7, type: 2}
+    StateThresholds: {fileID: 11400000, guid: 29b0a95ffa0254044901c8c821379040, type: 2}
   - Finger: 2
-    StateThresholds: {fileID: 11400000, guid: 8b470e0c4b48d474c9a42d7f661d48c7, type: 2}
+    StateThresholds: {fileID: 11400000, guid: 6654d266dec806d458e8c45751c96535, type: 2}
   - Finger: 3
     StateThresholds: {fileID: 11400000, guid: 8b470e0c4b48d474c9a42d7f661d48c7, type: 2}
   - Finger: 4
@@ -4268,7 +4268,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _hand
       value: 
-      objectReference: {fileID: 5098033516834522858}
+      objectReference: {fileID: 5098033517621552480}
     - target: {fileID: 8229932394553529518, guid: 92fe722de3dc2f544b35127b16386907,
         type: 3}
       propertyPath: _shapes.Array.size
@@ -4290,21 +4290,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _fingerFeatureStateProvider
       value: 
-      objectReference: {fileID: 5098033517386155420}
+      objectReference: {fileID: 31547087}
     - target: {fileID: 8229932394553529519, guid: 92fe722de3dc2f544b35127b16386907,
         type: 3}
       propertyPath: _hand
       value: 
-      objectReference: {fileID: 5098033516834522858}
+      objectReference: {fileID: 5098033517621552480}
     - target: {fileID: 8229932394553529519, guid: 92fe722de3dc2f544b35127b16386907,
         type: 3}
       propertyPath: _transformFeatureStateProvider
       value: 
-      objectReference: {fileID: 5098033517386155421}
+      objectReference: {fileID: 5098033518572244384}
     - target: {fileID: 8229932394553529519, guid: 92fe722de3dc2f544b35127b16386907,
         type: 3}
       propertyPath: _transformFeatureConfigs._values.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8229932394553529519, guid: 92fe722de3dc2f544b35127b16386907,
         type: 3}
@@ -9835,9 +9835,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1159667734}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.71175027, z: 0, w: 0.70243263}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0086}
+  m_LocalScale: {x: 0.0005, y: 0.0005, z: 0.0005}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2026631498}
@@ -9847,9 +9847,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 90.755, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.0636, y: -0.5681}
+  m_SizeDelta: {x: 1200, y: 600}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1159667736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9889,7 +9889,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &1159667738
 Canvas:
   m_ObjectHideFlags: 0
@@ -9899,7 +9899,7 @@ Canvas:
   m_GameObject: {fileID: 1159667734}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -17872,7 +17872,7 @@ MonoBehaviour:
   outputBox: {fileID: 2026965669}
   symbol: {fileID: 1301809568}
   dropdown: {fileID: 1774045988}
-  gesture: {fileID: 0}
+  gesture: {fileID: 2085123042}
 --- !u!1 &2026965667
 GameObject:
   m_ObjectHideFlags: 0
@@ -18302,6 +18302,18 @@ PrefabInstance:
       objectReference: {fileID: 5098033517386155421}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92fe722de3dc2f544b35127b16386907, type: 3}
+--- !u!114 &2085123042 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8229932394553529491, guid: 92fe722de3dc2f544b35127b16386907,
+    type: 3}
+  m_PrefabInstance: {fileID: 2085123041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0641f92adc0b7c14caa54af0604db2ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2092009871
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33759,7 +33771,6 @@ GameObject:
   - component: {fileID: 5098033516834522852}
   - component: {fileID: 5098033516834522858}
   - component: {fileID: 5098033516834522853}
-  - component: {fileID: 5098033516834522860}
   m_Layer: 0
   m_Name: LeftHand
   m_TagString: Untagged
@@ -33767,19 +33778,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &5098033516834522860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5098033516834522859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7b1d2560b4ca694a8d91bde194fc407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gesture: {fileID: 519417004}
 --- !u!4 &5098033516838340920
 Transform:
   m_ObjectHideFlags: 0
@@ -48566,6 +48564,7 @@ GameObject:
   - component: {fileID: 5098033517621552482}
   - component: {fileID: 5098033517621552480}
   - component: {fileID: 5098033517621552483}
+  - component: {fileID: 5098033517621552484}
   m_Layer: 0
   m_Name: RightHand
   m_TagString: Untagged
@@ -48606,6 +48605,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hand: {fileID: 5098033517621552480}
+--- !u!114 &5098033517621552484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5098033517621552481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7b1d2560b4ca694a8d91bde194fc407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gesture: {fileID: 519417004}
+  compass: {fileID: 631853612}
 --- !u!4 &5098033517624158536
 Transform:
   m_ObjectHideFlags: 0
@@ -66141,6 +66154,7 @@ GameObject:
   - component: {fileID: 5098033518572244383}
   - component: {fileID: 5098033518572244382}
   - component: {fileID: 31547087}
+  - component: {fileID: 5098033518572244384}
   m_Layer: 0
   m_Name: HandFeaturesRight
   m_TagString: Untagged
@@ -66176,6 +66190,22 @@ Transform:
   m_Father: {fileID: 5098033517621552482}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5098033518572244384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5098033518572244380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bffe606b408599b4fad696ddc889a943, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hand: {fileID: 5098033517621552480}
+  _hmd: {fileID: 5098033518550250911}
+  _trackingToWorldTransformer: {fileID: 5098033517257385992}
+  _disableProactiveEvaluation: 0
 --- !u!4 &5098033518572612521
 Transform:
   m_ObjectHideFlags: 0
