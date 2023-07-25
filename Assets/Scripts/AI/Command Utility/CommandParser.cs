@@ -9,6 +9,9 @@ public class CommandParser
     public static readonly int CODE_INVALID_RESPONSE = 2;   // Returned if a command was improperly parsed. (Ex: fill had the wrong number of arguments/an invalid token)
     public static readonly int CODE_EMPTY_COMMAND = 3;      // Returned if a new line was returned with no command.
     */
+
+    public static Transform CameraRigTransform;
+
     public static int Parse(string str, char commandSeparator, char argSeparator, out Command[] cmds) {
         cmds = null;
 
@@ -140,6 +143,20 @@ public class CommandParser
                 if (cmd.valid != LangscapeError.CMD_VALID.code)
                     return cmd.valid;
                 utilList.Add(cmd);
+                continue;
+            }
+
+            if (signature == TeleportCommand.SIGNATURE) { 
+                if (args.Length != TeleportCommand.REQUIRED_PARAMS + 1)
+                    return LangscapeError.LLM_INVALID_RESPONSE.code;
+                argv = new int[TeleportCommand.REQUIRED_PARAMS + 1];
+                int i = 0;
+                if (!Command.TryBuildArgs(args, TeleportCommand.REQUIRED_PARAMS, ref argv, ref i))
+                    return LangscapeError.LLM_INVALID_RESPONSE.code;
+                TeleportCommand cmd = new TeleportCommand(CameraRigTransform, argv);
+                if (cmd.valid != LangscapeError.CMD_VALID.code)
+                    return cmd.valid;
+                cmdList.Add(cmd);
                 continue;
             }
 

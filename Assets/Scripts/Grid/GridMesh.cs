@@ -27,6 +27,7 @@ public class GridMesh : MonoBehaviour
     [Header("Configure")]
     [SerializeField] private Vector3Int initialWorldSize;
     [SerializeField] private Vector2Int textureAtlasSize;
+    [SerializeField] private Transform cameraRigTransform;
 #if UNITY_EDITOR
     [SerializeField] private bool drawInEditor = true;
 
@@ -102,6 +103,7 @@ public class GridMesh : MonoBehaviour
         worldMesh = new Mesh();
         GetComponent<MeshFilter>().mesh = worldMesh;
 
+        CommandParser.CameraRigTransform = cameraRigTransform;
 
         RegenerateMesh();
     }
