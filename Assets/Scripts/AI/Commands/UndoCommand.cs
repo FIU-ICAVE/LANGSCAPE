@@ -12,7 +12,7 @@ class UndoCommand : Command {
 
     public UndoCommand(int count) {
         this.count = count;
-        valid = LangscapeError.LLM_INVALID_RESPONSE.code;
+        valid = LangscapeError.CMD_VALID.code;
     }
     public override void Execute() {
         WorldStateManager.Instance.UndoCommandBatch(count);

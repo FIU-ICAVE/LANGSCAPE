@@ -18053,6 +18053,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Compass Glow
       objectReference: {fileID: 0}
+    - target: {fileID: 114061393136448470, guid: f89f8136dbaeeed4faf4bed0bde24218,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114536385321584286, guid: f89f8136dbaeeed4faf4bed0bde24218,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114760067635415972, guid: f89f8136dbaeeed4faf4bed0bde24218,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 114831582600192262, guid: f89f8136dbaeeed4faf4bed0bde24218,
         type: 3}
       propertyPath: player
@@ -18062,6 +18077,11 @@ PrefabInstance:
         type: 3}
       propertyPath: fieldOfView
       value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 114911686632558926, guid: f89f8136dbaeeed4faf4bed0bde24218,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 224256833041006170, guid: f89f8136dbaeeed4faf4bed0bde24218,
         type: 3}

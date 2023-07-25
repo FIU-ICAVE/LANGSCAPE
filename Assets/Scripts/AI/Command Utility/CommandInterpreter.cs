@@ -51,7 +51,7 @@ public class CommandInterpreter : MonoBehaviour {
 
     // Loads prompt from file in Assets/Resources/prompt
     void Awake() {
-        openai = new OpenAIApi(apiKey: "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");
+        openai = new OpenAIApi(apiKey: "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");
         TextAsset filedata = Resources.Load<TextAsset>("OpenAI/PROMPT");
         if (filedata == null)
             throw new System.Exception("No file found called prompt in 'Assets/Resources/OpenAI/PROMPT");
@@ -141,7 +141,7 @@ public class CommandInterpreter : MonoBehaviour {
         // Complete the instruction
         try {
             var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest() {
-                Model = "gpt-3.5-turbo-16k",
+                Model = "gpt-3.5-turbo-16k-0613",
                 Messages = messages,
                 Temperature = 0f,
                 MaxTokens = 256,
