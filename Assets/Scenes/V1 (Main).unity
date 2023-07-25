@@ -3652,7 +3652,6 @@ MonoBehaviour:
   outputBox: {fileID: 1344005045}
   symbol: {fileID: 573693321}
   dropdown: {fileID: 688257027}
-  gesture: {fileID: 0}
 --- !u!1001 &424411317
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6154,7 +6153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08d22f7d89ae55498e7f5ad19bb5e5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  indicator: {fileID: 1615511616}
+  indicator: {fileID: 0}
   allowRotation: 0
   activity: 0
   indicatorToBeChanged: {fileID: 0}
@@ -11658,7 +11657,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -15629,7 +15628,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -17440,7 +17439,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -17892,7 +17891,6 @@ MonoBehaviour:
   outputBox: {fileID: 2026965669}
   symbol: {fileID: 1301809568}
   dropdown: {fileID: 1774045988}
-  gesture: {fileID: 2085123042}
 --- !u!1 &2026965667
 GameObject:
   m_ObjectHideFlags: 0
@@ -17997,7 +17995,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -18347,18 +18345,6 @@ PrefabInstance:
       objectReference: {fileID: 5098033517386155421}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92fe722de3dc2f544b35127b16386907, type: 3}
---- !u!114 &2085123042 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8229932394553529491, guid: 92fe722de3dc2f544b35127b16386907,
-    type: 3}
-  m_PrefabInstance: {fileID: 2085123041}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0641f92adc0b7c14caa54af0604db2ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2092009871
 PrefabInstance:
   m_ObjectHideFlags: 0
