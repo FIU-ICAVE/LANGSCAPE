@@ -3652,6 +3652,7 @@ MonoBehaviour:
   outputBox: {fileID: 1344005045}
   symbol: {fileID: 573693321}
   dropdown: {fileID: 688257027}
+  gesture: {fileID: 0}
 --- !u!1001 &424411317
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5999,6 +6000,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialWorldSize: {x: 20, y: 20, z: 20}
   textureAtlasSize: {x: 4, y: 4}
+  cameraRigTransform: {fileID: 5098033518511942259}
   drawInEditor: 1
   testCommands: 'f 0 0 0 20 20 20 0 #ffffff
 
@@ -6106,6 +6108,18 @@ MonoBehaviour:
   _targetPoint: {fileID: 0}
   _faceTargetDirection: 0
   _eyeLevel: 0
+--- !u!114 &696411497 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8229932394553529491, guid: 92fe722de3dc2f544b35127b16386907,
+    type: 3}
+  m_PrefabInstance: {fileID: 2085123041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0641f92adc0b7c14caa54af0604db2ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &699289956
 GameObject:
   m_ObjectHideFlags: 0
@@ -17891,6 +17905,7 @@ MonoBehaviour:
   outputBox: {fileID: 2026965669}
   symbol: {fileID: 1301809568}
   dropdown: {fileID: 1774045988}
+  gesture: {fileID: 696411497}
 --- !u!1 &2026965667
 GameObject:
   m_ObjectHideFlags: 0
