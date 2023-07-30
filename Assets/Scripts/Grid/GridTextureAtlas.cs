@@ -20,7 +20,19 @@ public enum GridTexture {
     Default = 0,
     Grid = 1,
     Filter = 2,
-    Hollow = 3,
+    Dirt = 3,
+    Grass = 4,
+    Stone = 5,
+    Orange_Flowers = 6,
+    Thatch = 7,
+    Slate_Roof = 8,
+    Submerged_Sand = 9,
+    Beach_Sand = 10,
+    Volcanic_Rock = 11,
+    Cobblestone = 12,
+    Red_Brick = 13,
+    Regrown_Grass = 14,
+    Supported_Thatch = 15,
 }
 
 public class GridTextureAtlas

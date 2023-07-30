@@ -70,13 +70,26 @@ public class GridMesh : MonoBehaviour
 
         // TODO: Move this into GridModel.cs
         models = new GridModel[(int)GridCellType.TYPE_MAX];
-        models[(int)GridCellType.Block] = GridModel.Load("block");
-        if (models[(int)GridCellType.Block] == null) {
+        models[(int)GridCellType.Solid] = GridModel.Load("block");
+        if (models[(int)GridCellType.Solid] == null) {
             Debug.LogError("Model Loader: Failed to load block model.");
         }
-        models[(int)GridCellType.Glass] = models[(int)GridCellType.Block];
-        models[(int)GridCellType.Outline] = models[(int)GridCellType.Block];
-        models[(int)GridCellType.Filter] = models[(int)GridCellType.Block];
+        models[(int)GridCellType.Glass] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Outline] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Filter] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Dirt] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Grass] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Stone] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Orange_Flowers] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Thatch] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Slate_Roof] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Submerged_Sand] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Beach_Sand] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Volcanic_Rock] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Cobblestone] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Red_Brick] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Regrown_Grass] = models[(int)GridCellType.Solid];
+        models[(int)GridCellType.Supported_Thatch] = models[(int)GridCellType.Solid];
 
         textureAtlas = new GridTextureAtlas(textureAtlasSize.x, textureAtlasSize.y);
 
@@ -89,6 +102,7 @@ public class GridMesh : MonoBehaviour
         worldMesh = new Mesh();
         GetComponent<MeshFilter>().mesh = worldMesh;
 
+
         RegenerateMesh();
     }
 
@@ -99,7 +113,7 @@ public class GridMesh : MonoBehaviour
         colors.Clear();
         uvs.Clear();
 
-        GridCellData floorCell = new GridCellData(GridCellType.Block, GridTexture.Grid, Color.white);
+        GridCellData floorCell = new GridCellData(GridCellType.Solid, GridTexture.Grid, Color.white);
 
         int xMax = size.x - 1;
         int yMax = size.y - 1;
@@ -367,6 +381,20 @@ public class GridMesh : MonoBehaviour
             Debug.Log("[WORLD] (REPLACE) from (" + pos.x + "," + pos.y + "," + pos.z + ") to (" + end.x + "," + end.y + "," + end.z + ").");
 #endif
         return copy;
+    }
+
+    public int[] GetCount(GridCellType[] type) {
+        int[] count = new int[type.Length];
+        for (int x = 0; x < size.x; x++) {
+            for (int y = 0; y < size.y; y++) {
+                for (int z = 0; z < size.z; z++) {
+                    for (int i = 0; i < type.Length; i++)
+                        if (data[x,y,z].type == type[i])
+                            count[i]++;
+                }
+            }
+        }
+        return count;
     }
 
     public static string GetDimensions() => "" + Instance.size.x + "x" + Instance.size.y + "x" + Instance.size.z;

@@ -1,0 +1,1017 @@
+﻿Instructions:
+Use the following commands to call functions on our program. Know that vec3 parameters must be represented using 3 integers separated by spaces. The world is 20x20x20, but do not check if a command is outside of the world, x represents right and width, y axis represents up and height, and z represents backwards and length. The blocks are as follows: {Empty: 0, Solid: 1, Glass: 2, Grid: 3, Filter: 4, Dirt: 5, Grass: 6, Stone: 7, Orange_Flowers: 8, Thatch: 9, Slate_Roof: 10, Submerged_Sand: 11, Beach_Sand: 12, Volcanic_Rock: 13, Cobblestone: 14, Red_Brick: 15, Regrown_Grass: 16, Supported_Thatch: 17}..
+
+Use 'n' when you can't interpret a response. 
+Use 'f <position: vec3> <size: vec3> <block_id: int> [color: hex]' to place a colored block in an area, starting from position given a size.
+Use 'm <position: vec3> <size: vec3> <displacement: vec3>' to move an area in the grid given a starting position and size using a displacement.
+Use 'r <position: vec3> <size: vec3> <rotation: int {0=0/360/..., 1=90/450/..., 2=180/540/..., 3=270/630/...}>' to rotate an area by a factor of 90 degrees counterclockwise around the center.
+Use 'c <position: vec3> <size: vec3> <replace_id: int> <with_id: int> [color: hex]' to replace a block type with a new one given a new block ID and color.
+Use 'u <count: int>' to undo the last number of responses given to the user.
+Use 'v <count: int>' to redo the last number of responses given to the user.
+Use 'q <id0> [id: int]' to list to the user the number of those block ids in the world, and the user can also ask for the following { floor: 1000, wall: 1001, window: 1002 }. 
+Use 't <position: vec3>' to teleport the position of the player to the given position.
+
+Architectural terms:
+Walls lie either on the XY plane or YZ plane and the last axis equals 1. Floors and ceilings lie on the XZ plane, and the Y axis equals 1.
+Windows are walls made of glass and can be placed inside walls, but the size must be smaller than that of the wall.
+Doors are empty blocks placed in walls that are at minimum two blocks tall and one block wide starting at the base of a wall.
+
+Examples:
+input: Make a grid wall that is 8 meters tall and 13 meters long with 2 red windows and a door at 4 5 1.
+output: f 4 5 1 1 8 13 3
+f 4 6 2 1 6 4 2 #ff0000
+f 4 6 9 1 6 4 2 #ff0000
+f 4 5 7 1 2 1 0
+
+input: Make a wall with two windows and a door.
+output: f 5 0 5 10 4 1 1
+f 6 1 5 2 2 1 2
+f 12 1 5 2 2 1 2
+f 9 0 5 2 3 1 0
+
+input: Place a green window at 3 0 3.
+output: f 3 0 3 3 2 1 2 #00ff00
+
+input: Build a wall at 2 2 2 thats 4x5.
+output: f 2 2 2 4 5 1 1
+
+input: Place a 5x5 wall with a door at 0 0 0.
+output: f 0 0 0 5 5 1 1
+f 1 0 0 2 2 1 0
+
+input: Make a 10x4 red wall with a 3x2 door on the left.
+output: f 5 0 5 10 5 1 1 #ff0000
+f 6 0 5 3 2 1 0
+
+input: Enclose the grid with solid blocks.
+output: f 0 0 0 20 20 1 1
+f 0 0 19 20 20 1 1
+f 0 0 1 1 20 18 1
+f 19 0 1 1 20 18 1
+f 0 19 0 20 1 20 1
+
+input: Change the glass block at 0 0 0 to a red grid.
+output: c 0 0 0 1 1 1 2 3 #ff0000
+
+input: Change the 10x5 grid wall at 2 2 2 to red.
+output: c 2 2 2 10 5 1 1 3 3 #ff0000
+
+input: Change all the solid blocks in the grid to cyan.
+output: c 0 0 0 20 20 20 1 1 #00ffff
+
+input: What is your name?
+output: n
+
+input: Create a wall with a window and a door on the left side.
+output: f 3 0 3 10 4 1 1
+f 7 1 3 5 2 1 2
+f 4 0 3 2 3 1 0
+
+input: move that wall forward 2 meters.
+output: m 3 0 3 10 4 1 0 0 -2
+
+input: Move the block at 0 0 0 right 5 meters and up 3 meters.
+output: m 0 0 0 1 1 1 5 3 0
+
+input: Move the 1x10x5 area at 3 5 9 down to the ground.
+output: m 3 5 9 1 10 5 0 -5 0
+
+input: Move the 1x2x5 wall at 15 2 3 down to the ground and left 10 meters.
+output: m 15 2 3 1 2 5 -10 -2 0
+
+input: Create a wall with 2 windows at 2 0 2.
+output: f 2 0 2 9 4 1 1
+f 3 1 2 3 2 1 2
+f 7 1 2 3 2 1 2
+
+input: Where is the block?
+output: n
+
+input: Make a wall with a door.
+output: f 0 0 0 10 4 1 1
+f 4 0 0 2 3 1 0
+
+input: Rotate the 5x3 wall at 5 6 3 left.
+output: r 5 6 3 5 3 1 1
+
+input: Rotate the entire grid right.
+output: r 0 0 0 20 20 20 3
+
+input: Move the 5x7 wall at 0 0 0 forward 7 blocks and then rotate it clockwise.
+output: m 0 0 0 5 7 1 0 0 -7
+r 0 0 7 5 7 1 3
+
+input: Move the 1x9x9 wall at 8 9 8 down to the ground and rotate it clockwise twice.
+output: m 8 9 8 1 9 9 0 -9 0
+r 8 0 8 1 9 9 2
+
+input: Flip the 3x3x3 area at the center of the grid.
+output: r 8 8 8 3 3 3 2
+
+input: Build a wall with a window and rotate it 90 degrees.
+output: f 5 0 5 6 6 1 1
+f 6 1 5 4 4 1 2
+r 5 0 5 6 6 1 1
+
+input: Change the 10x5 wall at 0 0 0 made of solid blocks to red.
+output: c 0 0 0 10 5 1 1 1 #ff0000
+
+input: Create a house with only one door
+output: f 0 0 0 10 7 1 1
+f 0 0 10 10 7 1 1
+f 0 0 0 1 7 10 1
+f 9 0 0 1 7 10 1
+f 0 6 0 10 1 10 1
+f 4 0 0 2 5 1 0  
+
+input: Create a house with one door and two windows
+output: f 0 0 0 10 7 1 1
+f 0 0 10 10 7 1 1
+f 0 0 0 1 7 10 1
+f 9 0 0 1 7 10 1
+f 0 6 0 10 1 10 1
+f 4 0 0 2 5 1 0
+f 7 4 0 2 2 1 2
+f 1 4 0 2 2 1 2
+
+input: Create an orange house with a door and two windows
+output: f 5 0 3 8 8 1 1 #ff8000
+f 5 0 12 8 8 1 1 #ff8000
+f 5 0 3 1 8 10 1 #ff8000
+f 12 0 3 1 8 10 1 #ff8000
+f 5 7 3 8 1 10 1 #ff8000
+f 9 0 3 2 5 1 0
+f 12 4 6 1 3 4 2
+f 6 4 3 2 3 1 2
+
+input: Create a house with a yellow door and three windows
+output: f 0 0 0 10 7 1 1 #ffff00
+f 0 0 10 10 7 1 1 #ffff00
+f 0 0 0 1 7 10 1 #ffff00
+f 9 0 0 1 7 10 1 #ffff00
+f 0 6 0 10 1 10 1 #ffff00
+f 4 0 0 2 5 1 0
+f 2 3 0 3 3 1 2 #ffff00
+f 7 3 0 3 3 1 2 #ffff00
+f 2 3 9 3 3 1 2 #ffff00
+
+input: Create a green house with two floors, a door, and four windows
+output: f 0 0 0 10 14 1 1 #00ff00
+f 0 0 10 10 14 1 1 #00ff00
+f 0 0 0 1 14 10 1 #00ff00
+f 9 0 0 1 14 10 1 #00ff00
+f 0 6 0 10 1 10 1 #00ff00
+f 0 13 0 10 1 10 1 #00ff00
+f 4 0 0 2 5 1 0
+f 1 3 0 2 2 1 2
+f 7 3 0 2 2 1 2
+f 2 3 10 3 2 1 2
+f 2 10 0 6 2 1 2
+
+input: Create a purple house with a door and two windows
+output: f 3 0 0 10 7 1 1 #800080
+f 3 0 10 10 7 1 1 #800080
+f 3 0 0 1 7 10 1 #800080
+f 12 0 0 1 7 10 1 #800080
+f 3 6 0 10 1 10 1 #800080
+f 7 0 0 2 5 1 0
+
+input: Create a house with two floors, a door, and four green windows, all made of glass.
+output: f 0 0 0 10 14 1 2 #ffffff
+f 0 0 10 10 14 1 2 #ffffff
+f 0 0 0 1 14 10 2 #ffffff
+f 9 0 0 1 14 10 2 #ffffff
+f 0 0 0 1 14 10 2 #ffffff
+f 0 6 0 10 1 10 2 #ffffff
+f 0 13 0 10 1 10 2 #ffffff
+f 4 0 0 2 5 1 0
+f 1 3 0 2 2 1 2 #00ff00
+f 7 3 0 2 2 1 2 #00ff00
+f 1 3 10 3 2 1 2 #00ff00
+f 6 3 10 3 2 1 2 #00ff00
+f 2 10 0 6 2 1 2
+
+input: Enclose the world with solid blocks except for a 4x4x4 cube at the center made of glass.
+output: f 0 0 0 20 20 1 1
+f 0 0 19 20 20 1 1
+f 0 0 1 1 20 18 1
+f 19 0 1 1 20 18 1
+f 0 19 0 20 1 20 1
+f 8 8 8 4 4 4 2 #ffffff
+
+input: Create a blue house with one large door and three small windows.
+output: f 0 0 0 10 7 1 1 #0000ff
+f 0 0 10 10 7 1 1 #0000ff
+f 0 0 0 1 7 10 1 #0000ff
+f 9 0 0 1 7 10 1 #0000ff
+f 0 3 0 10 4 10 1 #0000ff
+f 3 0 0 4 4 1 1 #ffffff
+f 1 2 0 1 2 1 2 #ffffff
+f 8 2 0 1 2 1 2 #ffffff
+f 4 5 0 2 1 1 2 #ffffff
+
+input: Create a white house with two floors, a door, and four windows.
+output: f 0 0 0 10 14 1 1 #ffffff
+f 0 0 10 10 14 1 1 #ffffff
+f 0 0 0 1 14 10 1 #ffffff
+f 9 0 0 1 14 10 1 #ffffff
+f 0 6 0 10 1 10 1 #ffffff
+f 0 13 0 10 1 10 1 #ffffff
+f 4 0 0 2 5 1 0
+f 1 3 0 2 2 1 2 #ffffff
+f 7 3 0 2 2 1 2 #ffffff
+f 2 3 10 3 2 1 2
+f 2 10 0 6 2 1 2
+
+input: Create a yellow house with a door, two floors, and six windows.
+output: f 0 0 0 10 14 1 1 #ffff00
+f 0 0 10 10 14 1 1 #ffff00
+f 0 0 0 1 14 10 1 #ffff00
+f 9 0 0 1 14 10 1 #ffff00
+f 0 6 0 10 1 10 1 #ffff00
+f 0 13 0 10 1 10 1 #ffff00
+f 4 0 0 2 5 1 0
+f 1 3 0 2 2 1 2
+f 7 3 0 2 2 1 2
+f 1 3 10 2 2 1 2
+f 1 8 0 2 2 1 2
+f 0 8 4 1 2 4 2
+f 9 3 2 1 2 4 2
+
+input: Create a red house with three floors, one door, and five windows.
+output: f 0 0 0 10 20 1 1 #ff0000
+f 0 0 10 10 20 1 1 #ff0000
+f 0 0 0 1 20 10 1 #ff0000
+f 9 0 0 1 20 10 1 #ff0000
+f 0 7 0 10 1 10 1 #ff0000
+f 0 13 0 10 1 10 1 #ff0000
+f 0 19 0 10 1 10 1 #ff0000
+f 4 0 0 2 5 1 0
+f 1 3 0 2 2 1 2
+f 7 3 0 2 2 1 2
+f 1 3 10 2 2 1 2
+f 9 14 4 1 2 4 2
+f 2 9 10 6 3 1 2
+
+input: Build a blue 8x6 wall at 2 2 2.
+output: f 2 2 2 8 6 1 1 #0000ff
+
+input: Build a glass window at 4 4 4 with a size of 3x3.
+output: f 4 4 4 3 3 1 2 #ffffff
+
+input: Place a green glass window at 6 6 6 with a size of 2x4.
+output: f 6 6 6 2 4 1 2 #00ff00
+
+input: Undo the last 3 commands.
+output: u 3
+
+input: Redo the previously undone command.
+output: v 1
+
+input: Build a white 1x1 wall at 0 0 0.
+output: f 0 0 0 1 1 1 1 #ffffff
+
+input: Move the wall at 0 0 0 to the position 5 5 5.
+output: m 0 0 0 1 1 1 5 5 5
+
+input: Create a 2x3 red wall at 8 0 8.
+output: f 8 0 8 2 3 1 1 #ff0000
+
+input: Create a 5x5 wall at 3 3 3 and rotate it clockwise by 90 degrees.
+output: f 3 3 3 5 5 1 1
+r 3 3 3 5 5 1 2
+
+input: Place a yellow filter at 4 4 4 with a size of 3x3.
+output: f 4 4 4 3 3 1 4 #ffff00
+
+input: Build a wall at 5 5 5 that's 6 blocks tall and 3 blocks wide.
+output: f 5 5 5 3 6 1 1
+
+input: Fill the entire space with solid blocks.
+output: f 0 0 0 20 20 20 1
+
+input: Fill the top half of the space with glass blocks.
+output: f 0 10 0 20 10 20 2
+
+input: Fill a 5x5x5 cube at the center of the space with grid blocks.
+output: f 7 7 7 5 5 5 3
+
+input: Fill the bottom plane with red blocks.
+output: f 0 0 0 20 1 20 1 #ff0000
+
+input: Fill a 2x2x10 column at the corner with blue blocks.
+output: f 0 0 0 2 2 10 1 #0000ff
+
+input: Fill a 3x3x3 cube at 1 1 1 with yellow blocks.
+output: f 1 1 1 3 3 3 1 #ffff00
+
+input: Fill a 4x4x4 cube at the bottom corner with magenta blocks.
+output: f 0 0 0 4 4 4 1 #ff00ff
+
+input: Fill the center 6x6x6 area with cyan blocks.
+output: f 7 7 7 6 6 6 1 #00ffff
+
+input: Fill a 1x20x20 strip along the bottom edge with black blocks.
+output: f 0 0 0 1 20 20 1 #000000
+
+input: Fill a 12x1x12 strip on the XY plane with orange blocks.
+output: f 4 4 0 12 1 12 1 #ff8000
+
+input: Fill a 10x10x1 plane on the XZ plane with purple blocks.
+output: f 5 0 5 10 10 1 1 #800080
+
+input: Fill a 3x20x3 strip along the Y axis with gray blocks.
+output: f 8 0 8 3 20 3 1 #808080
+
+input: Fill a 1x1x20 column at the center with brown blocks.
+output: f 9 9 0 1 1 20 1 #964B00
+
+input: Fill a 4x4x4 cube at 16 16 16 with light blue blocks.
+output: f 16 16 16 4 4 4 1 #ADD8E6
+
+input: Fill a 10x1x10 plane on the YZ plane with dark green blocks.
+output: f 0 5 5 1 10 10 1 #006400
+
+input: Build a red 10x5 wall at 0 0 0.
+output: f 0 0 0 10 5 1 1 #ff0000
+
+input: Build a wall that's 10 blocks tall and 3 blocks wide at 10 0 10.
+output: f 10 0 10 3 10 1 1
+
+input: Place a blue glass at 9 7 8.
+output: f 9 7 8 1 1 1 2 #0000ff
+
+input: Place a yellow filter at the center of the world.
+output: f 9 9 9 1 1 1 4 #ffff00
+
+input: Build walls around the world.
+output: f 0 0 0 20 20 1 1
+f 0 0 19 20 20 1 1
+f 0 0 1 1 20 18 1
+f 19 0 1 1 20 18 1
+
+input: Encase the world with black glass.
+output: f 0 0 0 20 19 1 2 #000000
+f 0 0 19 20 19 1 2 #000000
+f 0 0 1 1 19 18 2 #000000
+f 19 0 1 1 19 18 2 #000000
+f 0 19 0 20 1 20 2 #000000
+
+input: Fill the world with grid blocks.
+output: f 0 0 0 20 20 20 3
+
+input: Clear the world.
+output: f 0 0 0 20 20 20 0
+
+input: Create a magenta grid wall that's 10 meters tall and 10 meters long at 3 0 3.
+output: f 3 0 3 1 10 10 3 #ff00ff
+
+input: Make a red 10x6 meter wall with a window at 2 0 5.
+output: f 2 0 5 10 6 1 1 #ff0000
+f 3 1 5 8 4 1 2 #ffffff
+
+input: Make a grid wall that is 8 meters tall and 13 meters long with 2 red windows and a door at 4 5 1.
+output: f 4 5 1 1 8 13 3
+f 4 6 2 1 6 4 2 #ff0000
+f 4 6 9 1 6 4 2 #ff0000
+f 4 5 7 1 2 1 0
+
+input: Make a wall with two windows and a door.
+output: f 5 0 5 10 4 1 1
+f 6 1 5 2 2 1 2
+f 12 1 5 2 2 1 2
+f 9 0 5 2 3 1 0
+
+input: Build a yellow 5x7 wall at 10 0 3.
+output: f 10 0 3 5 7 1 1 #ffff00
+
+input: Build a green wall with two windows and a door, all made of glass.
+output: f 5 0 5 10 4 1 2 #00ff00
+f 6 1 5 2 2 1 2
+f 12 1 5 2 2 1 2
+f 9 0 5 2 3 1 0
+
+input: Place a cyan glass window at 8 3 2.
+output: f 8 3 2 1 1 1 2 #00ffff
+
+input: Build a white 8x5 wall at 3 0 2.
+output: f 3 0 2 8 5 1 1 #ffffff
+
+input: Place a blue glass window at 5 2 3.
+output: f 5 2 2 1 1 1 2 #0000ff
+
+input: Build a gray 6x3 wall at 0 0 0.
+output: f 0 0 0 6 3 1 1 #808080
+
+input: Place a green glass window at 2 1 0.
+output: f 2 1 0 1 1 1 2 #00ff00
+
+input: Set the floor of the world to grass.
+output: f 0 0 0 20 1 20 6
+
+input: Set the floor of the world to grass and then paint it red.
+output: f 0 0 0 20 1 20 6
+c 0 0 0 20 1 20 6 6 #ff0000
+
+input: Place a 5x4 stone wall at 4 4 4 and add a central window to it, then rotate the wall clockwise.
+output: f 4 4 4 5 4 1 7
+f 5 5 4 3 2 1 2
+r 4 4 4 5 4 1 3
+
+input: Fill from 4 5 10 through 12 13 10 using green glass.
+output: f 4 5 10 9 9 1 2 #00ff00
+
+input: Undo that, then redo it.
+output: u 1
+v 1
+
+input: Create a house starting at position 2 0 0 with one door and a big window on the front wall.
+output: f 2 0 0 10 7 1 1
+f 2 0 10 10 7 1 1
+f 2 0 0 1 7 10 1
+f 11 0 0 1 7 10 1
+f 2 6 0 10 1 10 1
+f 4 0 0 2 4 1 0
+f 7 2 0 4 3 1 2
+
+input: Create a house that starts at position 0 0 5 and has 2 windows and one door.
+output: f 0 0 5 10 7 1 1
+f 0 0 15 10 7 1 1
+f 0 0 5 1 7 10 1
+f 9 0 5 1 7 10 1
+f 0 6 5 10 1 10 1
+f 4 0 5 2 5 1 0
+f 1 2 5 2 2 1 2
+f 7 2 5 2 2 1 2
+
+input: Create a 10 by 10 by 20 house at the middle of the world with a door and three windows.
+output: f 5 0 5 10 19 1 1
+f 5 0 14 10 19 1 1
+f 5 0 5 1 19 10 1
+f 14 0 5 1 19 10 1
+f 5 19 5 10 1 10 1
+f 8 0 5 4 8 1 0
+f 6 10 5 8 2 1 2
+f 6 13 5 8 2 1 2
+f 6 16 5 8 2 1 2
+
+input: Create a blue house with the size of the world that has 4 windows one door and a white floor.
+output: f 0 0 0 20 20 1 1 #0000ff
+f 0 0 19 20 20 1 1 #0000ff
+f 0 0 0 1 20 19 1 #0000ff
+f 19 0 0 1 20 19 1 #0000ff
+f 0 19 0 20 1 20 1 #0000ff
+f 4 10 0 12 7 1 2
+f 4 10 19 12 7 1 2
+f 0 10 4 1 7 12 2
+f 19 10 4 1 7 12 2
+f 5 1 0 4 8 1 0
+f 0 0 0 20 1 20 1 #ffffff
+
+input: Create a house at the middle of the world with different colors yellow, green, white and red in the walls and the height of the world.
+output: f 5 0 5 10 19 1 1 #ffff00
+f 5 0 14 10 19 1 1 #00ff00
+f 5 0 5 1 19 10 1 #ffffff
+f 14 0 5 1 19 10 1 #ff0000
+f 5 19 5 10 1 10 1
+f 8 0 5 4 8 1 0
+f 6 10 5 8 2 1 2
+f 6 13 5 8 2 1 2
+f 6 16 5 8 2 1 2
+
+input: Create a house at the middle of the world with different colors yellow, green, white and red in the walls and the height of the world.
+output: f 0 0 0 20 20 1 1 #ffff00
+f 0 0 19 20 20 1 1 #00ff00
+f 0 0 0 1 20 19 1 #ffffff
+f 19 0 0 1 20 19 1 #ff0000
+f 0 19 0 20 1 20 1
+f 4 0 0 12 8 1 2
+f 4 11 0 12 8 1 2
+f 4 4 0 1 12 12 2
+f 4 4 19 1 12 12 2
+f 4 0 4 12 1 12 2
+f 4 15 4 12 1 12 2
+
+input: Create a 10 by 10 house with a window in each wall and a glass roof that starts at position 0 0 0. 
+output: f 0 0 0 10 10 1 1
+f 0 0 9 10 10 1 1
+f 0 0 0 1 10 9 1
+f 9 0 0 1 10 9 1
+f 0 9 0 10 1 10 2
+f 2 4 0 4 4 1 2
+f 0 2 2 1 6 6 2
+f 9 2 2 1 6 6 2
+f 2 4 9 6 4 1 2
+f 7 0 0 2 6 1 0
+
+input: Create a house with 3 doors.
+output: f 0 0 0 10 7 1 1 #ff0000
+f 0 0 10 10 7 1 1 #ff0000
+f 0 0 0 1 7 10 1 #ff0000
+f 9 0 0 1 7 10 1 #ff0000
+f 0 6 0 10 1 10 1 #ff0000
+f 4 0 0 2 4 1 0
+f 0 0 4 1 4 2 0
+f 9 0 4 1 4 2 0
+
+input: Build a house starting at position 0 0 5 with two windows on the sides and a door at the front.
+output: f 0 0 5 10 14 1 1 #ff0000
+f 0 0 15 10 14 1 1 #ff0000
+f 0 0 5 1 14 10 1 #ff0000
+f 9 0 5 1 14 10 1 #ff0000
+f 0 6 5 10 1 10 1 #ff0000
+f 0 13 5 10 1 10 1 #ff0000
+f 4 0 5 2 5 1 0
+f 0 2 10 1 10 4 2
+f 9 2 10 1 10 4 2
+
+input: Build a gray house with a black roof, one door and two black windows.
+output: f 0 0 0 10 7 1 1 #808080
+f 0 0 10 10 7 1 1 #808080
+f 0 0 0 1 7 10 1 #808080
+f 9 0 0 1 7 10 1 #808080
+f 0 6 0 10 1 10 1 #000000
+f 4 0 0 2 4 1 0
+f 2 2 0 1 2 1 2 #000000
+f 7 2 0 1 2 1 2 #000000
+
+input: Build a two houses one white and one blue one next to the other.
+output: f 0 0 0 10 7 1 1 #ffffff
+f 0 0 10 10 7 1 1 #ffffff
+f 0 0 0 1 7 10 1 #ffffff
+f 9 0 0 1 7 10 1 #ffffff
+f 0 6 0 10 1 10 1 #ffffff
+f 4 0 0 2 4 1 0
+f 10 0 0 10 7 1 1 #0000ff
+f 10 0 10 10 7 1 1 #0000ff
+f 10 0 0 1 7 10 1 #0000ff
+f 19 0 0 1 7 10 1 #0000ff
+f 10 6 0 10 1 10 1 #0000ff
+f 14 0 0 2 4 1 0
+
+input: Create a small red house with a door and two windows.
+output: f 0 0 0 6 5 1 1 #ff0000
+f 0 0 5 6 5 1 1 #ff0000
+f 0 0 0 1 5 5 1 #ff0000
+f 5 0 0 1 5 5 1 #ff0000
+f 0 4 0 5 1 5 1 #ff0000
+f 3 0 0 2 3 1 0
+f 1 2 0 1 1 1 2
+f 5 2 1 1 2 2 2
+
+input: Create a tall yellow house with three floors, a door, and four windows.
+output: f 0 0 0 8 20 1 1 #ffff00
+f 0 0 8 8 20 1 1 #ffff00
+f 0 0 0 1 20 8 1 #ffff00
+f 7 0 0 1 20 8 1 #ffff00
+f 0 19 0 8 1 8 1 #ffff00
+f 0 14 0 8 1 8 1 #ffff00
+f 0 7 0 8 1 8 1 #ffff00
+f 2 0 0 4 6 1 0
+f 1 11 0 1 2 1 2
+f 6 11 0 1 2 1 2
+f 1 16 0 1 2 1 2
+f 6 16 0 1 2 1 2
+
+input: Create a large blue house with a glass roof, one door, and six windows.
+output: f 0 0 0 14 10 1 1 #0000ff
+f 0 0 10 14 10 1 1 #0000ff
+f 0 0 0 1 10 10 1 #0000ff
+f 13 0 0 1 10 10 1 #0000ff
+f 0 9 0 14 1 10 1 #0000ff
+f 6 0 0 4 6 1 0
+f 2 7 0 10 2 1 2
+f 2 4 10 10 2 1 2
+f 2 7 10 10 2 1 2
+f 13 2 1 1 4 9 2
+f 0 2 1 1 4 9 2
+f 2 2 0 1 4 1 2
+
+input: Create a small green house at the farther corner with a door and two windows.
+output: f 14 0 14 6 5 1 1 #00ff00
+f 14 0 19 6 5 1 1 #00ff00
+f 14 0 14 1 5 6 1 #00ff00
+f 19 0 14 1 5 6 1 #00ff00
+f 14 5 14 6 1 5 1 #00ff00
+f 16 0 14 2 3 1 0
+f 18 4 14 1 1 1 2
+f 15 4 14 1 1 1 2
+
+input: Create a tall orange house with two floors, two doors, and one window.
+output: f 0 0 0 8 20 1 1 #ff8000
+f 0 0 8 8 20 1 1 #ff8000
+f 0 0 0 1 20 8 1 #ff8000
+f 7 0 0 1 20 8 1 #ff8000
+f 0 19 0 8 1 8 1 #ff8000
+f 0 10 0 8 1 8 1 #ff8000
+f 2 0 0 2 4 1 0
+f 5 0 0 2 4 1 0
+f 1 6 0 6 2 1 2
+
+input: Create a medium-sized purple house with a white roof, one door, and four windows.
+output: f 0 0 0 10 10 1 1 #800080
+f 0 0 10 10 10 1 1 #800080
+f 0 0 0 1 10 10 1 #800080
+f 9 0 0 1 10 10 1 #800080
+f 0 9 0 10 1 11 1 #ffffff
+f 2 0 0 2 4 1 0
+f 2 5 10 6 2 1 2
+f 2 8 10 6 1 1 2
+f 1 5 0 2 2 1 2
+f 5 5 0 2 2 1 2
+
+input: Create a small house at position 5 0 5 with a door, one window, and a red roof.
+output: f 5 0 5 6 5 1 1 #ffffff
+f 5 0 10 6 5 1 1 #ffffff
+f 5 0 5 1 5 6 1 #ffffff
+f 10 0 5 1 5 6 1 #ffffff
+f 5 4 5 6 1 6 1 #ff0000
+f 6 0 5 2 4 1 0
+f 9 2 5 1 2 1 2
+
+input: Create a house at position 0 0 0 with a glass front wall, a door, and two windows on the glass.
+output: f 0 0 0 10 7 1 2
+f 0 0 10 10 7 1 1
+f 0 0 0 1 7 10 1
+f 9 0 0 1 7 10 1
+f 0 6 0 10 1 10 1
+f 4 0 0 2 4 1 0
+f 1 2 0 2 2 1 0
+f 7 2 0 2 2 1 0
+
+input: Build a purple house with a white roof, one door, and four windows at position 10 0 10.
+output: f 10 0 10 10 10 1 1 #800080
+f 10 0 19 10 10 1 1 #800080
+f 10 0 10 1 10 10 1 #800080
+f 19 0 10 1 10 10 1 #800080
+f 10 9 10 10 1 10 1 #ffffff
+f 12 0 10 2 4 1 0
+f 12 5 19 6 2 1 2
+f 12 8 19 6 1 1 2
+f 11 5 10 2 2 1 2
+f 15 5 10 2 2 1 2
+
+input: Create a house with a green roof, one door, and two windows at position 15 0 5.
+output: f 15 0 5 5 7 1 1
+f 15 0 15 5 7 1 1
+f 15 0 5 1 7 10 1
+f 19 0 5 1 7 10 1
+f 15 6 5 5 1 11 1 #00ff00
+f 16 0 5 2 4 1 0
+f 16 5 5 2 1 1 2
+f 15 2 8 1 4 4 2
+
+input: Create a tall blue house with two floors, one door, and six windows at position 0 0 10.
+output: f 0 0 10 8 20 1 1 #0000ff
+f 0 0 18 8 20 1 1 #0000ff
+f 0 0 10 1 20 8 1 #0000ff
+f 7 0 10 1 20 8 1 #0000ff
+f 0 19 10 8 1 8 1 #0000ff
+f 0 10 10 8 1 8 1 #0000ff
+f 2 0 10 4 6 1 0
+f 1 7 10 1 2 1 2
+f 6 7 10 1 2 1 2
+f 1 13 10 1 2 1 2
+f 6 13 10 1 2 1 2
+f 1 16 10 1 2 1 2
+f 6 16 10 1 2 1 2
+
+input: Build a small orange house with a white roof, one door, and two windows at position 15 0 15.
+output: f 15 0 15 5 5 1 1 #ff8000
+f 15 0 19 5 5 1 1 #ff8000
+f 15 0 15 1 5 5 1 #ff8000
+f 19 0 15 1 5 5 1 #ff8000
+f 15 4 15 5 1 5 1 #ffffff
+f 17 0 15 2 4 1 0
+f 19 2 16 1 2 1 2
+f 15 2 16 1 2 1 2
+
+input: Build a modern house with large glass windows and a flat roof at position 5 0 5.
+output: f 5 0 5 12 8 1 1
+f 5 0 16 12 8 1 1
+f 5 0 5 1 8 11 1
+f 16 0 5 1 8 11 1
+f 5 7 5 12 1 11 1
+f 7 0 5 2 6 1 0
+f 10 2 5 4 4 1 2
+f 5 2 6 1 4 4 2
+f 16 2 6 1 4 4 2
+
+input: Create a rustic cabin in the woods with a thatched roof at position 10 0 10.
+output: f 10 0 10 8 6 1 1
+f 10 0 17 8 6 1 1
+f 10 0 10 1 6 8 1
+f 17 0 10 1 6 8 1
+f 10 5 10 8 1 8 1
+f 12 0 10 2 4 1 0
+
+input: Build a small cottage with one door, and three windows at position 7 0 3.
+output: f 7 0 3 6 5 1 1 #9e661b
+f 7 0 8 6 5 1 1 #9e661b
+f 7 0 3 1 5 6 1 #9e661b
+f 12 0 3 1 5 6 1 #9e661b
+f 7 4 3 6 1 6 1 #9e661b
+f 9 0 3 2 4 1 0
+f 7 1 5 1 3 1 2
+f 12 1 5 1 3 1 2
+f 7 1 7 1 3 1 2
+
+input: Build a modern house with floor-to-ceiling glass walls and a flat roof at position 12 0 8.
+output: f 12 0 8 8 10 1 2
+f 12 0 18 8 10 1 2
+f 12 0 8 1 10 10 2
+f 19 0 8 1 10 10 2
+f 12 9 8 8 1 10 1
+f 14 0 8 2 8 1 0
+
+input: Create a cozy log cabin with a brown roof, one door, and two orange flowers small windows at position 3 0 10.
+output: f 3 0 10 14 7 1 17
+f 3 0 16 14 7 1 17
+f 3 0 10 1 7 7 1
+f 16 0 10 1 7 7 1
+f 3 6 10 14 1 7 1 #964B00
+f 8 0 10 4 4 1 0
+f 5 2 10 2 2 1 8
+f 13 2 10 2 2 1 8
+
+input: Build a beach house with a white roof, one door, and large windows overlooking the ocean at position 15 0 0.
+output: f 15 0 0 5 8 1 9
+f 15 0 7 5 8 1 9
+f 15 0 0 1 8 7 9
+f 19 0 0 1 8 7 9
+f 15 7 0 5 1 8 1
+f 17 0 0 2 5 1 0
+f 16 2 7 3 4 1 2
+f 15 2 1 1 4 6 2
+
+input: Create a futuristic house with sleek design, large glass panels, and a metallic roof at position 5 0 10.
+output: f 5 0 10 10 10 1 3
+f 5 0 19 10 10 1 3
+f 5 0 10 1 10 10 3
+f 14 0 10 1 10 10 3
+f 5 9 10 10 1 10 1
+f 7 0 10 2 8 1 0
+f 10 2 10 4 6 1 4
+f 5 2 13 1 6 5 4
+f 14 2 13 1 6 5 4
+
+input: Build a mountain retreat with a stone exterior, one door, and a large window on the roof at position 0 0 5.
+output: f 0 0 5 10 8 1 7
+f 0 0 13 10 8 1 7
+f 0 0 5 1 8 8 7
+f 9 0 5 1 8 8 7
+f 0 7 5 10 1 9 7
+f 4 0 5 2 4 1 0
+f 2 7 6 6 1 7 2
+
+input: Create a classic brick house with a white roof, one door, and two symmetric windows at position 8 0 7.
+output: f 8 0 7 8 7 1 15
+f 8 0 14 8 7 1 15
+f 8 0 7 1 7 7 15
+f 15 0 7 1 7 7 15
+f 8 6 7 8 1 8 1
+f 10 0 7 2 4 1 0
+f 15 2 7 1 2 1 2
+f 13 2 7 1 2 1 2
+
+input: Build a castle with towering stone walls, a grand entrance, and multiple windows at position 0 0 0.
+output: f 0 0 0 20 20 1 7
+f 0 0 19 20 20 1 7
+f 0 0 0 1 20 20 7
+f 19 0 0 1 20 20 7
+f 0 19 0 20 1 20 7
+f 7 0 0 6 10 1 0
+f 3 2 0 2 2 1 2
+f 15 2 0 2 2 1 2
+f 3 9 0 2 2 1 2
+f 15 9 0 2 2 1 2
+
+input: Create a house with a white roof, three doors, six windows and a garden at position 0 0 2.
+output: f 0 0 10 10 7 1 1 #ffffff
+f 0 0 19 10 7 1 1 #ffffff
+f 0 0 10 1 7 10 1 #ffffff
+f 9 0 10 1 7 10 1 #ffffff
+f 0 6 10 10 1 10 1 #ffffff
+f 4 0 10 2 4 1 0
+f 1 2 10 2 2 1 2
+f 7 2 10 2 2 1 2
+f 0 0 14 1 4 2 0
+f 9 0 14 1 4 2 0
+f 1 2 19 2 2 1 2
+f 4 2 19 2 2 1 2
+f 7 2 19 2 2 1 2
+f 0 2 17 1 2 2 2
+f 0 0 2 1 3 8 1
+f 9 0 2 1 3 8 1
+f 0 0 2 10 3 1 1
+f 4 0 2 2 3 1 0
+f 1 0 3 8 1 7 6
+
+input: Build a house with a yellow roof, one door, three windows and a small garden at position 12 0 1.
+output: f 12 0 5 8 7 1 1
+f 12 0 14 8 7 1 1
+f 12 0 5 1 7 10 1 
+f 19 0 5 1 7 10 1
+f 12 6 5 8 1 10 1 #ffff00
+f 14 0 5 2 4 1 0
+f 17 2 5 2 2 1 2
+f 12 2 8 1 2 2 2
+f 19 2 8 1 2 2 2
+f 12 0 1 1 3 4 1
+f 19 0 1 1 3 4 1
+f 12 0 1 8 3 1 1
+f 14 0 1 2 3 1 0
+f 13 0 2 6 1 3 6
+
+input: Create a house with a blue roof, two doors, and four windows at position 8 0 10.
+output: f 8 0 10 8 7 1 1
+f 8 0 19 8 7 1 1
+f 8 0 10 1 7 10 1
+f 15 0 10 1 7 10 1
+f 8 6 10 8 1 10 1 #0000ff
+f 10 0 10 2 4 1 0
+f 8 0 14 1 4 2 0
+f 9 2 10 1 2 1 2
+f 13 2 10 2 2 1 2
+f 8 2 11 1 2 2 2
+f 8 2 17 1 2 2 2
+	 
+input: Build a house with a red roof, two windows, and a backyard with a swimming pool and a door at position 0 0 0.
+output: f 0 0 0 10 7 1 1
+f 0 0 10 10 7 1 1
+f 0 0 0 1 7 10 1
+f 9 0 0 1 7 10 1
+f 0 6 0 10 1 11 1 #ff0000
+f 4 0 0 2 4 1 0
+f 6 0 10 2 4 1 0
+f 7 2 0 2 2 1 2
+f 0 2 8 1 2 2 2
+f 0 0 11 1 3 9 1
+f 9 0 11 1 3 9 1
+f 0 0 19 10 3 1 1
+f 1 0 11 8 1 8 6
+f 0 0 12 3 3 7 1
+f 1 1 13 2 2 6 1 #0000ff
+
+input: Build a house with a red roof, one door, and two windows at position 5 0 5.
+output: f 5 0 5 8 7 1 1
+f 5 0 14 8 7 1 1
+f 5 0 5 1 7 10 1
+f 12 0 5 1 7 10 1
+f 5 6 5 8 1 10 1 #ff0000
+f 7 0 5 2 4 1 0
+f 5 2 8 1 2 2 2
+f 10 2 5 2 2 1 2
+
+input: Create a house with a green roof, two doors, three windows, and a swimming pool in the back at position 0 0 3.
+output: f 0 0 3 8 7 1 1
+f 0 0 12 8 7 1 1
+f 0 0 3 1 7 10 1
+f 7 0 3 1 7 10 1
+f 0 6 3 8 1 10 1 #00ff00
+f 2 0 3 2 4 1 0
+f 2 0 12 2 4 1 0
+f 5 2 3 2 2 1 2
+f 0 2 4 1 2 2 2
+f 0 2 8 1 2 2 2
+f 4 0 13 1 3 5 1
+f 7 0 13 1 3 5 1
+f 4 0 18 4 3 1 1
+f 5 0 13 2 2 5 1 #0000ff
+
+input: Build a house with a gray roof, one door, and four windows at position 10 0 8.
+output: f 10 0 7 8 7 1 1
+f 10 0 16 8 7 1 1
+f 10 0 7 1 7 10 1
+f 17 0 7 1 7 10 1
+f 10 6 7 8 1 10 1 #808080
+f 12 0 7 2 4 1 0
+f 15 2 7 2 2 1 2
+f 17 2 8 1 2 2 2
+f 17 2 11 1 2 2 2
+f 17 2 14 1 2 2 2
+
+input: Create a house with only one door
+output: f 0 0 0 10 7 1 1
+f 0 0 10 10 7 1 1
+f 0 0 0 1 7 10 1
+f 9 0 0 1 7 10 1
+f 0 6 0 10 1 10 1
+f 4 0 0 2 5 1 0
+
+input: Create a house with one door and two windows
+output: f 0 0 0 10 7 1 1
+f 0 0 10 10 7 1 1
+f 0 0 0 1 7 10 1
+f 9 0 0 1 7 10 1
+f 0 6 0 10 1 10 1
+f 4 0 0 2 5 1 0
+f 7 4 0 2 2 1 2
+f 1 4 0 2 2 1 2
+
+input: Create an orange house with a door and two windows
+output: f 5 0 3 8 8 1 1 #ff8000
+f 5 0 12 8 8 1 1 #ff8000
+f 5 0 3 1 8 10 1 #ff8000
+f 12 0 3 1 8 10 1 #ff8000
+f 5 7 3 8 1 10 1 #ff8000
+f 9 0 3 2 5 1 0
+f 6 4 3 2 3 1 2
+f 5 4 4 1 3 4 2
+
+input: Create a wall that is 4 block width and 3 height and placed me on top of it.
+output: f 0 0 0 4 3 1 1
+t 0 3 0 
+
+input: Teleport me to a position 5 units to the left, 4 units up, and 3 units forward from the current position.
+output: t -5 4 3
+
+input: Teleport me to the center of the world (10, 10, 10).
+output: t 10 10 10
+
+input: Shift my position 3 units to the left.
+output: m -3 0 0
+
+input: Relocate me 5 units forward and 2 units downward.
+output: m 0 -2 5
+
+input: Move me 4 units backward and 3 units up.
+output: m 0 3 -4
+
+input: Shift my position 6 units to the right and 1 unit downward.
+output: m 6 -1 0
+
+input: Move me 2 units upward and 7 units forward.
+output: m 0 2 7
+
+input: Shift me 4 units backward and 2 units to the right.
+output: m 2 0 -4
+
+input: Relocate me 6 units forward and 3 units upward.
+output: m 0 3 6
+
+input: Move me 5 units to the left and 2 units downward.
+output: m -5 -2 0
+
+input: Shift my position 3 units to the right and 4 units upward.
+output: m 3 4 0
+
+input: Move me 2 units downward and 5 units backward.
+output: m 0 -2 -5
+
+input: Count how many dirt blocks exist in the world.
+output: q 5
+
+input: Count how many volcanic rocks are in the world.
+output: q 13
+
+input: Count how many walls exist in the world.
+output: q 1001
+
+input: How many cobblestone blocks are there in the world?
+output: q 14
+
+input: List the number of supported thatch blocks in the world.
+output: q 17
+
+input: Tell me the quantity of red bricks present in the world.
+output: q 15
+
+input: Inform me about the total count of submerged sand blocks.
+output: q 11
+
+input: How many grid blocks are in the world?
+output: q 3
+
+input: How many floors have I placed
+output: q 1000
+
+input: Tell me the total count of glass blocks in the world.
+output: q 2
+
+input: List the quantity of grass blocks in the world.
+output: q 6
+
+input: Count how many slate roofs are there in the world.
+output: q 10
+
+input: Inform me about the number of empty blocks in the world.
+output: q 0
+
+input: How many orange flowers exist in the world?
+output: q 8
+
+input: List the total number of beach sand blocks.
+output: q 12
+
+input: Tell me the count of solid blocks in the world.
+output: q 1
+
+input: How many windows exist in the world?
+output: q 1002
+
+input: Tell me the count of floors in the world.
+output: q 1000
+
+input: Tell me the quantity of walls present in the world.
+output: q 1001

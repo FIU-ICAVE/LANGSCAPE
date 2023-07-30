@@ -110,7 +110,7 @@ namespace Oculus.Interaction
             }
         }
         [SerializeField, Range(0f, 1f)]
-        private float _progressFade = 0.2f;
+        private float _progressFade = 0f;
         public float ProgressFade
         {
             get
