@@ -341,3 +341,180 @@ output: n
 input: Make a red 10x6 meter wall with a window at 2 0 5.
 output: f 2 0 5 10 6 1 1 #ff0000
 f 3 1 5 8 4 1 2 #ffffff
+
+Input: Place a red block at the origin
+Output: f 0 0 0 1 1 1 1 #ff0000
+
+Input: Place an orange block at the origin
+Output: f 0 0 0 1 1 1 1 #ffa500
+
+Input: Place a yellow block at the origin
+Output: f 0 0 0 1 1 1 1 #ffea00
+
+Input: Place a green block at the origin
+Output: f 0 0 0 1 1 1 1 #008000
+
+Input: Place a blue block at the origin
+Output: f 0 0 0 1 1 1 1 #00ffff
+
+Input: Place a grid block at the origin
+Output: f 0 0 0 1 1 1 3
+
+Input: Place a dirt block at the origin
+Output: f 0 0 0 1 1 1 5
+
+Input: Place a grass block at the origin
+Output: f 0 0 0 1 1 1 6
+
+Input: Place a stone block at the origin
+Output: f 0 0 0 1 1 1 7
+
+Input: Place an orange flowers block at the origin
+Output: f 0 0 0 1 1 1 8
+
+Input: Place a thatch block at the origin
+Output: f 0 0 0 1 1 1 9
+Input: Place a slate roof block at the origin
+Output: f 0 0 0 1 1 1 10
+
+Input: Place a submerged sand block at the origin
+Output: f 0 0 0 1 1 1 11
+
+Input: Place a beach sand block at the origin
+Output: f 0 0 0 1 1 1 12
+
+Input: Place a volcanic rock block at the origin
+Output: f 0 0 0 1 1 1 13
+
+Input: Place a cobblestone block at the origin
+Output: f 0 0 0 1 1 1 14
+
+Input: Place a red brick block at the origin
+Output: f 0 0 0 1 1 1 15
+
+Input: Place a regrown grass block at the origin
+Output: f 0 0 0 1 1 1 16
+
+Input: Place a supported thatch block at the origin
+Output: f 0 0 0 1 1 1 17
+
+Input: Create a wall with two windows made out of stone
+Output: 
+f 0 0 10 5 1 7
+f 2 1 0 2 2 1 2
+f 6 1 0 2 2 1 2
+
+input: Make the wall out of orange flowers instead
+Output:
+f 0 0 10 5 1 8
+f 2 1 0 2 2 1 8
+f 6 1 0 2 2 1 8
+
+input: build me a house in the center of the grid made out of stone
+output: f 5 5 5 10 10 10 7
+
+input: place a line of wood blocks
+output: f 0 0 0 10 1 1 5
+
+input: place a line of grass blocks starting at Y5
+output: f 0 5 0 10 1 10 6
+
+input: make me a wall with a window and a door
+output: 
+f 5 0 5 10 4 1 1
+f 6 1 5 2 2 1 2
+f 9 0 5 2 3 1 0
+
+input: rotate the wall
+output: r 5 0 5 10 4 1 1 
+
+input: place a house with two doors
+output: 
+f 0 0 0 10 7 1 1
+f 0 0 10 10 7 1 1
+f 0 0 0 1 7 10 1
+f 9 0 0 1 7 10 1
+f 0 6 0 10 1 10 1
+f 4 0 0 2 4 1 0
+f 0 0 4 1 4 2 0
+f 9 0 4 1 4 2 0
+
+input: place a wall
+output: f 0 0 0 10 5 1 1
+
+input: place a red wall
+output: f 0 0 0 10 5 1 1 #ff0000
+
+input: place a white wall
+output: f 0 0 0 10 5 1 1 #ffffff
+
+input: place a red wall
+output: f 0 0 0 10 5 1 1 #ff0000
+
+input: place a purple wall
+output: f 0 0 0 10 5 1 1 #9900cc
+
+input: place a brown wall
+output: f 0 0 0 10 5 1 1 # a52a2a
+
+input: place a pink wall
+output: f 0 0 0 10 5 1 1 # ff69b4
+
+input: place an orange wall
+output: f 0 0 0 10 5 1 1 #ff9900
+
+input: place a white wall
+output: f 0 0 0 10 5 1 1 #ffffff
+
+input: place a black wall
+output: f 0 0 0 10 5 1 1 #000000
+
+input: place a blue wall
+output: f 0 0 0 10 10 1 1 #0000ff
+
+input: place a green wall next to it
+output: f 10 0 0 10 10 1 1 #00ff00
+
+input: shorten the height of both walls by half
+output: m 0 0 0 10 5 1 0 5 0
+m 10 0 0 10 5 1 0 5 0
+
+input: place a stone wall 5 blocks tall and 10 blocks wide
+output: f 0 0 0 10 5 1 7
+
+input: build a tower in the center of the grid
+output: f 8 8 8 4 14 4 1 #808080
+
+input: build a tower at the origin
+output: f 0 0 0 5 20 1 1
+
+input: build a green tower at the origin
+output: f 0 0 0 5 20 1 1 #00ff00
+
+input: build a blue tower at the origin
+output: f 0 0 0 5 20 1 1 #0000ff
+
+input: build a red tower at the origin
+output: f 0 0 0 5 20 1 1 #ff0000
+
+Input: build a purple tower at the origin 
+Output: f 0 0 0 5 20 1 1 #9900cc
+
+Input: build a brown tower at the origin 
+Output: f 0 0 0 5 20 1 1 #a52a2a
+
+Input: build a pink tower at the origin 
+Output: f 0 0 0 5 20 1 1 #ff69b4
+
+input: build a yellow tower at the origin
+output: f 0 0 0 5 20 1 1 #ffff00
+
+input: build an orange tower at the origin
+output: f 0 0 0 5 20 1 1 #ff9900
+
+
+input: build a black tower at the origin
+output: f 0 0 0 5 20 1 1 #000000
+
+input: build a white tower at the origin
+output: f 0 0 0 5 20 1 1 #ffffff
