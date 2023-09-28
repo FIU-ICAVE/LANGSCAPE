@@ -61,7 +61,7 @@ public class CommandInterpreter : MonoBehaviour {
 
     // Loads prompt from file in Assets/Resources/prompt
     void Awake() {
-        openai = new OpenAIApi(apiKey: "YOUR API HERE");
+        openai = new OpenAIApi(apiKey: "YOUR API KEY HERE");
         TextAsset filedata = Resources.Load<TextAsset>("OpenAI/PROMPT");
         if (filedata == null)
             throw new System.Exception("No file found called prompt in 'Assets/Resources/OpenAI/PROMPT");
@@ -149,7 +149,7 @@ public class CommandInterpreter : MonoBehaviour {
         outputBox.text = "Loading response...";
 
         // If User Input has key indicator "background" or "Background", Switch to Second LLM
-        if (sa.SwitchLLM(userRequest.Content, LLM_keyword[0]) == true || sa.SwitchLLM(userRequest.Content, LLM_keyword[1]) == true)
+        if (sa.SwitchLLM(userRequest.Content, LLM_keyword[0])|| sa.SwitchLLM(userRequest.Content, LLM_keyword[1]))
         {
             outputBox.text = "Background Changes Currently Not Implemented";
         }

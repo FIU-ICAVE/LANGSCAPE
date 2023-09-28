@@ -67,13 +67,12 @@ namespace Search
         // True or False, Message contains indicator for switching to 2nd LLM
         public bool SwitchLLM(string message, string indicator)
         {
-            int num = message.Length;
 
             // If Message Declaration is Empty
             if (string.IsNullOrEmpty(message)) { return false; }
             
             // Checks if indicator is in message
-            int check = message.IndexOf(indicator[0], 0, num);
+            int check = message.IndexOf(indicator, 0);
             
             // If Not Found
             if (check == -1) { return false; }
