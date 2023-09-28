@@ -149,7 +149,7 @@ public class CommandInterpreter : MonoBehaviour {
         outputBox.text = "Loading response...";
 
         // If User Input has key indicator "background" or "Background", Switch to Second LLM
-        if (sa.SwitchLLM(userRequest.Content, LLM_keyword[0]) || sa.SwitchLLM(userRequest.Content, LLM_keyword[1]))
+        if (sa.SwitchLLM(userRequest.Content, LLM_keyword[0]) == true || sa.SwitchLLM(userRequest.Content, LLM_keyword[1]) == true)
         {
             outputBox.text = "Background Changes Currently Not Implemented";
         }
@@ -182,17 +182,19 @@ public class CommandInterpreter : MonoBehaviour {
                         instruct = Updated.command;
                         // Only the Message
                         fluff = Updated.sentence;
-
+                        
+                        // If Instruct Has No Instructions, Change to "n" (For Now)
+                        if (string.IsNullOrEmpty(instruct) == false)
+                        {
+                            aiResponse.Content = instruct;
+                        }
+                        else
+                        {
+                            aiResponse.Content = "n";
+                        }
+                    
                     }
-                    // If Instruct Has No Instructions, Change to Fluff (For Now)
-                    if (string.IsNullOrEmpty(instruct) == false)
-                    {
-                        aiResponse.Content = instruct;
-                    }
-                    else
-                    {
-                        aiResponse.Content = "n";
-                    }
+                    
 
 
                     aiResponse.Content = aiResponse.Content.Trim();
