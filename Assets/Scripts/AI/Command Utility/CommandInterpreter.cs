@@ -211,7 +211,12 @@ public class CommandInterpreter : MonoBehaviour {
                     aiResponse.Content = aiResponse.Content.Trim();
 
                     messages.Add(aiResponse);
-                    outputBox.text = aiResponse.Content;
+
+                    // Outputs Ai Response Commands
+                    //outputBox.text = aiResponse.Content;
+                    // Outputs Ai Responses without Commands
+                    outputBox.text = fluff;
+                    
                 
             
         

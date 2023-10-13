@@ -37,7 +37,7 @@ public class CommandParser
 
             // If the signature is equal to the null command, exit the process with null.
             if (signature == Command.SIGNATURE)
-                return LangscapeError.CMD_NULL.code;
+                return LangscapeError.CMD_VALID.code/*LangscapeError.CMD_NULL.code*/;
 
             // If the signature is equal to the fill command, attempt to parse it.
             if (signature == FillCommand.SIGNATURE) {
