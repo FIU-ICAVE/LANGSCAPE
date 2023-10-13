@@ -53,6 +53,7 @@ public class CommandInterpreter : MonoBehaviour {
 
     // Search
     private SearchAlgorithms sa = new SearchAlgorithms();
+
     // Command Indicators for Only Instructions 
     // :: 1 for Only Commands, 2 for Words and Commands, 3 for 2nd LLM Keyword ::
     string[] indicator = { "f ", "m ", "r ", "c ", "u ", "v ", "q ", "t " };
@@ -61,7 +62,7 @@ public class CommandInterpreter : MonoBehaviour {
 
     // Loads prompt from file in Assets/Resources/prompt
     void Awake() {
-        openai = new OpenAIApi(apiKey: "YOUR API KEY HERE");
+        openai = new OpenAIApi(apiKey: "#");
         TextAsset filedata = Resources.Load<TextAsset>("OpenAI/PROMPT");
         if (filedata == null)
             throw new System.Exception("No file found called prompt in 'Assets/Resources/OpenAI/PROMPT");
@@ -194,8 +195,18 @@ public class CommandInterpreter : MonoBehaviour {
                         }
                     
                     }
-                    
 
+                    // Text to Speech Section
+                    
+                    // If Message Declaration is Empty
+                    if (string.IsNullOrEmpty(fluff))
+                    {
+                        fluff = "Command has been processed.";
+                    }
+
+                    AIMic.Instance.SpeakFluff(fluff);
+                    
+                    // Text To Speech Section
 
                     aiResponse.Content = aiResponse.Content.Trim();
 
