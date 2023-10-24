@@ -57,7 +57,7 @@ public class CommandInterpreter : MonoBehaviour {
     // Command Indicators for Only Instructions 
     // :: 1 for Only Commands, 2 for Words and Commands, 3 for 2nd LLM Keyword ::
     string[] indicator = { "f ", "m ", "r ", "c ", "u ", "v ", "q ", "t " };
-    string[] indicator2 = { " f ", " m ", " r ", " c ", " u ", " v ", " q ", " t " };
+    string[] indicator2 = { " f ", " m ", " r ", " c ", " u ", " v ", " q ", " t ", "\nf ", "\nm ", "\nr ", "\nc ", "\nu ", "\nv ", "\nq ", "\nt " };
     string[] LLM_keyword = { "Background", "background" };
 
     // Loads prompt from file in Assets/Resources/prompt
@@ -177,8 +177,8 @@ public class CommandInterpreter : MonoBehaviour {
                     // If Message Contains Only the Command don't Modify, otherwise Modify
                     if (sa.hasOnlyCommand(aiResponse.Content, indicator) == false && aiResponse.Content != "n")
                     {
-                        var Updated = sa.commandOnly((string)aiResponse.Content, indicator2);
-
+                        var Updated = sa.fullSplit((string)aiResponse.Content, indicator, indicator2);
+                        
                         // Only The Instructions
                         instruct = Updated.command;
                         // Only the Message
@@ -196,30 +196,31 @@ public class CommandInterpreter : MonoBehaviour {
                     
                     }
 
-                    // Text to Speech Section
-                    
-                    // If Message Declaration is Empty
-                    if (string.IsNullOrEmpty(fluff))
-                    {
-                        fluff = "Command has been processed.";
-                    }
-
-                    AIMic.Instance.SpeakFluff(fluff);
-                    
-                    // Text To Speech Section
-
                     aiResponse.Content = aiResponse.Content.Trim();
 
                     messages.Add(aiResponse);
-
-                    // Outputs Ai Response Commands
-                    //outputBox.text = aiResponse.Content;
-                    // Outputs Ai Responses without Commands
-                    outputBox.text = fluff;
                     
-                
-            
-        
+                    // Checks if Sentence Declaration is Not Empty
+                    if (!string.IsNullOrEmpty(fluff))
+                    {
+                        // Tells TTSpeaker to Speak fluff
+                        AIMic.Instance.SpeakFluff(fluff);
+                    }
+                    else
+                    {
+                        // Outputs Ai Response without Commands into Output Box
+                        fluff = "AI Responded";
+                    }
+
+                    // Outputs Ai Response without Commands into Output Box
+                    outputBox.text = fluff;
+                    // Outputs Ai Response without Sentence into Debug Log
+                    Debug.Log("Command: " + aiResponse.Content);
+
+
+
+
+
 
 #if TEST_CUBEPLACER
             WorldCommand commands = JSONParser.ParseCommand(message.Content);
