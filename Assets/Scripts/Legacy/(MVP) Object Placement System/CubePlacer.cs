@@ -22,8 +22,8 @@ public class CubePlacer : MonoBehaviour
     [SerializeField]
     private GameObject _block;
     private GameObject _objectContainer;
-    [SerializeField]
-    private bool _pointAndClickDebug = true;
+    //[SerializeField]
+    //private bool _pointAndClickDebug = true;
 
     [SerializeField]
     private Material _baseBlockMat;
