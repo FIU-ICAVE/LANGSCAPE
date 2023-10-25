@@ -58,7 +58,7 @@ public class CommandInterpreter : MonoBehaviour {
     // :: 1 for Only Commands, 2 for Words and Commands, 3 for 2nd LLM Keyword ::
     string[] indicator = { "f ", "m ", "r ", "c ", "u ", "v ", "q ", "t " };
     string[] indicator2 = { " f ", " m ", " r ", " c ", " u ", " v ", " q ", " t ", "\nf ", "\nm ", "\nr ", "\nc ", "\nu ", "\nv ", "\nq ", "\nt " };
-    string[] LLM_keyword = { "Background", "background" };
+    string LLM_keyword = "background";
 
     // Loads prompt from file in Assets/Resources/prompt
     void Awake() {
@@ -150,7 +150,7 @@ public class CommandInterpreter : MonoBehaviour {
         outputBox.text = "Loading response...";
 
         // If User Input has key indicator "background" or "Background", Switch to Second LLM
-        if (sa.SwitchLLM(userRequest.Content, LLM_keyword[0])|| sa.SwitchLLM(userRequest.Content, LLM_keyword[1]))
+        if (sa.SwitchLLM(userRequest.Content, LLM_keyword))
         {
             outputBox.text = "Background Changes Currently Not Implemented";
         }

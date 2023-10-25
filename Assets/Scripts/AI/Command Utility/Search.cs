@@ -249,8 +249,8 @@ namespace Search
             // If Message Declaration is Empty
             if (string.IsNullOrEmpty(message)) { return false; }
             
-            // Checks if indicator is in message
-            int check = message.IndexOf(indicator, 0);
+            // Checks if indicator is in message (case insensitive)
+            int check = message.IndexOf(indicator, StringComparison.OrdinalIgnoreCase);
             
             // If Not Found
             if (check == -1) { return false; }
