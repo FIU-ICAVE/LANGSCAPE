@@ -12,6 +12,8 @@
 
 using OpenAI;
 using System.Collections.Generic;
+using System;
+using Search;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -49,9 +51,18 @@ public class CommandInterpreter : MonoBehaviour {
     // ChatGPT
     private List<ChatMessage> messages = new List<ChatMessage>();
 
+    // Search
+    private SearchAlgorithms sa = new SearchAlgorithms();
+
+    // Command Indicators for Only Instructions 
+    // :: 1 for Only Commands, 2 for Words and Commands, 3 for 2nd LLM Keyword ::
+    string[] indicator = { "f ", "m ", "r ", "c ", "u ", "v ", "q ", "t " };
+    string[] indicator2 = { " f ", " m ", " r ", " c ", " u ", " v ", " q ", " t ", "\nf ", "\nm ", "\nr ", "\nc ", "\nu ", "\nv ", "\nq ", "\nt " };
+    string LLM_keyword = "background";
+
     // Loads prompt from file in Assets/Resources/prompt
     void Awake() {
-        openai = new OpenAIApi(apiKey: "YOUR API KEY HERE");
+        openai = new OpenAIApi(apiKey: "#");
         TextAsset filedata = Resources.Load<TextAsset>("OpenAI/PROMPT");
         if (filedata == null)
             throw new System.Exception("No file found called prompt in 'Assets/Resources/OpenAI/PROMPT");
@@ -138,23 +149,78 @@ public class CommandInterpreter : MonoBehaviour {
 
         outputBox.text = "Loading response...";
 
-        // Complete the instruction
-        try {
-            var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest() {
-                Model = "gpt-3.5-turbo-16k",
-                Messages = messages,
-                Temperature = 0f,
-                MaxTokens = 256,
-                PresencePenalty = 0,
-                FrequencyPenalty = 0
-            });
+        // If User Input has key indicator "background" or "Background", Switch to Second LLM
+        if (sa.SwitchLLM(userRequest.Content, LLM_keyword))
+        {
+            outputBox.text = "Background Changes Currently Not Implemented";
+        }
+        else
+        {
 
-            if (completionResponse.Choices != null && completionResponse.Choices.Count > 0) {
-                var aiResponse = completionResponse.Choices[0].Message;
-                aiResponse.Content = aiResponse.Content.Trim();
+            // Complete the instruction
+            try {
+                var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest() {
+                    Model = "gpt-3.5-turbo-16k",
+                    Messages = messages,
+                    Temperature = 0f,
+                    MaxTokens = 256,
+                    PresencePenalty = 0,
+                    FrequencyPenalty = 0
+                });
 
-                messages.Add(aiResponse);
-                outputBox.text = aiResponse.Content;
+                if (completionResponse.Choices != null && completionResponse.Choices.Count > 0) {
+                    var aiResponse = completionResponse.Choices[0].Message;
+                    
+                    string fluff = string.Empty; // Sentence
+                    string instruct = string.Empty; // Command
+
+                    // If Message Contains Only the Command don't Modify, otherwise Modify
+                    if (sa.hasOnlyCommand(aiResponse.Content, indicator) == false && aiResponse.Content != "n")
+                    {
+                        var Updated = sa.fullSplit((string)aiResponse.Content, indicator, indicator2);
+                        
+                        // Only The Instructions
+                        instruct = Updated.command;
+                        // Only the Message
+                        fluff = Updated.sentence;
+                        
+                        // If Instruct Has No Instructions, Change to "n" (For Now)
+                        if (string.IsNullOrEmpty(instruct) == false)
+                        {
+                            aiResponse.Content = instruct;
+                        }
+                        else
+                        {
+                            aiResponse.Content = "n";
+                        }
+                    
+                    }
+
+                    aiResponse.Content = aiResponse.Content.Trim();
+
+                    messages.Add(aiResponse);
+                    
+                    // Checks if Sentence Declaration is Not Empty
+                    if (!string.IsNullOrEmpty(fluff))
+                    {
+                        // Tells TTSpeaker to Speak fluff
+                        AIMic.Instance.SpeakFluff(fluff);
+                    }
+                    else
+                    {
+                        // Outputs Ai Response without Commands into Output Box
+                        fluff = "AI Responded";
+                    }
+
+                    // Outputs Ai Response without Commands into Output Box
+                    outputBox.text = fluff;
+                    // Outputs Ai Response without Sentence into Debug Log
+                    Debug.Log("Command: " + aiResponse.Content);
+
+
+
+
+
 
 #if TEST_CUBEPLACER
             WorldCommand commands = JSONParser.ParseCommand(message.Content);
@@ -173,4 +239,6 @@ public class CommandInterpreter : MonoBehaviour {
             outputBox.text = e.Message;
         }
     }
+
+}
 }
