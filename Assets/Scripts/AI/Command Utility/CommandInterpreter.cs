@@ -55,10 +55,13 @@ public class CommandInterpreter : MonoBehaviour {
     private SearchAlgorithms sa = new SearchAlgorithms();
 
     // Command Indicators for Only Instructions 
-    // :: 1 for Only Commands, 2 for Words and Commands, 3 for 2nd LLM Keyword ::
+    // :: Block Building => 1 for Only Commands, 2 for Words and Commands ::
     string[] indicator = { "f ", "m ", "r ", "c ", "u ", "v ", "q ", "t " };
     string[] indicator2 = { " f ", " m ", " r ", " c ", " u ", " v ", " q ", " t ", "\nf ", "\nm ", "\nr ", "\nc ", "\nu ", "\nv ", "\nq ", "\nt " };
+    // :: Background Building => Switch Keyword, 3 for Only Commands, 4 for Words and Commands ::
     string LLM_keyword = "background";
+    string[] indicator3 = { "d ", "l ", "z ", "o " };
+    string[] indicator4 = { "d ", "l ", "z ", "o ", "\nd ", "\nl ", "\nz", "\no" };
 
     // Loads prompt from file in Assets/Resources/prompt
     void Awake() {
