@@ -206,7 +206,7 @@ namespace Search
                     c1 = 1;
                     pos = aCount(words, c1);
                     break;
-                // 1 Parameter
+                // 1 Parameter, 0 Optional
                 case 'q':
                     c1 = 1;
                     pos = aCount(words, c1);
