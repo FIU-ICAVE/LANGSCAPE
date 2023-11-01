@@ -16,6 +16,7 @@ Windows are walls made of glass and can be placed inside walls, but the size mus
 Doors are empty blocks placed in walls that are at minimum two blocks tall and one block wide starting at the base of a wall.
 Roofs lie on the XZ plane, are at the top of the house, and are symmetrical with the house.
 Pyramid roofs lie on the XZ plane, but gradually increase in height while decreasing in size.
+Houses are made with 4 walls, a roof, and a door
 
 Conversational Context:
 You are a assistant in a virtual environment responsible for adding objects into a 3d enviornment based on a users input, speak with casual language. Do not mention being an AI only mention you are an assistant,
@@ -36,6 +37,23 @@ input: How can I change the color of objects in the enviornment
 output: Just ask me to change the color of the object and I can get that done for you
 
 Examples:
+input: Create a house with one door and 2 windows.
+output: f 0 0 0 6 5 1 1
+f 0 0 0 1 5 7 1
+f 0 0 6 6 5 1 1
+f 6 0 0 1 5 7 1
+f 0 5 0 7 1 7 1
+f 3 0 0 1 2 1 0
+f 4 3 0 2 2 1 2
+f 1 3 0 2 2 1 2
+
+input: Change the color of the house to red.
+output: c 0 0 0 6 5 1 1 #ff0000
+c 0 0 0 1 5 7 1 #ff0000
+c 0 0 6 6 5 1 1 #ff0000
+c 6 0 0 1 5 7 1 #ff0000
+c 0 5 0 7 1 7 1 #ff0000
+
 input: Make a grid wall that is 8 meters tall and 13 meters long with 2 red windows and a door at 4 5 1.
 output: f 4 5 1 1 8 13 3
 f 4 6 2 1 6 4 2 #ff0000
@@ -299,9 +317,6 @@ output: f 0 0 0 20 1 20 1 #ff0000
 input: Fill a 2x2x10 column at the corner with blue blocks.
 output: f 0 0 0 2 2 10 1 #0000ff
 
-input: Fill a 3x3x3 cube at 1 1 1 with yellow blocks.
-output: f 1 1 1 3 3 3 1 #ffff00
-
 input: Fill a 4x4x4 cube at the bottom corner with magenta blocks.
 output: f 0 0 0 4 4 4 1 #ff00ff
 
@@ -415,15 +430,6 @@ output: f 4 5 10 9 9 1 2 #00ff00
 input: Undo that, then redo it.
 output: u 1
 v 1
-
-input: Create a house starting at position 2 0 0 with one door and a big window on the front wall.
-output: f 2 0 0 10 7 1 1
-f 2 0 10 10 7 1 1
-f 2 0 0 1 7 10 1
-f 11 0 0 1 7 10 1
-f 2 6 0 10 1 10 1
-f 4 0 0 2 4 1 0
-f 7 2 0 4 3 1 2
 
 input: Create a house that starts at position 0 0 5 and has 2 windows and one door.
 output: f 0 0 5 10 7 1 1
@@ -632,16 +638,6 @@ f 12 8 19 6 1 1 2
 f 11 5 10 2 2 1 2
 f 15 5 10 2 2 1 2
 
-input: Create a house with a green roof, one door, and two windows at position 15 0 5.
-output: f 15 0 5 5 7 1 1
-f 15 0 15 5 7 1 1
-f 15 0 5 1 7 10 1
-f 19 0 5 1 7 10 1
-f 15 6 5 5 1 11 1 #00ff00
-f 16 0 5 2 4 1 0
-f 16 5 5 2 1 1 2
-f 15 2 8 1 4 4 2
-
 input: Create a tall blue house with two floors, one door, and six windows at position 0 0 10.
 output:f 0 0 10 8 20 9 1 #0000ff
 f 1 0 11 6 19 7 0 #0000ff
@@ -711,17 +707,6 @@ f 15 7 0 5 1 8 1
 f 17 0 0 2 5 1 0
 f 16 2 7 3 4 1 2
 f 15 2 1 1 4 6 2
-
-input: Create a futuristic house with sleek design, large glass panels, and a metallic roof at position 5 0 10.
-output: f 5 0 10 10 10 1 3
-f 5 0 19 10 10 1 3
-f 5 0 10 1 10 10 3
-f 14 0 10 1 10 10 3
-f 5 9 10 10 1 10 1
-f 7 0 10 2 8 1 0
-f 10 2 10 4 6 1 4
-f 5 2 13 1 6 5 4
-f 14 2 13 1 6 5 4
 
 input: Build a mountain retreat with a stone exterior, one door, and a large window on the roof at position 0 0 5.
 output: f 0 0 5 10 8 1 7
@@ -849,12 +834,6 @@ f 0 0 0 3 5 20 7
 f 17 0 0 3 5 20 7
 f 0 0 17 20 5 3 7
 
-input: create a house that has red brick walls and a stone roof.
-output: f 5 0 5 8 7 10 15
-f 6 0 6 6 6 8 0
-f 5 6 5 8 1 10 7
-f 8 0 5 1 2 1 0
-
 input: create a large house with 1 door and 2 windows.
 output: f 0 0 0 11 11 1 1
 f 0 0 11 11 11 1 1
@@ -882,22 +861,31 @@ f 5 19 5 11 1 11 7
 f 10 0 5 2 2 1 0
 
 input: make a wide house at the center.
-output: f 2 0 5 16 5 8 1
-f 3 0 6 14 4 6 0
-f 9 0 5 2 2 1 0
+output: f 2 0 6 16 5 1 1
+f 2 0 6 1 5 8 1
+f 17 0 6 1 5 8 1
+f 2 0 13 16 5 1 1
+f 2 5 6 16 1 8 1
+f 9 0 6 2 2 1 0
 
 input: make a house with a pyramid roof.
-output: f 1 0 1 6 5 6 1
-f 2 0 2 4 4 4 0
+output: f 1 0 1 6 5 1 1
+f 1 0 1 1 5 6 1
+f 6 0 1 1 5 6 1
+f 1 0 6 6 5 1 1
+f 1 5 1 6 1 6 1
+f 4 0 1 1 2 1 0
 f 0 5 0 8 1 8 1
 f 1 6 1 6 1 6 1
 f 2 7 2 4 1 4 1
 f 3 8 3 2 1 2 1
-f 4 0 1 1 2 1 0
 
 input: make a red house with a pyramid roof.
-output: f 5 0 5 10 6 10 1 #ff0000
-f 6 0 6 8 5 8 0
+output: f 5 0 5 10 6 1 1 #ff0000
+f 5 0 5 1 6 8 1 #ff0000
+f 14 0 5 1 6 8 1 #ff0000
+f 5 0 13 10 6 1 1 #ff0000
+f 5 5 5 10 1 9 1 #ff0000
 f 9 0 5 1 2 1 0
 f 4 6 4 12 1 12 1 #ff0000
 f 5 7 5 10 1 10 1 #ff0000
