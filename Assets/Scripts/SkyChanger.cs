@@ -26,6 +26,8 @@ public class SkyChanger : MonoBehaviour
     void Start()
     {
         SkyDropdown.onValueChanged.AddListener(delegate { ChangeSky(SkyDropdown.value); });
+        RenderSettings.skybox = dayMat;
+        DynamicGI.UpdateEnvironment();
     }
 
     public void ChangeSky(int skyType)
@@ -88,8 +90,5 @@ public class SkyChanger : MonoBehaviour
                 Debug.Log("Invalid sky type");
                 break;
         }
-
-        // Updates the environment lighting again, just in case. could probably be deleted.
-        DynamicGI.UpdateEnvironment();
     }
 }
