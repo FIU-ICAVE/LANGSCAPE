@@ -161,6 +161,7 @@ namespace Search
 
             switch (letter)
             {
+                /* First LLM Indicators */
                 // 8 Parameters, 1 Optional
                 case 'f':
                     c1 = 7; c2 = 8;
@@ -205,7 +206,7 @@ namespace Search
                     c1 = 1;
                     pos = aCount(words, c1);
                     break;
-                // 1 Parameter
+                // 1 Parameter, 0 Optional
                 case 'q':
                     c1 = 1;
                     pos = aCount(words, c1);
@@ -216,6 +217,22 @@ namespace Search
                     pos = aCount(words, c1);
                     break;
 
+                /* Background LLM Indicators */
+                // 1 Parameter, 0 Optional
+                case 'd':
+                    // Skybox
+                    break;
+                // 1 Parameter, 0 Optional
+                case 'l':
+                    // Land
+                    break;
+                // N Parameters, 0 Optional
+                case 'o':
+                    // Objects
+                    break;
+                case 'z':
+                    // Utility
+                    break;
             }
             return pos;
 
