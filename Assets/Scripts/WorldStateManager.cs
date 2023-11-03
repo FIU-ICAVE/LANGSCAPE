@@ -95,7 +95,7 @@ public class WorldStateManager : MonoBehaviour
             ExecutePush(batch);
             GridMesh.Instance.RegenerateMesh();
         }
-        if (parseCode != 0)
+        if (parseCode != LangscapeError.CMD_VALID.code)
         {
             AIMic.Instance.ShushFluff();
         }
