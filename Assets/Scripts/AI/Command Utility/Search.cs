@@ -220,18 +220,30 @@ namespace Search
                 /* Background LLM Indicators */
                 // 1 Parameter, 0 Optional
                 case 'd':
-                    // Skybox
+                    c1 = 1;
+                    pos = aCount(words, c1);
                     break;
                 // 1 Parameter, 0 Optional
                 case 'l':
-                    // Land
+                    c1 = 1;
+                    pos = aCount(words, c1);
                     break;
-                // N Parameters, 0 Optional
+                // 1 Parameter, 0 Optional
                 case 'o':
-                    // Objects
+                    c1 = 1;
+                    pos = aCount(words, c1);
                     break;
+                // 2 Parameter, 1 Optional
                 case 'z':
-                    // Utility
+                    c1 = 1; c2 = 2;
+                    if(words.Count() >= c2 && words[c2].All(char.IsNumber))
+                    {
+                        pos = aCount(words, c2);
+                    }
+                    else
+                    {
+                        pos = aCount(words, c1);
+                    }
                     break;
             }
             return pos;
