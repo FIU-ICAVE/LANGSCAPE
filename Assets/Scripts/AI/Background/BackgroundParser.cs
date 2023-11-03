@@ -1,53 +1,55 @@
 using System.Collections.Generic;
-using UnityEngine;
-
-/// <summary>
-/// // Format of Command Code :: [ErrorCode] [Command Indicator] [Action] [Extra Action]
-/// [Err]   [Ind]   [Action]            [Extra Action]
-/// 0000    d = 1   Uses State: int   
-/// ----    l = 2   Uses Area: int
-/// ----    o = 3   Uses Item: int      
-/// ----    z = 4   Uses Util: int      ??: int
-/// </summary>
-public struct b_command
-{
-    public int errorCode;
-    public int c_ind;
-    public int act;
-    public bool extra;
-    public int act2;
-
-    // When Error Occurs
-    public b_command(int eCode)
-    {
-        this.errorCode = eCode;
-        this.c_ind = 0;
-        this.act = 0;
-        this.extra = false;
-        this.act2 = 0;
-    }
-    // When No Extra Parameter Exists
-    public b_command(int eCode, int cCode, int aCode, bool eCheck)
-    {
-        this.errorCode = eCode;
-        this.c_ind = cCode;
-        this.act = aCode;
-        this.extra = eCheck;
-        this.act2 = 0;
-    }
-    // When Extra Parameter Exists
-    public b_command(int eCode, int cCode, int aCode, bool eCheck, int a2Code)
-    {
-        this.errorCode = eCode;
-        this.c_ind = cCode;
-        this.act = aCode;
-        this.extra = eCheck;
-        this.act2 = a2Code;
-    }
-} 
+using UnityEngine; 
 
 public class BackgroundParser
 {
+
+    /// <summary>
+    /// // Format of Command Code :: [ErrorCode] [Command Indicator] [Action] [Extra Action]
+    /// [Err]   [Ind]   [Action]            [Extra Action]
+    /// 0000    n = 0   Uses 0: int
+    /// ----    d = 1   Uses State: int   
+    /// ----    l = 2   Uses Area: int
+    /// ----    o = 3   Uses Item: int      
+    /// ----    z = 4   Uses Util: int      Opt: int
+    /// </summary>
+    public struct b_command
+    {
+        public int errorCode;
+        public int c_ind;
+        public int act;
+        public bool extra;
+        public int act2;
+
+        // When Error Occurs
+        public b_command(int eCode)
+        {
+            this.errorCode = eCode;
+            this.c_ind = 0;
+            this.act = 0;
+            this.extra = false;
+            this.act2 = 0;
+        }
+        // When No Extra Parameter Exists
+        public b_command(int eCode, int cCode, int aCode, bool eCheck)
+        {
+            this.errorCode = eCode;
+            this.c_ind = cCode;
+            this.act = aCode;
+            this.extra = eCheck;
+            this.act2 = 0;
+        }
+        // When Extra Parameter Exists
+        public b_command(int eCode, int cCode, int aCode, bool eCheck, int a2Code)
+        {
+            this.errorCode = eCode;
+            this.c_ind = cCode;
+            this.act = aCode;
+            this.extra = eCheck;
+            this.act2 = a2Code;
+        }
+    }
+
     // Returns an List of b_commands ( Error and CommandCode)
     // If there is an error return Corresponding Error Code and Empty Integer Array
     // Format of Command Code :: <ErrorCode> <Command Indicator> <Action> <Extra Action>
@@ -65,20 +67,23 @@ public class BackgroundParser
         do
         {
             b_command bcom = new b_command(0000);
+            int error = LangscapeError.CMD_VALID.code;
             int j = 0;
             switch (words[k])
             {
+                case "n":
+                    bcom = new b_command(error, 0, 0, false);
+                    break;
                 // One Parameter, 0 Optional
                 case "d":
                     if (int.TryParse(words[k + 1], out j))
                     {
-                        int error = LangscapeError.CMD_VALID.code;
                         bcom = new b_command(error, 1, j, false);
                     }
                     else
                     {
-                        // Create Error for Not Int Command
-                        bcom = new b_command(0000);
+                        error = LangscapeError.CMD_INVALID_PARAM.code;
+                        bcom = new b_command(error);
                     }
 
                     break;
@@ -86,26 +91,24 @@ public class BackgroundParser
                 case "l":
                     if (int.TryParse(words[k + 1], out j))
                     {
-                        int error = LangscapeError.CMD_VALID.code;
                         bcom = new b_command(error, 2, j, false);
                     }
                     else
                     {
-                        // Create Error for Not Int Command
-                        bcom = new b_command(0000);
+                        error = LangscapeError.CMD_INVALID_PARAM.code;
+                        bcom = new b_command(error);
                     }
                     break;
                 // One Parameter, 0 Optional
                 case "o":
                     if (int.TryParse(words[k + 1], out j))
                     {
-                        int error = LangscapeError.CMD_VALID.code;
                         bcom = new b_command(error, 3, j, false);
                     }
                     else
                     {
-                        // Create Error for Not Int Command
-                        bcom = new b_command(0000);
+                        error = LangscapeError.CMD_INVALID_PARAM.code;
+                        bcom = new b_command(error);
                     }
                     break;
                 // Two Parameters, 1 Optional
@@ -114,7 +117,6 @@ public class BackgroundParser
                     {
                         if (words.Length < k + 2)
                         {
-                            int error = LangscapeError.CMD_VALID.code;
                             bcom = new b_command(error, 4, j, false);
                         }
                         else
@@ -122,15 +124,19 @@ public class BackgroundParser
                             int p = 0;
                             if (int.TryParse(words[k + 2], out p))
                             {
-                                int error = LangscapeError.CMD_VALID.code;
                                 bcom = new b_command(error, 4, j, true, p);
+                            }
+                            else
+                            {
+                                error = LangscapeError.CMD_INVALID_PARAM.code;
+                                bcom = new b_command(error);
                             }
                         }
                     }
                     else
                     {
-                        // Create Error for Not Int Command
-                        bcom = new b_command(0000);
+                        error = LangscapeError.CMD_INVALID_PARAM.code;
+                        bcom = new b_command(error);
                     }
                     break;
                 // <How does one get here?>
