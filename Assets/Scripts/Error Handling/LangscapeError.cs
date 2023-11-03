@@ -80,6 +80,9 @@ public class LangscapeError : MonoBehaviour
     public static LangscapeError CMD_POSITION_OUT_OF_WORLD = new LangscapeError(11004, "That position is out of bounds.");
     public static LangscapeError CMD_DESTINATION_OUT_OF_WORLD = new LangscapeError(11005, "The new destination would be out of bounds.");
     public static LangscapeError CMD_ROTATION_INVALID = new LangscapeError(11006, "That rotation is invalid. Rotations must be greater than zero and less than two-hundred and seventy.");
+    /* ERRORS IMPLEMENTED IN 2.0 */
+    public static LangscapeError CMD_OBJECT_D_NA = new LangscapeError(11007, "Sorry, The object you wish to delete does not exist");
+    public static LangscapeError CMD_OBJECT_NA = new LangscapeError(11008, "Sorry, The object you wish to spawn has not added yet");
 
     //LLM errors
     public static LangscapeError LLM_INVALID_RESPONSE = new LangscapeError(20000, "Sorry, the LLM did not understand. Could you repeat or rephrase?"); //LLM doesn't respond correctly
@@ -135,6 +138,16 @@ public class LangscapeError : MonoBehaviour
         if (code == CMD_ROTATION_INVALID)
         {
             ThrowUserError(CMD_ROTATION_INVALID);
+            return;
+        }
+        if(code == CMD_OBJECT_D_NA)
+        {
+            ThrowUserError(CMD_OBJECT_D_NA);
+            return;
+        }
+        if(code == CMD_OBJECT_NA)
+        {
+            ThrowUserError(CMD_OBJECT_NA);
             return;
         }
 
