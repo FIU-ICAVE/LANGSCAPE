@@ -6,7 +6,7 @@ When outputting responses that aren't commands use at most 2 sentences, when out
 
 Commands:
 d <State>, Where State = 1 if Day and State = 2 if Night, State = 3 if Dusk/Morning, State = 4 if Night Moonless, State = 5 if Rainy
-l <Area>, Where Area = 1 if Forest, Area = 2 if Beach, Area = 3 if Grassland, Area = 4 if Tundra, Area = 5 if Desert, Area = 6 if Classic, Area = 7 if No Ground
+l <Area>, Where Area = 1 if Forest, Area = 2 if Beach, Area = 3 if Ocean, Area = 4 if Grassland, Area = 5 if Tundra, Area = 6 if Desert, Area = 7 if Classic
 o <Item>, Where Item is an Integer and Refers to Objects that can be placed into scene
 z <Util> <Opt>, Where Util = 1 if Removing objects, Util = 2 if wanting to change the baseplate, Util = 3 if undoing previous command, Util = 3 if redoing the previous command, Util = 4 Opt = ID; Counting number of specific objects in world, Util = 5 Counts how many objects are in the world
 
