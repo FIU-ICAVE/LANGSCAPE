@@ -34,9 +34,9 @@ public class CommandInterpreter : MonoBehaviour {
 
     // OpenAI Settings
     private OpenAIApi openai;
-    //private OpenAIApi b_llm;
+    private OpenAIApi b_llm;
     private string prompt;
-    //private string b_prompt;
+    private string b_prompt;
 
     // Whisper
     private readonly string fileName = "output.wav";
@@ -52,7 +52,7 @@ public class CommandInterpreter : MonoBehaviour {
 
     // ChatGPT
     private List<ChatMessage> messages = new List<ChatMessage>();
-    //private List<ChatMessage> b_messages = new List<ChatMessage>();
+    private List<ChatMessage> b_messages = new List<ChatMessage>();
 
     // Search
     private SearchAlgorithms sa = new SearchAlgorithms();
@@ -65,7 +65,7 @@ public class CommandInterpreter : MonoBehaviour {
     // :: Background Building => Switch Keyword, 3 for Only Commands, 4 for Words and Commands ::
     string LLM_keyword = "background";
     string[] indicator3 = { "d ", "l ", "z ", "o " };
-    string[] indicator4 = { "d ", "l ", "z ", "o ", "\nd ", "\nl ", "\nz", "\no" };
+    string[] indicator4 = { " d ", " l ", " z ", " o ", "\nd ", "\nl ", "\nz", "\no" };
 
     // Loads prompt from file in Assets/Resources/prompt
     void Awake() {
@@ -76,15 +76,15 @@ public class CommandInterpreter : MonoBehaviour {
             throw new System.Exception("No file found called prompt in 'Assets/Resources/OpenAI/PROMPT");
         prompt = filedata.text;
         Debug.Log(prompt);
-        /*
+        
         // Background LLM
         b_llm = new OpenAIApi(apiKey: "#");
-        filedata = Resources.Load<TextAsset>("OpenAI/BACKGOUND");
+        filedata = Resources.Load<TextAsset>("OpenAI/BACKGROUND");
         if (filedata == null)
             throw new System.Exception("No file found called prompt in 'Assets/Resources/OpenAI/BACKGROUND");
         b_prompt = filedata.text;
         Debug.Log(b_prompt);
-        */
+        
     }
 
     private void Start() {
@@ -99,7 +99,7 @@ public class CommandInterpreter : MonoBehaviour {
         dropdown.RefreshShownValue();
 
         messages.Add(new ChatMessage() { Role = "system", Content = prompt });
-        //b_messages.Add(new ChatMessage() { Role = "system", Content = b_prompt });
+        b_messages.Add(new ChatMessage() { Role = "system", Content = b_prompt });
     }
     private void ChangeMicrophone(int index) {
         PlayerPrefs.SetInt("user-mic-device-index", index);
@@ -171,10 +171,10 @@ public class CommandInterpreter : MonoBehaviour {
         // If User Input has key indicator "background" (case-insensitive), Switch to Second LLM
         if (change)
         {
-            //b_messages.Add(userRequest);
+            b_messages.Add(userRequest);
 
             // Complete the instruction
-            /*try
+            try
             {
                 var compResponse = await b_llm.CreateChatCompletion(new CreateChatCompletionRequest()
                 {
@@ -194,9 +194,9 @@ public class CommandInterpreter : MonoBehaviour {
                     string instruct = string.Empty; // Command
 
                     // If Message Contains Only the Command don't Modify, otherwise Modify
-                    if (sa.hasOnlyCommand(aiRespa.Content, indicator) == false && aiRespa.Content != "n")
+                    if (sa.hasOnlyCommand(aiRespa.Content, indicator3) == false && aiRespa.Content != "n")
                     {
-                        var Updated = sa.fullSplit((string)aiRespa.Content, indicator, indicator2);
+                        var Updated = sa.fullSplit((string)aiRespa.Content, indicator3, indicator4);
 
                         // Only The Instructions
                         instruct = Updated.command;
@@ -206,11 +206,11 @@ public class CommandInterpreter : MonoBehaviour {
                         // If Instruct Has No Instructions, Change to "n" (For Now)
                         if (string.IsNullOrEmpty(instruct) == false)
                         {
-                            aiResponse.Content = instruct;
+                            aiRespa.Content = instruct;
                         }
                         else
                         {
-                            aiResponse.Content = "n";
+                            aiRespa.Content = "n";
                         }
 
                     }
@@ -234,9 +234,10 @@ public class CommandInterpreter : MonoBehaviour {
                     // Outputs Ai Response without Commands into Output Box
                     outputBox.text = fluff;
                     // Outputs Ai Response without Sentence into Debug Log
-                    Debug.Log("Command: " + aiRespa.Content);             
-                    
-                    // Implement Background Manager Instance        
+                    Debug.Log("Command: " + aiRespa.Content);
+
+                    // Implement Background Manager Instance
+                    BackgroundManager.Instance.Execute(aiRespa.Content);
 
                 } else {
                     outputBox.text = "No text was generated from this prompt.";
@@ -244,8 +245,8 @@ public class CommandInterpreter : MonoBehaviour {
             } catch (System.Exception e) {
                     outputBox.text = e.Message;
             }
-            */
-            outputBox.text = "Background Changes Currently Not Implemented";
+            
+            //outputBox.text = "Background Changes Currently Not Implemented";
         }
         else
         {

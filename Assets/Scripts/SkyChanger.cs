@@ -20,16 +20,18 @@ public class SkyChanger : MonoBehaviour
     private Vector3 rainyRotation = new Vector3( 56, 312, -38);
 
     public GameObject directionalLight;
-
-    public TMPro.TMP_Dropdown SkyDropdown; // for the dropdown menu
+    int state; // Stores Current Active State
+    
+    //public TMPro.TMP_Dropdown SkyDropdown; // for the dropdown menu
     // Start is called before the first frame update
     void Start()
     {
-        SkyDropdown.onValueChanged.AddListener(delegate { ChangeSky(SkyDropdown.value); });
+        //SkyDropdown.onValueChanged.AddListener(delegate { ChangeSky(SkyDropdown.value); });
         RenderSettings.skybox = dayMat;
         DynamicGI.UpdateEnvironment();
+        state = 1; 
     }
-
+    
     public void ChangeSky(int skyType)
     {
         // Find the Directional Light GameObject
@@ -90,5 +92,14 @@ public class SkyChanger : MonoBehaviour
                 Debug.Log("Invalid sky type");
                 break;
         }
+        // Error Checker
+        if(skyType != default)
+        {
+            state = skyType;
+        }
+    }
+    public int currentSky()
+    {
+        return state;
     }
 }

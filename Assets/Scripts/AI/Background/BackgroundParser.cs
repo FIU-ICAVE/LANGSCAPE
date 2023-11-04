@@ -72,7 +72,7 @@ public class BackgroundParser
             switch (words[k])
             {
                 case "n":
-                    bcom = new b_command(error, 0, 0, false);
+                    bcom = new b_command(error);
                     break;
                 // One Parameter, 0 Optional
                 case "d":
@@ -141,7 +141,7 @@ public class BackgroundParser
                     break;
                 // <How does one get here?>
                 default:
-                    // Error Code For Getting Here
+                    error = LangscapeError.CMD_INVALID_PARAM.code;
                     bcom = new b_command(0000);
                     break;
             }

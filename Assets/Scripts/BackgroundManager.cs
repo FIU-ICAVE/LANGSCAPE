@@ -8,23 +8,39 @@ using UnityEngine;
 public class BackgroundManager : MonoBehaviour
 {
     // Variables
+    /* For Keeping Track of Objects */
     const int MaxObjects = 50;
     ToyBox box;
     List<GameObject> items;
+    /* For Keeping Track of Commands */
+    List<BackgroundParser.b_command> history;
+    /* For Keeping Track of Current Environments */
+    struct environ
+    {
+        public int sky;
+        public int land;
+
+        public environ(int sCode, int lCode)
+        {
+            this.sky = sCode;
+            this.land = lCode;
+        }
+    }
+    List<environ> e_history;
 
     [Header("Background Scripts")]
     //<Don't forget to declare them public>
     /* Script for Changing Skybox */
     public SkyChanger skyChanger;
     /* Script for Changing Land */
-    //public LandChanger landChanger;
+    public GroundChanger groundChanger;
     /* Script for Spawn and Despawning Objects */
     public Spawner spawner;
 
     [Header("Object Prefabs")]
     // <Should ItemPrefabs Be Held Here or in each of the functions?>
     public GameObject[] itemPrefabs = new GameObject[5];
-    // For Keeping Track of Objects
+    
     
 
     /*
@@ -52,7 +68,9 @@ public class BackgroundManager : MonoBehaviour
 
         // Keeps Track of Objects in World for Object and Utility Commands
         box = new ToyBox();
-        items = new List<GameObject> ();
+        items = new List<GameObject>();
+        history = new List<BackgroundParser.b_command>();
+        e_history = new List<environ>();
 
     }
 
@@ -67,7 +85,8 @@ public class BackgroundManager : MonoBehaviour
     /* Manipulate Land*/
     public void l_Change(int area)
     {
-        // Add LandChanger
+        // <Anything else to Add?>
+        groundChanger.changeGround(area);
     }
 
     /* Manipulate Objects */
@@ -101,7 +120,8 @@ public class BackgroundManager : MonoBehaviour
         return LangscapeError.CMD_VALID.code;
     }
 
-    // Utilities
+    /* Utilities */
+    // Main Hub for All Utility Matters :: Declutters Execute() ::
     public int Utility(int util, int opt = 0)
     {
         int error = LangscapeError.CMD_VALID.code;
@@ -121,7 +141,7 @@ public class BackgroundManager : MonoBehaviour
 
         return error;
     }
-
+    // Deletes Specific Nth[opt] Instance of Object[item]
     public int DestroyObject(int item, int opt = 1)
     {
         int pos = box.RemoveObjectByObjectId(item, opt);
@@ -138,12 +158,65 @@ public class BackgroundManager : MonoBehaviour
         }
         
     }
-    
-    public void UndoPreviousCommand(int item)
+    // Undo Previous Command
+    public int UndoPreviousCommand()
     {
+        int error = LangscapeError.CMD_VALID.code;
+        // Check if there is at least one executed command in History
+        if(history.Count > 0)
+        {
+            // Pull 2nd to Last Command From History
+            BackgroundParser.b_command snip = history[history.Count - 1];
+            // Do Nothing
+            if(snip.c_ind == 0)
+            {
+                snip = new BackgroundParser.b_command(error);
+                // Do Nothing
+            }
+            // Revert Sky
+            else if(snip.c_ind == 1)
+            {
+                environ s = e_history[e_history.Count - 1];
+                snip = new BackgroundParser.b_command(error, 1, s.sky, false);
+            }
+            // Revert Land
+            else if(snip.c_ind == 2)
+            {
+                environ s = e_history[e_history.Count -1];
+                snip = new BackgroundParser.b_command(error, 2, s.land, false);
+            }
+            // Revert Object Spawn
+            else if(snip.c_ind == 3)
+            {
+                // Utility >> DestroyObject() >> Position: Last
+                snip = new BackgroundParser.b_command(error, 4, /*Placeholder*/ 2, true, box.GetAddedCount() - 1);
 
+
+            }
+            // Revert Utility Change
+            else if (snip.c_ind == 4)
+            {
+                snip = new BackgroundParser.b_command(error);
+            }
+            
+            
+            error = CommandExecutor(snip, error);
+        }
+        return error;
     }
-
+    // Redo Previous Command
+    public int RedoPreviousCommand()
+    {
+        int error = LangscapeError.CMD_VALID.code;
+        // Check if there is at least one executed command in History
+        if (history.Count > 0)
+        {
+            // Pull Last Command From History
+            BackgroundParser.b_command snip = history[history.Count - 1];
+            error = CommandExecutor(snip, error);
+        }
+        return error;
+    }
 
     /* Execute Everything */
     public void Execute(string response)
@@ -159,6 +232,10 @@ public class BackgroundManager : MonoBehaviour
             // 
             for(int i = 0; i < b_coms.Count; i++)
             {
+                // Grab Current Environment and Store
+                environ current = new environ(skyChanger.currentSky(), groundChanger.currentGround());
+                e_history.Add(current);
+
                 BackgroundParser.b_command bcom = b_coms[i];
 
                 // Leave it Error Sensed
@@ -168,41 +245,16 @@ public class BackgroundManager : MonoBehaviour
                     break;
                 }
 
-                // Checks Command Type
-                switch (bcom.c_ind)
-                {
-                    case 0:
-                        // No Change
-                        break;
-                    case 1:
-                        d_Change(bcom.act);
-                        break;
-                    case 2:
-                        // Land
-                        break;
-                    case 3:
-                        error = ObjectSpawn(bcom.act);
-                        break;
-                    case 4:
-                        if (bcom.extra)
-                        {
-                            // Utility with Two Params
-                            error = Utility(bcom.act, bcom.act2);
-                        }
-                        else
-                        {
-                            // Utility With One Param
-                            error = Utility(bcom.act);
-                        }
-
-                        break;
-                }
-
+                // Method for Initiating Type
+                error = CommandExecutor(bcom, error);
+                
+                // Error Catcher
                 if(error != LangscapeError.CMD_VALID.code)
                 {
                     break;
                 }
-
+                // Add to Command History
+                history.Add(bcom);
             }
         }
         else
@@ -219,6 +271,44 @@ public class BackgroundManager : MonoBehaviour
         // Summon Langscape Error
         LangscapeError.Instance.ThrowUserError(error);
         
+    }
+    // <Ask about Doing Undo if N Subsists>
+    public int CommandExecutor(BackgroundParser.b_command bcom, int errno)
+    {
+        // Variables
+        int error = errno;
+
+        // Checks Command Type
+        switch (bcom.c_ind)
+        {
+            case 0:
+                // No Change
+                break;
+            case 1:
+                d_Change(bcom.act);
+                break;
+            case 2:
+                l_Change(bcom.act);
+                break;
+            case 3:
+                error = ObjectSpawn(bcom.act);
+                break;
+            case 4:
+                if (bcom.extra)
+                {
+                    // Utility with Two Params
+                    error = Utility(bcom.act, bcom.act2);
+                }
+                else
+                {
+                    // Utility With One Param
+                    error = Utility(bcom.act);
+                }
+
+                break;
+        }
+
+        return error;
     }
 
 }
