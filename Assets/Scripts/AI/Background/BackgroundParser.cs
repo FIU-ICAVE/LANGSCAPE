@@ -142,7 +142,7 @@ public class BackgroundParser
                 // <How does one get here?>
                 default:
                     error = LangscapeError.CMD_INVALID_PARAM.code;
-                    bcom = new b_command(0000);
+                    bcom = new b_command(error);
                     break;
             }
 
