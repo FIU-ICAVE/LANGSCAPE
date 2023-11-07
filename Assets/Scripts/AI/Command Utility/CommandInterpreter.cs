@@ -256,7 +256,7 @@ public class CommandInterpreter : MonoBehaviour {
             {
                 var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
                 {
-                    Model = "gpt-3.5-turbo-16k",
+                    Model = "gpt-4-1106-preview",
                     Messages = messages,
                     Temperature = 0f,
                     MaxTokens = 256,
