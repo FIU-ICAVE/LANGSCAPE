@@ -14,19 +14,6 @@ public class BackgroundManager : MonoBehaviour
     List<GameObject> items;
     /* For Keeping Track of Commands */
     List<BackgroundParser.b_command> history;
-    /* For Keeping Track of Current Environments */
-    struct environ
-    {
-        public int sky;
-        public int land;
-
-        public environ(int sCode, int lCode)
-        {
-            this.sky = sCode;
-            this.land = lCode;
-        }
-    }
-    List<environ> e_history;
 
     [Header("Background Scripts")]
     //<Don't forget to declare them public>
@@ -70,7 +57,6 @@ public class BackgroundManager : MonoBehaviour
         box = new ToyBox();
         items = new List<GameObject>();
         history = new List<BackgroundParser.b_command>();
-        e_history = new List<environ>();
 
     }
 
@@ -102,7 +88,7 @@ public class BackgroundManager : MonoBehaviour
                 return error;
             }
         }
-        if(item > itemPrefabs.Length)
+        if(item >= itemPrefabs.Length)
         {
             // ERROR CODE FOR NONEXISTENT OBJECT
             return LangscapeError.CMD_OBJECT_NA.code;
@@ -125,17 +111,42 @@ public class BackgroundManager : MonoBehaviour
     public int Utility(int util, int opt = 0)
     {
         int error = LangscapeError.CMD_VALID.code;
+        int count = 0;
+        string floof = string.Empty;
 
         switch (util)
         {
             case 1:
-                // Placeholder
+                // Remove Object
+                error = DestroyObject(opt);
                 break;
             case 2:
-                // Placeholder
+                // Count By object_num
+                count = box.GetAddedObjectCount(opt);
+                if (count == 1)
+                {
+                    floof = string.Format("There is currently {0} Spawned in the world.", count);
+                }
+                else
+                {
+                    floof = string.Format("There are currently {0} Spawned in the world.", count);
+                }
+                AIMic.Instance.SpeakFluff(floof);
+                break;
+            case 3:
+                // Count all Objects
+                count = box.GetAddedCount();
+                if (count == 1) {
+                    floof = string.Format("There is currently {0} Spawned Object in the world.", count);
+                }
+                else
+                {
+                    floof = string.Format("There are currently {0} Spawned Objects in the world.", count);
+                }
+                AIMic.Instance.SpeakFluff(floof);
                 break;
             default:
-                //
+                error = LangscapeError.CMD_INVALID_PARAM.code;
                 break;
         }
 
@@ -158,66 +169,7 @@ public class BackgroundManager : MonoBehaviour
         }
         
     }
-    // Undo Previous Command
-    public int UndoPreviousCommand()
-    {
-        int error = LangscapeError.CMD_VALID.code;
-        // Check if there is at least one executed command in History
-        if(history.Count > 0)
-        {
-            // Pull 2nd to Last Command From History
-            BackgroundParser.b_command snip = history[history.Count - 1];
-            // Do Nothing
-            if(snip.c_ind == 0)
-            {
-                snip = new BackgroundParser.b_command(error);
-                // Do Nothing
-            }
-            // Revert Sky
-            else if(snip.c_ind == 1)
-            {
-                environ s = e_history[e_history.Count - 1];
-                snip = new BackgroundParser.b_command(error, 1, s.sky, false);
-            }
-            // Revert Land
-            else if(snip.c_ind == 2)
-            {
-                environ s = e_history[e_history.Count -1];
-                snip = new BackgroundParser.b_command(error, 2, s.land, false);
-            }
-            // Revert Object Spawn
-            else if(snip.c_ind == 3)
-            {
-                // Utility >> DestroyObject() >> Position: Last
-                snip = new BackgroundParser.b_command(error, 4, /*Placeholder*/ 2, true, box.GetAddedCount() - 1);
-
-
-            }
-            // Revert Utility Change
-            else if (snip.c_ind == 4)
-            {
-                snip = new BackgroundParser.b_command(error);
-            }
-            
-            
-            error = CommandExecutor(snip, error);
-        }
-        return error;
-    }
-    // Redo Previous Command
-    public int RedoPreviousCommand()
-    {
-        int error = LangscapeError.CMD_VALID.code;
-        // Check if there is at least one executed command in History
-        if (history.Count > 0)
-        {
-            // Pull Last Command From History
-            BackgroundParser.b_command snip = history[history.Count - 1];
-            error = CommandExecutor(snip, error);
-        }
-        return error;
-    }
-
+  
     /* Execute Everything */
     public void Execute(string response)
     {
@@ -232,9 +184,6 @@ public class BackgroundManager : MonoBehaviour
             // 
             for(int i = 0; i < b_coms.Count; i++)
             {
-                // Grab Current Environment and Store
-                environ current = new environ(skyChanger.currentSky(), groundChanger.currentGround());
-                e_history.Add(current);
 
                 BackgroundParser.b_command bcom = b_coms[i];
 
