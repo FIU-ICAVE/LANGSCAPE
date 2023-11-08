@@ -156,7 +156,7 @@ namespace Search
             {
                 mess = message.Substring(0, 50);
             }
-            string[] words = mess.Split(' ');
+            string[] words = mess.Split(' ', '\r', '\n');
             int pos = 0;
 
             switch (letter)

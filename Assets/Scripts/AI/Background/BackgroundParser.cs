@@ -62,7 +62,7 @@ public class BackgroundParser
 
         /* Part 2*/
         List<b_command> bfg = new List<b_command>();
-        string[] words = input.Split(' ');
+        string[] words = input.Split(' ', '\r','\n');
         int k = 0;
         do
         {
@@ -115,7 +115,7 @@ public class BackgroundParser
                 case "z":
                     if (int.TryParse(words[k + 1], out j))
                     {
-                        if (words.Length < k + 2)
+                        if (words.Length < k + 3)
                         {
                             bcom = new b_command(error, 4, j, false);
                         }
