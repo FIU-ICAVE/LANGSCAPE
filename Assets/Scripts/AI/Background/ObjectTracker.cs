@@ -41,144 +41,6 @@ namespace ObjectTracker
             u_id = 0;
         }
 
-        /* Information Calls */
-        // Outputs String Containing Object Information, and Whether it's Added or Removed
-        public string ObjectInfo(int uid)
-        {
-            // Variable
-            string info = string.Format("Object {uid} Not Found");
-            int aCount = GetAddedCount();
-            int rCount = GetRemovedCount();
-
-            // If Both Lists Are Empty, Check Neither Lists
-            if(aCount == 0 && rCount == 0)
-            {
-                info = "No Objects Added Yet";
-            }
-            // If Only Added List is Empty, Check in Removed List
-            else if(aCount == 0)
-            {
-                var result = SearchByUniqueId(uid, Removed);
-                if (result.check)
-                {
-                    int rs = result.position;
-                    info = string.Format("Id {uid} :: Object_Id => {Removed[rs].o_id} :: Status => Removed ::");
-                }
-            }
-            // If Only Removed List is Empty, Check in Added List
-            else if(rCount == 0)
-            {
-                var result = SearchByUniqueId(uid, Added);
-                if (result.check)
-                {
-                    int rs = result.position;
-                    info = string.Format("Id {uid} :: Object_Id => {Added[rs].o_id} :: Status => Added ::");
-                }
-            }
-            // If Both Lists Aren't Empty, Check in Both Lists
-            else
-            {
-                var result = SearchByUniqueId(uid, Added);
-                if (result.check)
-                {
-                    int rs = result.position;
-                    info = string.Format("Id {uid} :: Object_Id => {Added[rs].o_id} :: Status => Added ::");
-                }
-                else
-                {
-                    result = SearchByUniqueId(uid, Removed);
-                    if (result.check)
-                    {
-                        int rs = result.position;
-                        info = string.Format("Id {uid} :: Object_Id => {Removed[rs].o_id} :: Status => Removed ::");
-                    }
-                }
-            }
-
-            
-            return info;
-        }
-        public string AddedObjectInfo(int uid)
-        {
-            string info = string.Format("Object {uid} hasn't been Spawned");
-            var result = SearchByUniqueId(uid, Added);
-            if (result.check)
-            {
-                int rs = result.position;
-                info = string.Format("Id {uid} :: Object_Id => {Added[rs].o_id} :: Status => Added ::");
-            }
-            return info;
-        }
-        public string RemovedObjectInfo(int uid)
-        {
-            string info = string.Format("Object {uid} hasn't been Removed");
-            var result = SearchByUniqueId(uid, Removed);
-            if (result.check)
-            {
-                int rs = result.position;
-                info = string.Format("Id {uid} :: Object_Id => {Removed[rs].o_id} :: Status => Removed ::");
-            }
-            return info;
-        }
-        public string[] AllObjectsInfo()
-        {
-            if(GetTotalCount() <= 0)
-            {
-                return new string[0];
-            }
-            string[] holder = new string[GetTotalCount()];
-            for(int i = 0; i < GetTotalCount(); i++)
-            {
-                var result = SearchByUniqueId(i, Added);
-                if (result.check)
-                {
-                    int rs = result.position;
-                    holder[i] = string.Format("Id {i} :: Object_Id => {Added[rs].o_id} :: Status => Added ::");
-                }
-                else
-                {
-                    int rs = result.position;
-                    result = SearchByUniqueId(i, Removed);
-                    holder[i] = string.Format("Id {i} :: Object_Id => {Removed[rs].o_id} :: Status => Removed ::");
-                }
-                
-            }
-            return holder;
-        }
-        public string[] AllAddedObjectsInfo()
-        {
-            if (GetAddedCount() <= 0)
-            {
-                return new string[0];
-            }
-            string[] holder = new string[GetAddedCount()];
-            for (int i = 0; i < GetAddedCount(); i++)
-            {
-                Item item = Added[i];
-
-                holder[i] = string.Format("Id {item.id} :: Object_Id => {item.o_id} :: Status => Added ::");
-
-            }
-            return holder;
-        }
-        public string[] AllRemovedObjectsInfo()
-        {
-            if (GetRemovedCount() <= 0)
-            {
-                return new string[0];
-            }
-            string[] holder = new string[GetRemovedCount()];
-            for (int i = 0; i < GetRemovedCount(); i++)
-            {
-                Item item = Removed[i];
-
-                holder[i] = string.Format("Id {item.id} :: Object_Id => {item.o_id} :: Status => Removed ::");
-
-            }
-            return holder;
-        }
-        
-
         /* :: Add Calls :: */
         // Creates New Object
         public int CreateObject(int objectId)
@@ -191,19 +53,6 @@ namespace ObjectTracker
             u_id++;
 
             return (item.id);
-        }
-        // Retrieves Deleted Object Id <Is this neccessary?, Ai will remember>
-        public int RecoverObject(int uid)
-        {
-            var result = SearchByUniqueId(uid, Removed);
-            int objNum = -1;
-            if(result.check)
-            {
-                objNum = Removed[result.position].o_id;
-                Added.Add(Removed[result.position]);
-                Removed.RemoveAt(result.position);
-            }
-            return objNum;
         }
 
 
@@ -239,35 +88,6 @@ namespace ObjectTracker
             if (!n_value) { return u_value; }
 
             return u_value;
-        }
-        // Deletes All Objects
-        public bool RemoveAllObjects()
-        {
-            int aCount = GetAddedCount();
-            if (aCount == 0)
-            {
-                return false;
-            }
-            for(int i = 0; i < aCount; i++)
-            {
-                Removed.Add(Added[i]);
-            }
-            Added.Clear();
-
-            return true;
-        }
-        // Deletes All Objects With Specific Object Id
-        public bool RemoveAllObjectsByObjectId(int objectId)
-        {
-            var result = SearchByObjectId(objectId, Added);
-            if (result.check)
-            {
-                for(int i = 0; i < result.position.Length; i++)
-                {
-                    RemoveObjectByPosition((int)result.position[i]);
-                }
-            }
-            return result.check;
         }
 
         /* :: Search Calls :: */
@@ -364,6 +184,10 @@ namespace ObjectTracker
         public (int objectId, int uid) RetrieveAddedInfoByPosition(int pos)
         {
             return (Added[pos].o_id, Added[pos].id);
+        }
+        public (int objectId, int uid) RetrieveRemovedInfoByPosition(int pos)
+        {
+            return (Removed[pos].o_id, Removed[pos].id);
         }
     }
 }
