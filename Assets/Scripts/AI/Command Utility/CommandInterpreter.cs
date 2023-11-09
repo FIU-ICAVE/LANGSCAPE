@@ -63,7 +63,7 @@ public class CommandInterpreter : MonoBehaviour {
     string[] indicator = { "f ", "m ", "r ", "c ", "u ", "v ", "q ", "t " };
     string[] indicator2 = { " f ", " m ", " r ", " c ", " u ", " v ", " q ", " t ", "\nf ", "\nm ", "\nr ", "\nc ", "\nu ", "\nv ", "\nq ", "\nt " };
     // :: Background Building => Switch Keyword, 3 for Only Commands, 4 for Words and Commands ::
-    string LLM_keyword = "background";
+    string LLM_keyword = "ace";
     string[] indicator3 = { "d ", "l ", "z ", "o " };
     string[] indicator4 = { " d ", " l ", " z ", " o ", "\nd ", "\nl ", "\nz", "\no" };
 
@@ -168,7 +168,7 @@ public class CommandInterpreter : MonoBehaviour {
 
         outputBox.text = "Loading response...";
 
-        // If User Input has key indicator "background" (case-insensitive), Switch to Second LLM
+        // If User Input has key indicator "ace" (case-insensitive), Switch to Second LLM
         if (change)
         {
             b_messages.Add(userRequest);
