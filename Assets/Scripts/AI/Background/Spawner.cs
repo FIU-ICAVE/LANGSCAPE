@@ -5,7 +5,9 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [Header("Cameras")]
-    public GameObject occulusCamera;
+    /* OVR >> OVRCameraRig 1 >> TrackingSpace >> CenterEyeAnchor */
+    public Camera occulusCamera;
+    /* Windows >> Camera */
     public Camera windowsCamera;
 
     // When Called Should Spawn Item In front of player
@@ -26,7 +28,7 @@ public class Spawner : MonoBehaviour
         playerRot = windowsCamera.transform.rotation;
 #endif
         // 1 - 5 - 7 - 10 
-        float spawnDist = 7;
+        float spawnDist = 5;
         Vector3 spawnPos = playerPos + playerDir * spawnDist;
 
 
