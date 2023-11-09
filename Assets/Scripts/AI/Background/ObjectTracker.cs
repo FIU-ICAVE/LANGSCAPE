@@ -74,7 +74,7 @@ namespace ObjectTracker
             return result.check;
             
         }
-        // Deletes nth Instance of Object with Specific Object Id
+        // Deletes nth Instance of Object with Specific Object Id, Returns Unique Value
         public int RemoveObjectByObjectId(int objectId, int n)
         {
             bool n_value = (n > 0 && n <= GetAddedCount());
@@ -89,6 +89,30 @@ namespace ObjectTracker
 
             return u_value;
         }
+        // Deletes All Objects
+        public void RemoveAllObjects()
+        {
+            int aCount = GetAddedCount();
+            for (int i = 0; i < aCount; i++)
+            {
+                Removed.Add(Added[i]);
+            }
+            Added.Clear();
+        }
+        // Deletes All Objects With Specific Object Id
+        public void RemoveAllObjectsByObjectId(int objectId)
+        {
+            var result = SearchByObjectId(objectId, Added);
+            if (result.check)
+            {
+                for (int i = 0; i < result.position.Length; i++)
+                {
+                    RemoveObjectByPosition((int)result.position[i]);
+                }
+            }
+        }
+
+
 
         /* :: Search Calls :: */
         // Search by Unique Id
