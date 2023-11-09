@@ -19221,6 +19221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12263d9bced781a4a8ca0a034694e348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  occulusCamera: {fileID: 5098033518511942263}
+  windowsCamera: {fileID: 228074200}
 --- !u!4 &1418384556
 Transform:
   m_ObjectHideFlags: 0

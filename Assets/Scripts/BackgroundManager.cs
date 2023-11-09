@@ -90,8 +90,10 @@ public class BackgroundManager : MonoBehaviour
     }
 
     /* Manipulate Objects */
-    public int ObjectSpawn(int item)
+    public int ObjectSpawn(int item2)
     {
+        int item = item2 - 1;
+
         if(items.Count > MaxObjects)
         {
             //FOR TOO MANY OBJECTS DESPAWN FIRST ITEM?
