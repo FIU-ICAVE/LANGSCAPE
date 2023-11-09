@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    // When Called Should Spawn Item
+   [Header("Cameras")]
+    public GameObject occulusCamera;
+    public Camera windowsCamera;
+    
+    // When Called Should Spawn Item In front of player
     public GameObject Spawn(GameObject itemPrefab)
     {
-<<<<<<< Updated upstream
-        return (GameObject)Instantiate(itemPrefab, transform.position, Quaternion.identity);
-=======
         Vector3 playerPos;
         Vector3 playerDir;
         Quaternion playerRot;
@@ -30,7 +31,6 @@ public class Spawner : MonoBehaviour
 
 
         return (GameObject)Instantiate(itemPrefab, spawnPos, playerRot);
->>>>>>> Stashed changes
     }
     public void Despawn(GameObject gameObject)
     {
