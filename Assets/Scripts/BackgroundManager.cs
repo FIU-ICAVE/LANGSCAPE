@@ -76,8 +76,9 @@ public class BackgroundManager : MonoBehaviour
     }
 
     /* Manipulate Objects */
-    public int ObjectSpawn(int item)
+    public int ObjectSpawn(int item2)
     {
+        int item = item2 - 1;
         if(items.Count > MaxObjects)
         {
             //FOR TOO MANY OBJECTS DESPAWN FIRST ITEM?
@@ -118,7 +119,7 @@ public class BackgroundManager : MonoBehaviour
         {
             case 1:
                 // Remove Object
-                error = DestroyObject(opt);
+                error = DestroyObject(opt - 1);
                 break;
             case 2:
                 // Count By object_num
@@ -145,11 +146,59 @@ public class BackgroundManager : MonoBehaviour
                 }
                 AIMic.Instance.SpeakFluff(floof);
                 break;
+            case 4:
+                // Destroy All of A Specific Object
+                error = DestroyAllByObject(opt-1);
+                break;
+            case 5:
+                // Destroy All Spawned Objects
+                error = DestroyAllObjects();
+                break;
             default:
                 error = LangscapeError.CMD_INVALID_PARAM.code;
                 break;
         }
 
+        return error;
+    }
+    // Deletes All Instances of Object[item]
+    public int DestroyAllByObject(int item)
+    {
+        int error = LangscapeError.CMD_VALID.code;
+        int count = box.GetAddedObjectCount(item);
+
+        if (count < 1)
+        {
+            // Error for Zero Count
+            return LangscapeError.CMD_OBJECT_D_NA.code;
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            error = DestroyObject(item);
+
+            if(error != LangscapeError.CMD_VALID.code)
+            {
+                return error;
+            }
+        }
+        return error;
+    }
+    //Deletes All Objects
+    public int DestroyAllObjects()
+    {
+        int error = LangscapeError.CMD_VALID.code;
+
+        if (box.GetAddedCount() < 1)
+        {
+            // Error for Zero Count
+            return LangscapeError.CMD_OBJECT_D_NA.code;
+        }
+        
+        // Clear List and Box
+        items.Clear();
+        box.RemoveAllObjects();
+        
         return error;
     }
     // Deletes Specific Nth[opt] Instance of Object[item]
