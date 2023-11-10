@@ -48,6 +48,7 @@ public class CommandInterpreter : MonoBehaviour {
     //Gesture Detect
 #if !UNITY_STANDALONE_WIN
     public GestureTest gesture;
+    public GestureTest gesture2;
 #endif
 
     // ChatGPT
@@ -145,10 +146,15 @@ public class CommandInterpreter : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.V))
             EndRecording();
 #else
-        if (!isRecording && gesture.selected)
+        if (!isRecording && (gesture.selected || gesture2.selected))
+        {
+            change = gesture2.selected;
             StartRecording();
-        if (isRecording && !gesture.selected)
+        }
+        if (isRecording && (!gesture.selected && !gesture2.selected))
+        {
             EndRecording();
+        }
 #endif
 
         if (isRecording) {
@@ -163,8 +169,9 @@ public class CommandInterpreter : MonoBehaviour {
             Content = request
         };
 
-
+#if UNITY_STANDALONE_WIN
         change = sa.SwitchLLM(userRequest.Content, LLM_keyword);
+#endif
 
         outputBox.text = "Loading response...";
 
