@@ -124,7 +124,7 @@ public class BackgroundManager : MonoBehaviour
                 break;
             case 2:
                 // Count By object_num
-                count = box.GetAddedObjectCount(opt);
+                count = box.GetAddedObjectCount(opt - 1);
                 if (count == 1)
                 {
                     floof = string.Format("There is currently {0} Spawned in the world.", count);
@@ -166,23 +166,20 @@ public class BackgroundManager : MonoBehaviour
     public int DestroyAllByObject(int item)
     {
         int error = LangscapeError.CMD_VALID.code;
-        int count = box.GetAddedObjectCount(item);
 
-        if (count < 1)
+        if (box.GetAddedCount() < 1)
         {
             // Error for Zero Count
             return LangscapeError.CMD_OBJECT_D_NA.code;
         }
-
-        for (int i = 0; i < count; i++)
+        // Clear List and Box
+        for(int i = box.GetAddedCount() - 1; i >= 0; i--)
         {
-            error = DestroyObject(item);
-
-            if(error != LangscapeError.CMD_VALID.code)
-            {
-                return error;
-            }
+            spawner.Despawn(items[i]);
         }
+        // Clear List and Box
+        box.RemoveAllObjects();
+        
         return error;
     }
     //Deletes All Objects
