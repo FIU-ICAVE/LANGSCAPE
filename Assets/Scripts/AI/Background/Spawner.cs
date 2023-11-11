@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
    [Header("Cameras")]
-    public GameObject occulusCamera;
+    public Camera oculusCamera;
     public Camera windowsCamera;
     
     // When Called Should Spawn Item In front of player
@@ -17,9 +17,9 @@ public class Spawner : MonoBehaviour
 
 
 #if !UNITY_STANDALONE_WIN
-        playerPos = occulusCamera.transform.position;
-        playerDir = occulusCamera.transform.forward;
-        playerRot = occulusCamera.transform.rotation;
+        playerPos = oculusCamera.transform.position;
+        playerDir = oculusCamera.transform.forward;
+        playerRot = oculusCamera.transform.rotation;
 #else
         playerPos = windowsCamera.transform.position;
         playerDir = windowsCamera.transform.forward;

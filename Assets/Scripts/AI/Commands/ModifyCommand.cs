@@ -21,6 +21,7 @@ class ModifyCommand : Command {
         target = new GridCellData(argv[6], Color.white);
         cell = new GridCellData(argv[7], color);
         valid = LangscapeError.CMD_VALID.code;
+        Debug.Log(ToString());
 
         if (IsInvalidPosition(position, size))
             return;
