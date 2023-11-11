@@ -66,7 +66,7 @@ public class CommandInterpreter : MonoBehaviour {
     // :: Background Building => Switch Keyword, 3 for Only Commands, 4 for Words and Commands ::
     string LLM_keyword = "ace";
     string[] indicator3 = { "d ", "l ", "z ", "o " };
-    string[] indicator4 = { " d ", " l ", " z ", " o ", "\nd ", "\nl ", "\nz", "\no" };
+    string[] indicator4 = { " d ", " l ", " z ", " o ", "\nd ", "\nl ", "\nz ", "\no " };
 
     // Loads prompt from file in Assets/Resources/prompt
     void Awake() {
