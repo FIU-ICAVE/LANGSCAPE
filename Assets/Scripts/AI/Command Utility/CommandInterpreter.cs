@@ -48,6 +48,7 @@ public class CommandInterpreter : MonoBehaviour {
     //Gesture Detect
 #if !UNITY_STANDALONE_WIN
     public GestureTest gesture;
+    public GestureTest gesture2;
 #endif
 
     // ChatGPT
@@ -63,7 +64,11 @@ public class CommandInterpreter : MonoBehaviour {
     string[] indicator = { "f ", "m ", "r ", "c ", "u ", "v ", "q ", "t " };
     string[] indicator2 = { " f ", " m ", " r ", " c ", " u ", " v ", " q ", " t ", "\nf ", "\nm ", "\nr ", "\nc ", "\nu ", "\nv ", "\nq ", "\nt " };
     // :: Background Building => Switch Keyword, 3 for Only Commands, 4 for Words and Commands ::
-    string LLM_keyword = "background";
+
+    #if UNITY_STANDALONE_WIN
+    string LLM_keyword = "background"; //for windows version
+    #endif
+    
     string[] indicator3 = { "d ", "l ", "z ", "o " };
     string[] indicator4 = { " d ", " l ", " z ", " o ", "\nd ", "\nl ", "\nz", "\no" };
 
@@ -145,10 +150,15 @@ public class CommandInterpreter : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.V))
             EndRecording();
 #else
-        if (!isRecording && gesture.selected)
+        if (!isRecording && (gesture.selected || gesture2.selected))
+        {
+            change = gesture2.selected;
             StartRecording();
-        if (isRecording && !gesture.selected)
+        }
+        if (isRecording && (!gesture.selected && !gesture2.selected))
+        {
             EndRecording();
+        }
 #endif
 
         if (isRecording) {
@@ -163,8 +173,9 @@ public class CommandInterpreter : MonoBehaviour {
             Content = request
         };
 
-
-        change = sa.SwitchLLM(userRequest.Content, LLM_keyword);
+        #if UNITY_STANDALONE_WIN
+                change = sa.SwitchLLM(userRequest.Content, LLM_keyword);
+        #endif
 
         outputBox.text = "Loading response...";
 

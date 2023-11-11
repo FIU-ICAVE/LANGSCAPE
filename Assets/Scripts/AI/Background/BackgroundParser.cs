@@ -62,7 +62,7 @@ public class BackgroundParser
 
         /* Part 2*/
         List<b_command> bfg = new List<b_command>();
-        string[] words = input.Split(' ', '\r','\n');
+        string[] words = input.Split(' ','\r','\n');
         int k = 0;
         do
         {

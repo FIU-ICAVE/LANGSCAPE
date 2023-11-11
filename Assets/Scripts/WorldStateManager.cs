@@ -88,7 +88,8 @@ public class WorldStateManager : MonoBehaviour
     }
     public void BuildCommandBatch(string response, string request) //located here to avoid repeating this code throughout other scripts
     {
-        int parseCode = CommandParser.Parse(response, '\n', ' ', out Command[] cmds);
+        char[] split = {'\n', '\r'};
+        int parseCode = CommandParser.Parse(response, split, ' ', out Command[] cmds);
         if (parseCode == 0 && cmds != null && cmds.Length != 0)
         {
             CommandBatch batch = new(cmds, request, response);
