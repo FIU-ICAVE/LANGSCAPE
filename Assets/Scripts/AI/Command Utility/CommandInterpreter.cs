@@ -70,7 +70,7 @@ public class CommandInterpreter : MonoBehaviour {
     #endif
     
     string[] indicator3 = { "d ", "l ", "z ", "o " };
-    string[] indicator4 = { " d ", " l ", " z ", " o ", "\nd ", "\nl ", "\nz", "\no" };
+    string[] indicator4 = { " d ", " l ", " z ", " o ", "\nd ", "\nl ", "\nz ", "\no " };
 
     // Loads prompt from file in Assets/Resources/prompt
     void Awake() {
