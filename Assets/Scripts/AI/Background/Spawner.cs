@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-   [Header("Cameras")]
+    [Header("Cameras")]
+    /* OVR >> OVRCameraRig 1 >> TrackingSpace >> CenterEyeAnchor */
     public Camera oculusCamera;
+    /* Windows >> Camera */
     public Camera windowsCamera;
-    
+
     // When Called Should Spawn Item In front of player
     public GameObject Spawn(GameObject itemPrefab)
     {
