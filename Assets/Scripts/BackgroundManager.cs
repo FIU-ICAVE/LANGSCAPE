@@ -166,19 +166,24 @@ public class BackgroundManager : MonoBehaviour
     public int DestroyAllByObject(int item)
     {
         int error = LangscapeError.CMD_VALID.code;
+        int count = box.GetAddedObjectCount(item);
 
-        if (box.GetAddedCount() < 1)
+        if (count < 1)
         {
             // Error for Zero Count
             return LangscapeError.CMD_OBJECT_D_NA.code;
         }
-        // Clear List and Box
-        for(int i = box.GetAddedCount() - 1; i >= 0; i--)
+        // Clear List of Specific Objects [item]
+        for(int i = 0; i < count; i++)
         {
-            spawner.Despawn(items[i]);
+            error = DestroyObject(item);
+            if(error != LangscapeError.CMD_VALID.code)
+            {
+                return error;
+            }
         }
-        // Clear List and Box
-        box.RemoveAllObjects();
+        // Clear Box of Specific Objects [item]
+        box.RemoveAllObjectsByObjectId(item);
         
         return error;
     }
@@ -192,7 +197,11 @@ public class BackgroundManager : MonoBehaviour
             // Error for Zero Count
             return LangscapeError.CMD_OBJECT_D_NA.code;
         }
-        
+        // Despawn Items
+        for(int i = items.Count - 1; i >= 0; i--)
+        {
+            spawner.Despawn(items[i]);
+        }
         // Clear List and Box
         items.Clear();
         box.RemoveAllObjects();
