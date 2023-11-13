@@ -74,7 +74,7 @@ public class CommandInterpreter : MonoBehaviour {
 
     // Loads prompt from file in Assets/Resources/prompt
     void Awake() {
-        openai = new OpenAIApi(apiKey: "#");
+        openai = new OpenAIApi(apiKey: "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");
         // 1st LLM
         TextAsset filedata = Resources.Load<TextAsset>("OpenAI/PROMPT");
         if (filedata == null)
@@ -83,7 +83,7 @@ public class CommandInterpreter : MonoBehaviour {
         Debug.Log(prompt);
         
         // Background LLM
-        b_llm = new OpenAIApi(apiKey: "#");
+        b_llm = new OpenAIApi(apiKey: "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");
         filedata = Resources.Load<TextAsset>("OpenAI/BACKGROUND");
         if (filedata == null)
             throw new System.Exception("No file found called prompt in 'Assets/Resources/OpenAI/BACKGROUND");
