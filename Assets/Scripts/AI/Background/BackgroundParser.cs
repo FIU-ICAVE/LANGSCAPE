@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine; 
 
@@ -117,6 +118,11 @@ public class BackgroundParser
                     {
                         if (words.Length < k + 3)
                         {
+                            bcom = new b_command(error, 4, j, false);
+                        }
+                        else if (Char.IsLetter(words[k + 2], 0))
+                        {
+                            // End Utility Command and Move to Next Command
                             bcom = new b_command(error, 4, j, false);
                         }
                         else
