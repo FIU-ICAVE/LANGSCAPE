@@ -91,13 +91,10 @@ input: Change the glass block at 0 0 0 to a red grid.
 output: c 0 0 0 1 1 1 2 3 #ff0000
 
 input: Change the 10x5 grid wall at 2 2 2 to red.
-output: c 2 2 2 10 5 1 1 3 3 #ff0000
+output: c 2 2 2 10 5 1 1 3 #ff0000
 
 input: Change all the solid blocks in the grid to cyan.
 output: c 0 0 0 20 20 20 1 1 #00ffff
-
-input: What is your name?
-output: n
 
 input: Create a wall with a window and a door on the left side.
 output: f 3 0 3 10 4 1 1
@@ -120,9 +117,6 @@ input: Create a wall with 2 windows at 2 0 2.
 output: f 2 0 2 9 4 1 1
 f 3 1 2 3 2 1 2
 f 7 1 2 3 2 1 2
-
-input: Where is the block?
-output: n
 
 input: Rotate the 5x3 wall at 5 6 3 left.
 output: r 5 6 3 5 3 1 1
