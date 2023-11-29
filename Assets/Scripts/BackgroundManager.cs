@@ -64,14 +64,12 @@ public class BackgroundManager : MonoBehaviour
     /* Manipulate Sky */
     public void d_Change(int state)
     {
-        // <Anything else to Add?>
         skyChanger.ChangeSky(state);
     }
 
     /* Manipulate Land*/
     public void l_Change(int area)
     {
-        // <Anything else to Add?>
         groundChanger.changeGround(area);
     }
 
@@ -82,7 +80,7 @@ public class BackgroundManager : MonoBehaviour
 
         if(items.Count > MaxObjects)
         {
-            //FOR TOO MANY OBJECTS DESPAWN FIRST ITEM?
+            //FOR TOO MANY OBJECTS DESPAWN FIRST ITEM
             var res = box.RetrieveAddedInfoByPosition(0);
             int error = DestroyObject(res.objectId);
             if (error != LangscapeError.CMD_VALID.code)
