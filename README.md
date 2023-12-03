@@ -37,6 +37,7 @@ After this, Unity should have populated your directory with all the proper files
 
 #### 4. OPENAI Api Key Placement
 To Run the Project include active OpenAI Api Key where applicable. (In Assets/Scripts/AI/Command Utility/CommandInterpreter.cs)
+
 ->In Windows/Mac/Linux Unity Editor Mode:
   - Press and Hold "v" Key to initiate either LLM
   - Include the word Background in speech during use for 2nd LLM
