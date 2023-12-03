@@ -35,17 +35,17 @@ After this, Unity should have populated your directory with all the proper files
 
 [Unity Documentation](https://docs.unity.com/)
 
-#### 4. OPENAI Api Key Placement
-To Run the Project include active OpenAI Api Key where applicable. (In Assets/Scripts/AI/Command Utility/CommandInterpreter.cs)
+#### 4. OPENAI Api Key Placement and How to Check if its Working
+Running the Project requires an active OpenAI Api Key. (Currently used in Assets/Scripts/AI/Command Utility/CommandInterpreter.cs)
 
 ->In Windows/Mac/Linux Unity Editor Mode:
-  - Press and Hold "v" Key to initiate either LLM
-  - Include the word Background in speech during use for 2nd LLM
+  - Press and Hold the "v" Key to initiate either LLM
+  - Include the word "Background" in the recording to access the 2nd LLM
     
 ->In Oculus VR - Hand-Tracking:
-  - Use Thumbs Up Pose to initate 1st LLM Recording - Grid Building
-  - Use Scissors Pose to initiate 2nd LLM Recording - Object Spawning, Land Changes, Sky Changes, and Related Utility
-  - Close Hand to end Recording of either LLM
+  - Use the Thumbs Up Pose for the Left Hand to initate recording for the 1st LLM - Grid Building
+  - Use the Scissors Pose for the Left Hand to initiate recording for the 2nd LLM - Object Spawning, Land Changes, Sky Changes, and Related Utility
+  - Close the Left Hand to end the recording for either LLM
 
 ## Project Directory Structure
 ### File Directories:
