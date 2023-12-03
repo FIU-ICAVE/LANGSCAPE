@@ -41,6 +41,7 @@ To Run the Project include active OpenAI Api Key where applicable. (In Assets/Sc
 ->In Windows/Mac/Linux Unity Editor Mode:
   - Press and Hold "v" Key to initiate either LLM
   - Include the word Background in speech during use for 2nd LLM
+    
 ->In Oculus VR - Hand-Tracking:
   - Use Thumbs Up Pose to initate 1st LLM Recording - Grid Building
   - Use Scissors Pose to initiate 2nd LLM Recording - Object Spawning, Land Changes, Sky Changes, and Related Utility
