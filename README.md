@@ -47,6 +47,38 @@ To Run the Project include active OpenAI Api Key where applicable. (In Assets/Sc
   - Use Scissors Pose to initiate 2nd LLM Recording - Object Spawning, Land Changes, Sky Changes, and Related Utility
   - Close Hand to end Recording of either LLM
 
+## Project Directory Structure
+### File Directories:
+●    Editor: Anything placed in this folder will not be compiled at runtime. Place things such as custom inspector menus in here.
+
+●    Imported assets: This folder contains all of our imported assets from the unity store that were used for the background system.
+
+●    Materials: Contains all Unity materials, as well as our shader graphs.
+
+●    Models: Contains the prefabs for the background Objects that are spawned, as well as ground state models, and other 3D models.
+
+●    Oculus: Resource folder for Oculus Voice SDK. This might be moved to Oculus Voice.
+
+●    Oculus Voice: Oculus Voice SDK package.
+
+●    OVR: Contains everything related to VR.
+
+●    Prefabs: Contains all the prefabricated GameObjects.
+
+●    Rendering Pipeline: Unity package to support our custom shaders.
+
+●    Resources: Contains miscellaneous important files that are needed/referenced by the codebase. The LLM prompts are located here.
+
+●    Samples: Some packages, such as the OpenAI Utility package, have their example assets and scenes in a separate directory from the rest of the package. This folder contains those example assets.
+
+●    Scenes: Contains all LANGSCAPE scenes.
+
+●    Scripts: Contains all LANGSCAPE scripts.
+
+●    Textures: Contains UI and block textures.
+
+There are some other folders not mentioned here. These are, for the most part, unimportant and can be rearranged without much concern.
+
 ## Quick GIT Guide
 
 [GIT Documentation](https://git-scm.com/doc)
