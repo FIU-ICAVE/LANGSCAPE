@@ -14,10 +14,11 @@ namespace OpenAI
         [SerializeField] private RectTransform received;
 
         private float height;
-        private OpenAIApi openai = new OpenAIApi(apiKey: "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");
-
+        private OpenAIApi openai = new OpenAIApi(apiKey: "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");
+        
         private List<ChatMessage> messages = new List<ChatMessage>();
         private string prompt = "Act as a random stranger in a chat room and reply to the questions. Don't break character. Don't ever mention that you are an AI model.";
+        
 
         private void Start()
         {
@@ -44,39 +45,44 @@ namespace OpenAI
                 Role = "user",
                 Content = inputField.text
             };
-            
-            AppendMessage(newMessage);
 
-            if (messages.Count == 0) newMessage.Content = prompt + "\n" + inputField.text; 
-            
-            messages.Add(newMessage);
-            
-            button.enabled = false;
-            inputField.text = "";
-            inputField.enabled = false;
-            
-            // Complete the instruction
-            var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
-            {
-                Model = "gpt-3.5-turbo-0301",
-                Messages = messages
-            });
+                AppendMessage(newMessage);
 
-            if (completionResponse.Choices != null && completionResponse.Choices.Count > 0)
-            {
-                var message = completionResponse.Choices[0].Message;
-                message.Content = message.Content.Trim();
-                
-                messages.Add(message);
-                AppendMessage(message);
+                if (messages.Count == 0) newMessage.Content = prompt + "\n" + inputField.text;
+
+                messages.Add(newMessage);
+
+                button.enabled = false;
+                inputField.text = "";
+                inputField.enabled = false;
+
+                // Complete the instruction
+                var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
+                {
+                    Model = "gpt-3.5-turbo-0301",
+                    Messages = messages
+                });
+
+                if (completionResponse.Choices != null && completionResponse.Choices.Count > 0)
+                {
+                    var message = completionResponse.Choices[0].Message;
+
+                    message.Content = message.Content.Trim();
+
+                    messages.Add(message);
+                    AppendMessage(message);
+
+
+                    
+                }
+                else
+                {
+                    Debug.LogWarning("No text was generated from this prompt.");
+                }
+
+                button.enabled = true;
+                inputField.enabled = true;
             }
-            else
-            {
-                Debug.LogWarning("No text was generated from this prompt.");
-            }
-
-            button.enabled = true;
-            inputField.enabled = true;
-        }
+        
     }
 }

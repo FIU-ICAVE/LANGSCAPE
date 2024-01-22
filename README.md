@@ -35,6 +35,50 @@ After this, Unity should have populated your directory with all the proper files
 
 [Unity Documentation](https://docs.unity.com/)
 
+#### 4. OPENAI Api Key Placement and How to Check if its Working
+Running the Project requires an active OpenAI Api Key. (Currently used in Assets/Scripts/AI/Command Utility/CommandInterpreter.cs)
+
+->In Windows/Mac/Linux Unity Editor Mode:
+  - Press and Hold the "v" Key to initiate either LLM
+  - Include the word "Background" in the recording to access the 2nd LLM
+    
+->In Oculus VR - Hand-Tracking:
+  - Use the Thumbs Up Pose for the Left Hand to initate recording for the 1st LLM - Grid Building
+  - Use the Scissors Pose for the Left Hand to initiate recording for the 2nd LLM - Object Spawning, Land Changes, Sky Changes, and Related Utility
+  - Close the Left Hand to end the recording for either LLM
+
+## Project Directory Structure
+### File Directories:
+●    Editor: Anything placed in this folder will not be compiled at runtime. Place things such as custom inspector menus in here.
+
+●    Imported assets: This folder contains all of our imported assets from the unity store that were used for the background system.
+
+●    Materials: Contains all Unity materials, as well as our shader graphs.
+
+●    Models: Contains the prefabs for the background Objects that are spawned, as well as ground state models, and other 3D models.
+
+●    Oculus: Resource folder for Oculus Voice SDK. This might be moved to Oculus Voice.
+
+●    Oculus Voice: Oculus Voice SDK package.
+
+●    OVR: Contains everything related to VR.
+
+●    Prefabs: Contains all the prefabricated GameObjects.
+
+●    Rendering Pipeline: Unity package to support our custom shaders.
+
+●    Resources: Contains miscellaneous important files that are needed/referenced by the codebase. The LLM prompts are located here.
+
+●    Samples: Some packages, such as the OpenAI Utility package, have their example assets and scenes in a separate directory from the rest of the package. This folder contains those example assets.
+
+●    Scenes: Contains all LANGSCAPE scenes.
+
+●    Scripts: Contains all LANGSCAPE scripts.
+
+●    Textures: Contains UI and block textures.
+
+There are some other folders not mentioned here. These are, for the most part, unimportant and can be rearranged without much concern.
+
 ## Quick GIT Guide
 
 [GIT Documentation](https://git-scm.com/doc)

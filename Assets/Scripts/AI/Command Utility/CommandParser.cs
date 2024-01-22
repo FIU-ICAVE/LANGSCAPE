@@ -9,7 +9,7 @@ public class CommandParser
     public static readonly int CODE_INVALID_RESPONSE = 2;   // Returned if a command was improperly parsed. (Ex: fill had the wrong number of arguments/an invalid token)
     public static readonly int CODE_EMPTY_COMMAND = 3;      // Returned if a new line was returned with no command.
     */
-    public static int Parse(string str, char commandSeparator, char argSeparator, out Command[] cmds) {
+    public static int Parse(string str, char[] commandSeparator, char argSeparator, out Command[] cmds) {
         cmds = null;
 
         if (str.Length == 0)
@@ -18,7 +18,7 @@ public class CommandParser
         List<Command> cmdList = new List<Command>();
         List<Command> utilList = new List<Command>(); // Undo and redo commands
 
-        string[] commandStrings = str.Split(commandSeparator);
+        string[] commandStrings = str.Split(commandSeparator[0],commandSeparator[1]);
 
         // fill 0 0 0 1 10 10 1 #
         foreach (string command in commandStrings) {
@@ -37,7 +37,7 @@ public class CommandParser
 
             // If the signature is equal to the null command, exit the process with null.
             if (signature == Command.SIGNATURE)
-                return LangscapeError.CMD_NULL.code;
+                return LangscapeError.CMD_VALID.code/*LangscapeError.CMD_NULL.code*/;
 
             // If the signature is equal to the fill command, attempt to parse it.
             if (signature == FillCommand.SIGNATURE) {
